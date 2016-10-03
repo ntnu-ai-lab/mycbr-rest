@@ -1,4 +1,4 @@
-package no.ntnu.mycbr;
+package no.ntnu.mycbr.rest;
 
 import de.dfki.mycbr.core.DefaultCaseBase;
 import de.dfki.mycbr.core.ICaseBase;

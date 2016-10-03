@@ -2,7 +2,6 @@ package no.ntnu.mycbr.rest;
 
 import de.dfki.mycbr.core.casebase.Instance;
 import io.swagger.annotations.*;
-import no.ntnu.mycbr.CaseBases;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;

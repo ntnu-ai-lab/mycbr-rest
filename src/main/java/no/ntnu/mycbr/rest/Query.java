@@ -23,11 +23,11 @@ public class Query {
 
     private static HashMap<String, Double> resultList = new HashMap<String, Double>();;
 
-    public Query(String concept, String attribute, String value) {
+    public Query(String casebase, String concept, String attribute, String value) {
 
         Project project = App.getProject();
         // create case bases and assign the case bases that will be used for submitting a query
-        DefaultCaseBase cb = (DefaultCaseBase)project.getCaseBases().get(CBREngine.getCaseBase());
+        DefaultCaseBase cb = (DefaultCaseBase)project.getCaseBases().get(casebase);
         // create a concept and get the main concept of the project;
         Concept myConcept = project.getConceptByID(concept) ;
 
@@ -55,11 +55,11 @@ public class Query {
         }
 }
 
-    public Query(String concept, String caseID) {
+    public Query(String casebase, String concept, String caseID) {
 
         Project project = App.getProject();
         // create case bases and assign the case bases that will be used for submitting a query
-        DefaultCaseBase cb = (DefaultCaseBase)project.getCaseBases().get(CBREngine.getCaseBase());
+        DefaultCaseBase cb = (DefaultCaseBase)project.getCaseBases().get(casebase);
         // create a concept and get the main concept of the project;
         Concept myConcept = project.getConceptByID(concept) ;
 
@@ -78,7 +78,6 @@ public class Query {
             r.setRetrievalMethod(Retrieval.RetrievalMethod.RETRIEVE_SORTED);
             r.start();
             List<Pair<Instance, Similarity>> results = r.getResult();
-            System.out.println("Query results: " +results.size());
 
             for (Pair<Instance, Similarity> result : results) {
                 this.resultList.put(result.getFirst().getName(), result.getSecond().getValue());
@@ -90,8 +89,10 @@ public class Query {
         }
     }
 
+    public HashMap<String, Double> getSimilarCasesByID() {
+        return resultList;
+    }
     public HashMap<String, Double> getSimilarCases() {
         return resultList;
     }
-
 }

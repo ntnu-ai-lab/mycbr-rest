@@ -36,20 +36,7 @@ public class App {
 
         engine = new CBREngine();
         project = engine.createProjectFromPRJ();
-
-
         SpringApplication.run(App.class, args);
     }
-
-    private static LinkedList<Double> printResult(List<Pair<Instance, Similarity>> result) {
-        LinkedList<Double> sims = new LinkedList<Double>();
-        for (Pair<Instance, Similarity> r : result) {
-            System.out.println("\nSimilarity: " + r.getSecond().getValue()
-                    + " to Instance: " + r.getFirst().getName());
-            sims.add(r.getSecond().getValue());
-        }
-        return sims;
-    }
-
 
 }

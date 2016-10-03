@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>de.dfki.mycbr</groupId>
+  <artifactId>mycbr-sdk</artifactId>
+  <versioning>
+    <versions>
+      <version>3.2-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20161002100904</lastUpdated>
+  </versioning>
+</metadata>

@@ -1,0 +1,118 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>no.ntnu.mycbr</groupId>
+  <artifactId>mycbr-rest-example</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>mycbr-rest-example</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <junit.version>3.8.1</junit.version>
+    <java.version>1.8</java.version>
+    <mycbr.version>3.2-SNAPSHOT</mycbr.version>
+    <spring.version>1.4.1.RELEASE</spring.version>
+    <springfox.version>2.4.0</springfox.version>
+    <jackson.version>1.9.12</jackson.version>
+    <mvn.compiler.version>3.5.1</mvn.compiler.version>
+    <hibernate.version>1.0.1.Final</hibernate.version>
+  </properties>
+
+
+  <repositories>
+    <repository>
+      <id>mycbr-repo</id>
+      <url>file://${basedir}/lib</url>
+    </repository>
+
+    <repository>
+      <id>spring-releases</id>
+      <url>https://repo.spring.io/libs-release</url>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>de.dfki.mycbr</groupId>
+      <artifactId>mycbr-sdk</artifactId>
+      <version>${mycbr.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <version>${spring.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.jackson</groupId>
+      <artifactId>jackson-mapper-asl</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-swagger-ui</artifactId>
+      <version>${springfox.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-swagger2</artifactId>
+      <version>${springfox.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate.javax.persistence</groupId>
+      <artifactId>hibernate-jpa-2.0-api</artifactId>
+      <version>${hibernate.version}</version>
+    </dependency>
+
+  </dependencies>
+
+
+  <build>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${mvn.compiler.version}</version>
+          <configuration>
+            <source>${java.version}</source>
+            <target>${java.version}</target>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <version>${spring.version}</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>repackage</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+   </build>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>spring-releases</id>
+      <url>https://repo.spring.io/libs-release</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+</project>

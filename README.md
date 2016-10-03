@@ -14,5 +14,6 @@ This project puts myCBR into Spring.io and provides the created REST calls throu
 # Functionalities
 * The goal is to provide the entire retrieval, however, so far only the model is working
  * /case provides the case content
- * /concept provides the concept name(s)
+ * /concept provides the concept name
+ * /casebase provides the name(s) of the case bases associated with the project
  * /retieval provides the similarity-based retrieval either by specifying symbols or an id of existing cases

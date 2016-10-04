@@ -17,3 +17,10 @@ This project puts myCBR into Spring.io and provides the created REST calls throu
  * /concept provides the concept name
  * /casebase provides the name(s) of the case bases associated with the project
  * /retieval provides the similarity-based retrieval either by specifying symbols or an id of existing cases
+ 
+ 
+ # Customization to other myCBR projects
+ * The app requires a myCBR project, which should be put into mycbr-rest-example/src/main/resources
+ * In order to detect the project file, CBREngine.java has to be adapted:
+  * private static String projectName = "used_cars_flat.prj" should be changed to the project file's name
+ * The rest of the API is independent from the project, hence only the parameters such as case base and comcept names have to be adapted to the new project

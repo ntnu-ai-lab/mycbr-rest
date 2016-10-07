@@ -78,6 +78,9 @@ public class CBREngine {
 				System.out.print(".");
 			}		
 			System.out.print("\n");	//console pretty print
+
+
+
 		//	System.out.print("cb: " project.getCaseBases().get(CBREngine.getCaseBase()).getName());	//console pretty print
 		}
 		catch(Exception ex){

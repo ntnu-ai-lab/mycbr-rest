@@ -1,4 +1,4 @@
-package no.ntnu.mycbr.rest;
+package no.ntnu.mycbr.rest.restexample;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;

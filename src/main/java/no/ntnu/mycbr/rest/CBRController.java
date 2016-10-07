@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class CBRController {
 
     @ApiOperation(value = "getConcept", nickname = "getConcept")
-    @RequestMapping(method = RequestMethod.GET, path="/concept", produces = "application/json")
+    @RequestMapping(method = RequestMethod.GET, path="/concepts", produces = "application/json")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success", response = Query.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")})
-    public ConceptName concept() {
+    public ConceptName getConcept() {
         return new ConceptName();
     }
 
@@ -79,6 +79,31 @@ public class CBRController {
             @ApiResponse(code = 500, message = "Failure")})
     public CaseBases getCaseBases() {
         return new CaseBases();
+    }
+
+    @ApiOperation(value = "getAttributes", nickname = "getAttributes")
+    @RequestMapping(method = RequestMethod.GET, value = "/attributes", headers="Accept=application/json")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = Instance.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
+    public Attribute getAttributes(@RequestParam(value="concept name", defaultValue="Car") String concept) {
+        return new Attribute(concept);
+    }
+
+    @ApiOperation(value = "getValueRange", nickname = "getValueRange")
+    @RequestMapping(method = RequestMethod.GET, value = "/values", headers="Accept=application/json")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = Instance.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
+    public ValueRange getValueRange(@RequestParam(value="concept name", defaultValue="Car") String concept,
+                                    @RequestParam(value="attribute name", defaultValue="Color") String attributeName) {
+        return new ValueRange(concept, attributeName);
     }
 
 }

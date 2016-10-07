@@ -89,9 +89,6 @@ public class Query {
         }
     }
 
-    public HashMap<String, Double> getSimilarCasesByID() {
-        return resultList;
-    }
     public HashMap<String, Double> getSimilarCases() {
         return resultList;
     }

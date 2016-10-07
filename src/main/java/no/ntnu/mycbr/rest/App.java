@@ -1,22 +1,9 @@
 package no.ntnu.mycbr.rest;
 
-import de.dfki.mycbr.core.DefaultCaseBase;
 import de.dfki.mycbr.core.Project;
-import de.dfki.mycbr.core.casebase.Attribute;
-import de.dfki.mycbr.core.casebase.Instance;
-import de.dfki.mycbr.core.model.AttributeDesc;
-import de.dfki.mycbr.core.model.Concept;
-import de.dfki.mycbr.core.retrieval.Retrieval;
-import de.dfki.mycbr.core.similarity.Similarity;
-import de.dfki.mycbr.util.Pair;
 import no.ntnu.mycbr.CBREngine;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Hello world!

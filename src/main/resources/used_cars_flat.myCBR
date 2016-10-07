@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Project name="used_cars_flat" author="" >
+<svs>
+  <sv name="_unknown_"/>
+  <sv name="_undefined_"/>
+  <sv name="_others_"/>
+<fct name="default function" type="Symbol" mt="PARTNER_QUERY" r="REUSE" t="MAX" symm="true">
+<qsym name="_unknown_">
+</qsym>
+<qsym name="_undefined_">
+</qsym>
+<qsym name="_others_">
+</qsym>
+</fct>
+</svs>
+<model>
+  <concept name="Car">
+    <desc name="ZIP" type="Integer" min="0" max="9" mult="false" >
+      <fct name="default function" type="Integer" ltype="CONSTANT" lparam="1.0" rtype="CONSTANT" rparam="1.0" mode="DIFFERENCE" symm="true" mt="PARTNER_QUERY" r="REUSE" t="MAX" />
+    </desc>
+    <desc name="Speed" type="Integer" min="100" max="300" mult="false" >
+      <fct name="SpeedFunc" type="AdvancedInteger" mode="DIFFERENCE" symm="false" mt="PARTNER_QUERY" r="REUSE" t="MAX">
+        <point x="-200.0" y="0.0" />
+        <point x="0.0" y="1.0" />
+        <point x="200.0" y="0.9" />
+      </fct>
+    </desc>
+    <desc name="Color" type="Symbol" mult="false" >
+      <symbol value="dark_red" />
+      <symbol value="green" />
+      <symbol value="dark_green" />
+      <symbol value="light_gray" />
+      <symbol value="black" />
+      <symbol value="violet" />
+      <symbol value="yellow" />
+      <symbol value="light_blue" />
+      <symbol value="turquoise" />
+      <symbol value="dark_blue" />
+      <symbol value="orange" />
+      <symbol value="red" />
+      <symbol value="gray" />
+      <symbol value="blue" />
+      <symbol value="white" />
+      <symbol value="dark_gray" />
+      <symbol value="silver" />
+      <symbol value="anthracite" />
+      <fct name="tax" type="Taxonomy" mt="PARTNER_QUERY" r="REUSE" t="MAX" qconfig="INNER_NODES_ANY" cconfig="INNER_NODES_ANY" top="Color" sim="0.0" symm="true" >
+        <node name="light_gray" sim="1.0" parent="gray" />
+        <node name="orange" sim="1.0" parent="red" />
+        <node name="red" sim="0.5" parent="Color" />
+        <node name="dark_green" sim="1.0" parent="green" />
+        <node name="dark_red" sim="1.0" parent="red" />
+        <node name="dark_gray" sim="1.0" parent="gray" />
+        <node name="black" sim="1.0" parent="Color" />
+        <node name="dark_blue" sim="1.0" parent="blue" />
+        <node name="blue" sim="0.5" parent="Color" />
+        <node name="white" sim="1.0" parent="Color" />
+        <node name="turquoise" sim="1.0" parent="Color" />
+        <node name="anthracite" sim="1.0" parent="Color" />
+        <node name="green" sim="0.5" parent="Color" />
+        <node name="violet" sim="1.0" parent="Color" />
+        <node name="yellow" sim="1.0" parent="Color" />
+        <node name="light_blue" sim="1.0" parent="blue" />
+        <node name="silver" sim="1.0" parent="Color" />
+        <node name="gray" sim="0.5" parent="Color" />
+      </fct>
+    </desc>
+    <desc name="CCM" type="Integer" min="1000" max="6000" mult="false" >
+      <fct name="CCMFunc" type="AdvancedInteger" mode="DIFFERENCE" symm="false" mt="PARTNER_QUERY" r="REUSE" t="MAX">
+        <point x="-5000.0" y="0.0" />
+        <point x="0.0" y="1.0" />
+        <point x="5000.0" y="0.8" />
+      </fct>
+    </desc>
+    <desc name="Car Code" type="Integer" min="0" max="10000000" mult="false" >
+      <fct name="default function" type="Integer" ltype="CONSTANT" lparam="1.0" rtype="CONSTANT" rparam="1.0" mode="DIFFERENCE" symm="true" mt="PARTNER_QUERY" r="REUSE" t="MAX" />
+    </desc>
+    <desc name="Miles" type="Integer" min="0" max="1000000" mult="false" >
+      <fct name="MilesFunc" type="AdvancedInteger" mode="DIFFERENCE" symm="false" mt="PARTNER_QUERY" r="REUSE" t="MAX">
+        <point x="-1000000.0" y="0.9" />
+        <point x="0.0" y="1.0" />
+        <point x="1000000.0" y="0.0" />
+      </fct>
+    </desc>
+    <desc name="Year" type="Integer" min="1950" max="2007" mult="false" >
+      <fct name="YearFunc" type="AdvancedInteger" mode="DIFFERENCE" symm="false" mt="PARTNER_QUERY" r="REUSE" t="MAX">
+        <point x="-57.0" y="0.0" />
+        <point x="0.0" y="1.0" />
+        <point x="57.0" y="1.0" />
+      </fct>
+    </desc>
+    <desc name="Price" type="Float" min="1.0" max="100000.0" mult="false" >
+      <fct name="PriceFunc" type="AdvancedFloat" mode="DIFFERENCE" symm="false" mt="PARTNER_QUERY" r="REUSE" t="MAX" maxForQuotient="10.0" >
+        <point x="0.0" y="1.0" />
+      </fct>
+    </desc>
+    <desc name="Doors" type="Integer" min="2" max="7" mult="false" >
+      <fct name="DoorsFunc" type="AdvancedInteger" mode="DIFFERENCE" symm="false" mt="PARTNER_QUERY" r="REUSE" t="MAX">
+        <point x="-5.0" y="0.0" />
+        <point x="0.0" y="1.0" />
+        <point x="5.0" y="0.0" />
+      </fct>
+    </desc>
+    <desc name="Model" type="Symbol" mult="false" >
+      <symbol value="525tds" />
+      <symbol value="540i" />
+      <symbol value="a4_1.9_tdi" />
+      <symbol value="m_roadster" />
+      <symbol value="a6_2.4" />
+      <symbol value="e_class" />
+      <symbol value="e_430" />
+      <symbol value="520i" />
+      <symbol value="c_180" />
+      <symbol value="528i" />
+      <symbol value="z3_series" />
+      <symbol value="318i" />
+      <symbol value="a6_2.8" />
+      <symbol value="a6_1.9_tdi" />
+      <symbol value="z3_2.8" />
+      <symbol value="323i" />
+      <symbol value="AUDI" />
+      <symbol value="passat" />
+      <symbol value="c_250_diesel" />
+      <symbol value="slk" />
+      <symbol value="a4_2.8" />
+      <symbol value="325td" />
+      <symbol value="VW" />
+      <symbol value="316i" />
+      <symbol value="328i" />
+      <symbol value="c_200" />
+      <symbol value="Mercedes" />
+      <symbol value="c_240" />
+      <symbol value="e_220_diesel" />
+      <symbol value="3_series" />
+      <symbol value="320i" />
+      <symbol value="c_280" />
+      <symbol value="5_series" />
+      <symbol value="golf" />
+      <symbol value="c_class" />
+      <symbol value="z3_1.8" />
+      <symbol value="a4_1.8_t" />
+      <symbol value="z3_1.9" />
+      <symbol value="a4_1.8" />
+      <symbol value="a6_1.8_t" />
+      <symbol value="slk_200" />
+      <symbol value="a4_1.6" />
+      <symbol value="e_200" />
+      <symbol value="m3" />
+      <symbol value="e_290_diesel" />
+      <symbol value="535i" />
+      <symbol value="523i" />
+      <symbol value="e_280" />
+      <symbol value="325tds" />
+      <symbol value="e_320" />
+      <symbol value="BMW" />
+      <symbol value="c_220_diesel" />
+      <symbol value="e_300_diesel" />
+      <symbol value="slk_230_kompressor" />
+      <symbol value="c_230_kompressor" />
+      <fct name="ModelFunc" type="Taxonomy" mt="PARTNER_QUERY" r="REUSE" t="MAX" qconfig="INNER_NODES_ANY" cconfig="INNER_NODES_ANY" top="Model" sim="0.0" symm="true" >
+        <node name="a4_1.9_tdi" sim="1.0" parent="AUDI" />
+        <node name="328i" sim="1.0" parent="3_series" />
+        <node name="VW" sim="0.25" parent="Model" />
+        <node name="535i" sim="1.0" parent="5_series" />
+        <node name="323i" sim="1.0" parent="3_series" />
+        <node name="m3" sim="1.0" parent="BMW" />
+        <node name="e_290_diesel" sim="1.0" parent="e_class" />
+        <node name="325tds" sim="1.0" parent="3_series" />
+        <node name="a6_2.4" sim="1.0" parent="AUDI" />
+        <node name="e_220_diesel" sim="1.0" parent="e_class" />
+        <node name="5_series" sim="0.5" parent="BMW" />
+        <node name="316i" sim="1.0" parent="3_series" />
+        <node name="a4_1.8_t" sim="1.0" parent="AUDI" />
+        <node name="c_class" sim="0.5" parent="Mercedes" />
+        <node name="e_320" sim="1.0" parent="e_class" />
+        <node name="AUDI" sim="0.5" parent="Model" />
+        <node name="passat" sim="1.0" parent="VW" />
+        <node name="z3_1.9" sim="1.0" parent="z3_series" />
+        <node name="540i" sim="1.0" parent="5_series" />
+        <node name="e_430" sim="1.0" parent="e_class" />
+        <node name="320i" sim="1.0" parent="3_series" />
+        <node name="e_300_diesel" sim="1.0" parent="e_class" />
+        <node name="e_200" sim="1.0" parent="e_class" />
+        <node name="c_200" sim="1.0" parent="c_class" />
+        <node name="e_class" sim="0.5" parent="Mercedes" />
+        <node name="slk_200" sim="1.0" parent="slk" />
+        <node name="a4_1.8" sim="1.0" parent="AUDI" />
+        <node name="a6_2.8" sim="1.0" parent="AUDI" />
+        <node name="a4_2.8" sim="1.0" parent="AUDI" />
+        <node name="525tds" sim="1.0" parent="5_series" />
+        <node name="c_280" sim="1.0" parent="c_class" />
+        <node name="Mercedes" sim="0.25" parent="Model" />
+        <node name="e_280" sim="1.0" parent="e_class" />
+        <node name="a6_1.8_t" sim="1.0" parent="AUDI" />
+        <node name="3_series" sim="0.5" parent="BMW" />
+        <node name="z3_1.8" sim="1.0" parent="z3_series" />
+        <node name="318i" sim="1.0" parent="3_series" />
+        <node name="c_180" sim="1.0" parent="c_class" />
+        <node name="m_roadster" sim="1.0" parent="BMW" />
+        <node name="c_220_diesel" sim="1.0" parent="c_class" />
+        <node name="z3_series" sim="0.5" parent="BMW" />
+        <node name="c_250_diesel" sim="1.0" parent="c_class" />
+        <node name="BMW" sim="0.5" parent="Model" />
+        <node name="a6_1.9_tdi" sim="1.0" parent="AUDI" />
+        <node name="golf" sim="0.5" parent="VW" />
+        <node name="528i" sim="1.0" parent="5_series" />
+        <node name="325td" sim="1.0" parent="3_series" />
+        <node name="520i" sim="1.0" parent="5_series" />
+        <node name="a4_1.6" sim="1.0" parent="AUDI" />
+        <node name="c_240" sim="1.0" parent="c_class" />
+        <node name="slk_230_kompressor" sim="1.0" parent="slk" />
+        <node name="523i" sim="1.0" parent="5_series" />
+        <node name="slk" sim="0.5" parent="Mercedes" />
+        <node name="z3_2.8" sim="1.0" parent="z3_series" />
+        <node name="c_230_kompressor" sim="1.0" parent="c_class" />
+      </fct>
+    </desc>
+    <desc name="Manufacturer" type="Symbol" mult="false" >
+      <symbol value="mercedes-benz" />
+      <symbol value="vw" />
+      <symbol value="audi" />
+      <symbol value="bmw" />
+<fct name="ManufacturerFunc" type="Symbol" mt="PARTNER_QUERY" r="REUSE" t="MAX" symm="false">
+<qsym name="mercedes-benz">
+<csym name="audi" sim="0.5"/>
+<csym name="bmw" sim="0.3"/>
+</qsym>
+<qsym name="vw">
+<csym name="audi" sim="0.3"/>
+</qsym>
+<qsym name="audi">
+<csym name="mercedes-benz" sim="0.5"/>
+<csym name="vw" sim="0.3"/>
+<csym name="bmw" sim="0.3"/>
+</qsym>
+<qsym name="bmw">
+<csym name="mercedes-benz" sim="0.3"/>
+<csym name="audi" sim="0.3"/>
+</qsym>
+</fct>
+    </desc>
+    <desc name="Gas" type="Symbol" mult="false" >
+      <symbol value="diesel" />
+      <symbol value="gasoline" />
+<fct name="GasFunc" type="Symbol" mt="PARTNER_QUERY" r="REUSE" t="MAX" symm="false">
+<qsym name="diesel">
+</qsym>
+<qsym name="gasoline">
+</qsym>
+</fct>
+    </desc>
+    <desc name="Body" type="Symbol" mult="false" >
+      <symbol value="convertible" />
+      <symbol value="roadster" />
+      <symbol value="fastback" />
+      <symbol value="coupe" />
+      <symbol value="station_wagon" />
+      <symbol value="sedan" />
+<fct name="BodyFunc" type="Symbol" mt="PARTNER_QUERY" r="REUSE" t="MAX" symm="false">
+<qsym name="convertible">
+<csym name="roadster" sim="0.7"/>
+<csym name="fastback" sim="0.2"/>
+</qsym>
+<qsym name="roadster">
+<csym name="convertible" sim="0.7"/>
+<csym name="fastback" sim="0.5"/>
+</qsym>
+<qsym name="fastback">
+<csym name="convertible" sim="0.2"/>
+<csym name="roadster" sim="0.5"/>
+<csym name="coupe" sim="0.2"/>
+</qsym>
+<qsym name="coupe">
+<csym name="fastback" sim="0.2"/>
+<csym name="station_wagon" sim="0.5"/>
+<csym name="sedan" sim="0.7"/>
+</qsym>
+<qsym name="station_wagon">
+<csym name="coupe" sim="0.5"/>
+<csym name="sedan" sim="0.8"/>
+</qsym>
+<qsym name="sedan">
+<csym name="coupe" sim="0.7"/>
+<csym name="station_wagon" sim="0.8"/>
+</qsym>
+</fct>
+    </desc>
+    <desc name="Power" type="Integer" min="10" max="1000" mult="false" >
+      <fct name="PowerFunc" type="AdvancedInteger" mode="DIFFERENCE" symm="false" mt="PARTNER_QUERY" r="REUSE" t="MAX">
+        <point x="-990.0" y="0.0" />
+        <point x="0.0" y="1.0" />
+        <point x="990.0" y="0.9" />
+      </fct>
+    </desc>
+    <amalgam name="CarFunc" type="WEIGHTED_SUM" active="true" >
+      <entry name="ZIP" active="false" fct="default function" weight="1.0"/>
+      <entry name="Speed" active="true" fct="SpeedFunc" weight="1.0"/>
+      <entry name="Color" active="true" fct="tax" weight="5.0"/>
+      <entry name="CCM" active="true" fct="CCMFunc" weight="1.0"/>
+      <entry name="Car Code" active="false" fct="default function" weight="1.0"/>
+      <entry name="Miles" active="true" fct="MilesFunc" weight="3.0"/>
+      <entry name="Year" active="true" fct="YearFunc" weight="1.0"/>
+      <entry name="Price" active="true" fct="PriceFunc" weight="7.0"/>
+      <entry name="Doors" active="true" fct="DoorsFunc" weight="2.0"/>
+      <entry name="Model" active="true" fct="ModelFunc" weight="5.0"/>
+      <entry name="Manufacturer" active="true" fct="ManufacturerFunc" weight="7.0"/>
+      <entry name="Gas" active="true" fct="GasFunc" weight="1.0"/>
+      <entry name="Body" active="true" fct="BodyFunc" weight="5.0"/>
+      <entry name="Power" active="true" fct="PowerFunc" weight="3.0"/>
+    </amalgam>
+  </concept>
+</model>
+<hierarchy>
+  <fct name="default function" type="Taxonomy" mt="PARTNER_QUERY" r="REUSE" t="MAX" qconfig="NO_INNERNODES" cconfig="NO_INNERNODES" top="inheritanceDesc" sim="0.0" symm="true" >
+    <node name="Car" sim="0.5" parent="inheritanceDesc" />
+  </fct>
+</hierarchy>
+<cases no="956" cb="CaseBase0"/>
+</Project>

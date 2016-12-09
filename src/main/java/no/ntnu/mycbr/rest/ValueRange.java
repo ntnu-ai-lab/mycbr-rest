@@ -23,28 +23,29 @@ public class ValueRange {
         attributes.clear();
 
         AttributeDesc attdesc = myConcept.getAttributeDesc(attributeName);
-        if (attdesc.getClass().getSimpleName().equalsIgnoreCase("FloatDesc")){
+        String AttributeDescName = attdesc.getClass().getSimpleName();
+        if (AttributeDescName.equalsIgnoreCase("FloatDesc")){
             FloatDesc aFloatAtt = (FloatDesc) attdesc;
             Set<Float> range = new HashSet<>();
             range.add(aFloatAtt.getMin());
             range.add(aFloatAtt.getMax());
             attributes.put(attdesc.getName(),range);
         }
-        if (attdesc.getClass().getSimpleName().equalsIgnoreCase("IntegerDesc")){
+        else if (AttributeDescName.equalsIgnoreCase("IntegerDesc")){
             IntegerDesc aIntegerAtt = (IntegerDesc) attdesc;
             Set<Integer> range = new HashSet<>();
             range.add(aIntegerAtt.getMin());
             range.add(aIntegerAtt.getMax());
             attributes.put(attdesc.getName(),range);
         }
-        if (attdesc.getClass().getSimpleName().equalsIgnoreCase("DoubleDesc")){
+        else if (AttributeDescName.equalsIgnoreCase("DoubleDesc")){
             DoubleDesc aIntegerAtt = (DoubleDesc) attdesc;
             Set<Double> range = new HashSet<>();
             range.add(aIntegerAtt.getMin());
             range.add(aIntegerAtt.getMax());
             attributes.put(attdesc.getName(),range);
         }
-        if (attdesc.getClass().getSimpleName().equalsIgnoreCase("SymbolDesc")){
+        else if (AttributeDescName.equalsIgnoreCase("SymbolDesc")){
             SymbolDesc aSymbolAtt = (SymbolDesc) attdesc;
             attributes.put(attdesc.getName(),aSymbolAtt.getAllowedValues());
         }

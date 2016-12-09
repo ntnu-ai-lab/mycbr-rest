@@ -4,6 +4,7 @@ import de.dfki.mycbr.core.DefaultCaseBase;
 import de.dfki.mycbr.core.Project;
 import de.dfki.mycbr.core.casebase.Attribute;
 import de.dfki.mycbr.core.casebase.Instance;
+import de.dfki.mycbr.core.casebase.SymbolAttribute;
 import de.dfki.mycbr.core.model.*;
 import de.dfki.mycbr.core.retrieval.Retrieval;
 import de.dfki.mycbr.core.similarity.Similarity;

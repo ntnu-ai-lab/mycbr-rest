@@ -46,6 +46,8 @@ public class Query {
                 this.resultList.put(result.getFirst().getName(), result.getSecond().getValue());
             }
 
+            query.reset();
+
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -80,7 +82,10 @@ public class Query {
                 this.resultList.put(result.getFirst().getName(), result.getSecond().getValue());
             }
 
+            query.reset();
+
         }
+
         catch (Exception e) {
             e.printStackTrace();
         }
@@ -128,6 +133,7 @@ public class Query {
                 this.resultList.put(result.getFirst().getName(), result.getSecond().getValue());
             }
 
+            query.reset();
 
         }
         catch (Exception e) {

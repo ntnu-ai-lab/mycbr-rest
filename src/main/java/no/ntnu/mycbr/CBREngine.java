@@ -23,7 +23,7 @@ public class CBREngine {
 	private static String columnseparator = ";";
 	private static String multiplevalueseparator = ",";
 	// name of the case base that should be used; the default name in myCBR is CB_csvImport
-	private static String casebase = "CarsCB";
+	private static String casebase = "CaseBase0";
 	// Getter for the ConceptName meta data
 	public static String getCaseBase() {
 		return casebase;

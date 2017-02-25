@@ -14,16 +14,19 @@ This project puts myCBR into Spring.io and provides the created REST calls throu
 
 # Functionalities
 * The goal is to provide the entire retrieval, however, so far only the model is working
-* GET Requests
+## GET Requests
  * /case provides the case content
  * /concepts provides all concept names in the project
  * /casebase provides the name(s) of the case bases associated with the project
  * /retieval provides the similarity-based retrieval either by specifying symbols or an id of existing cases
  * /attributes provides a list of attributes and their value types 
  * /values provides the list of allowed values for SymbolDesc attributes and min/max for IntegerDesc/DoubleDesc/FloatDesc
-* POST Requests
- * /retrieval allows you to post a query with a number of attributes, e.g.: {"Doors": 5, "Model": "golf", "Manufacturer": "vw"}
-  * Currently only Symbol, Integer, Double and Float attributes are supported.
+## POST Requests
+ * /retrieval allows you to post a query with a number of attributes, e.g.:  
+    ```{"Doors": 4, "Model": "e_300_diesel", "Manufacturer": "mercedes-benz","Color":"yellow, blue"}``` 
+ * Currently only Symbol, Integer, Double and Float attributes are supported.
+ * Currently only Multiple Symbol attributes are supported
+ * the number of returned cases can be set, use -1 for returning all
  
  
 # Customization to other myCBR projects

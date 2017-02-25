@@ -4,6 +4,7 @@ import de.dfki.mycbr.core.DefaultCaseBase;
 import de.dfki.mycbr.core.Project;
 import de.dfki.mycbr.core.casebase.Attribute;
 import de.dfki.mycbr.core.casebase.Instance;
+import de.dfki.mycbr.core.casebase.MultipleAttribute;
 import de.dfki.mycbr.core.casebase.SymbolAttribute;
 import de.dfki.mycbr.core.model.*;
 import de.dfki.mycbr.core.retrieval.Retrieval;
@@ -11,16 +12,14 @@ import de.dfki.mycbr.core.similarity.Similarity;
 import de.dfki.mycbr.util.Pair;
 import no.ntnu.mycbr.CBREngine;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by kerstin on 05/08/16.
  */
 public class Query {
 
-    private static HashMap<String, Double> resultList = new HashMap<String, Double>();
+    private static LinkedHashMap<String, Double> resultList = new LinkedHashMap<>();
 
     public Query(String casebase, String concept, String attribute, String value) {
 
@@ -91,7 +90,7 @@ public class Query {
         }
     }
 
-    public Query(String casebase, String concept, HashMap<String, Object> queryContent) {
+    public Query(String casebase, String concept, HashMap<String, Object> queryContent, int k) {
 
         Project project = App.getProject();
         // create case bases and assign the case bases that will be used for submitting a query
@@ -121,14 +120,38 @@ public class Query {
                 }
                 if (attdesc.getClass().getSimpleName().equalsIgnoreCase("SymbolDesc")){
                     SymbolDesc aSymbolAtt = (SymbolDesc) attdesc;
-                    query.addAttribute(attdesc, (String) att.getValue());
+                    if (!aSymbolAtt.isMultiple()) {
+                        query.addAttribute(attdesc, (String) att.getValue());
+                    }
+                    else {
+                        LinkedList<Attribute> llAtts = new LinkedList<Attribute>();
+                        StringTokenizer st = new StringTokenizer((String) att.getValue(), ",");
+                        while (st.hasMoreElements()) {
+                            String symbolName = st.nextElement().toString().trim();
+                            llAtts.add(aSymbolAtt.getAttribute(symbolName));
+                        }
+
+                        MultipleAttribute<SymbolDesc> muliSymbol = new MultipleAttribute<SymbolDesc>(aSymbolAtt, llAtts);
+                        query.addAttribute(attdesc, muliSymbol);
+                    }
                 }
             }
 
-            r.setRetrievalMethod(Retrieval.RetrievalMethod.RETRIEVE_SORTED);
+            //int k = Integer.parseInt(number);
+            System.out.println("k: " + k + " and this is > -1: " + (k > -1));
+            if (k > -1) {
+                r.setK(k);
+                r.setRetrievalMethod(Retrieval.RetrievalMethod.RETRIEVE_K_SORTED);
+                System.out.println("retrieving " + r.getK() + " cases using " + r.getRetrievalMethod());
+            } else {
+                r.setRetrievalMethod(Retrieval.RetrievalMethod.RETRIEVE_SORTED);
+            }
+
             r.start();
             List<Pair<Instance, Similarity>> results = r.getResult();
+            System.out.println("retrieved " +  results.size() + " cases using " + r.getRetrievalMethod());
 
+            this.resultList.clear();
             for (Pair<Instance, Similarity> result : results) {
                 this.resultList.put(result.getFirst().getName(), result.getSecond().getValue());
             }

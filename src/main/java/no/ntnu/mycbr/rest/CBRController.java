@@ -50,8 +50,9 @@ public class CBRController {
             @ApiResponse(code = 500, message = "Failure")})
     public Query getSimilarCases(@RequestParam(value="casebase", defaultValue="CaseBase0") String casebase,
                                  @RequestParam(value="concept name", defaultValue="Car") String concept,
+                                 @RequestParam(required = false, value="no of returned cases",defaultValue = "-1") int k,
                                  @RequestBody(required = true)  HashMap<String, Object> queryContent) {
-        return new Query(casebase, concept, queryContent);
+        return new Query(casebase, concept, queryContent, k);
     }
 
     @ApiOperation(value = "getSimilarCasesByID", nickname = "getSimilarCasesByID")

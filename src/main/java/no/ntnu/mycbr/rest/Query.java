@@ -1,5 +1,6 @@
 package no.ntnu.mycbr.rest;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import de.dfki.mycbr.core.DefaultCaseBase;
 import de.dfki.mycbr.core.Project;
 import de.dfki.mycbr.core.casebase.Attribute;
@@ -19,9 +20,9 @@ import java.util.*;
  */
 public class Query {
 
-    private static LinkedHashMap<String, Double> resultList = new LinkedHashMap<>();
+    private LinkedHashMap<String, Double> resultList = new LinkedHashMap<>();
 
-    public Query(String casebase, String concept, String attribute, String value) {
+    public Query(String casebase, String concept, String attribute, String value, int k) {
 
         Project project = App.getProject();
         // create case bases and assign the case bases that will be used for submitting a query
@@ -35,9 +36,15 @@ public class Query {
             Instance query = r.getQueryInstance();
 
             SymbolDesc queryDesc = (SymbolDesc) myConcept.getAllAttributeDescs().get(attribute);
-            query.addAttribute(queryDesc,queryDesc.getAttribute(value));
+            query.addAttribute(queryDesc, queryDesc.getAttribute(value));
 
-            r.setRetrievalMethod(Retrieval.RetrievalMethod.RETRIEVE_SORTED);
+            if (k > -1) {
+                r.setK(k);
+                r.setRetrievalMethod(Retrieval.RetrievalMethod.RETRIEVE_K_SORTED);
+            } else {
+                r.setRetrievalMethod(Retrieval.RetrievalMethod.RETRIEVE_SORTED);
+            }
+
             r.start();
             List<Pair<Instance, Similarity>> results = r.getResult();
 
@@ -53,7 +60,7 @@ public class Query {
         }
 }
 
-    public Query(String casebase, String concept, String caseID) {
+    public Query(String casebase, String concept, String caseID, int k) {
 
         Project project = App.getProject();
         // create case bases and assign the case bases that will be used for submitting a query
@@ -73,7 +80,13 @@ public class Query {
                 query.addAttribute(e.getKey(), e.getValue());
             }
 
-            r.setRetrievalMethod(Retrieval.RetrievalMethod.RETRIEVE_SORTED);
+            if (k > -1) {
+                r.setK(k);
+                r.setRetrievalMethod(Retrieval.RetrievalMethod.RETRIEVE_K_SORTED);
+            } else {
+                r.setRetrievalMethod(Retrieval.RetrievalMethod.RETRIEVE_SORTED);
+            }
+
             r.start();
             List<Pair<Instance, Similarity>> results = r.getResult();
 
@@ -137,21 +150,16 @@ public class Query {
                 }
             }
 
-            //int k = Integer.parseInt(number);
-            System.out.println("k: " + k + " and this is > -1: " + (k > -1));
             if (k > -1) {
                 r.setK(k);
                 r.setRetrievalMethod(Retrieval.RetrievalMethod.RETRIEVE_K_SORTED);
-                System.out.println("retrieving " + r.getK() + " cases using " + r.getRetrievalMethod());
             } else {
                 r.setRetrievalMethod(Retrieval.RetrievalMethod.RETRIEVE_SORTED);
             }
 
             r.start();
             List<Pair<Instance, Similarity>> results = r.getResult();
-            System.out.println("retrieved " +  results.size() + " cases using " + r.getRetrievalMethod());
 
-            this.resultList.clear();
             for (Pair<Instance, Similarity> result : results) {
                 this.resultList.put(result.getFirst().getName(), result.getSecond().getValue());
             }

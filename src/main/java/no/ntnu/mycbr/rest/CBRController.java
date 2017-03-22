@@ -12,19 +12,18 @@ import java.util.HashMap;
 @RestController
 public class CBRController {
 
-    @ApiOperation(value = "getConcept", nickname = "getConcept")
-    @RequestMapping(method = RequestMethod.GET, path="/concepts", produces = "application/json")
+    @ApiOperation(value = "getCase", nickname = "getCase")
+    @RequestMapping(method = RequestMethod.GET, value = "/case", headers="Accept=application/json")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success", response = ConceptName.class),
+            @ApiResponse(code = 200, message = "Success", response = Case.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")
     })
-    public ConceptName getConcept() {
-        return new ConceptName();
+    public Case getCase(@RequestParam(value="caseID", defaultValue="144_vw") String caseID) {
+        return new Case(caseID);
     }
-
 
     @ApiOperation(value = "getSimilarCases", nickname = "getSimilarCases")
     @RequestMapping(method = RequestMethod.GET, path="/retrieval", produces = "application/json")
@@ -78,19 +77,6 @@ public class CBRController {
         return new Query(casebase, concept, caseID, k);
     }
 
-    @ApiOperation(value = "getCase", nickname = "getCase")
-    @RequestMapping(method = RequestMethod.GET, value = "/case", headers="Accept=application/json")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success", response = Case.class),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")
-    })
-    public Case getCase(@RequestParam(value="caseID", defaultValue="144_vw") String caseID) {
-        return new Case(caseID);
-    }
-
     @ApiOperation(value = "getCaseBases", nickname = "getCaseBases")
     @RequestMapping(method = RequestMethod.GET, path="/casebase", produces = "application/json")
     @ApiResponses(value = {
@@ -114,6 +100,19 @@ public class CBRController {
             @ApiResponse(code = 500, message = "Failure")})
     public AmalgamationFunctions getAmalgamationFunctions(@RequestParam(value="concept name", defaultValue="Car") String concept) {
         return new AmalgamationFunctions(concept);
+    }
+
+    @ApiOperation(value = "getConcept", nickname = "getConcept")
+    @RequestMapping(method = RequestMethod.GET, path="/concepts", produces = "application/json")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = ConceptName.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")
+    })
+    public ConceptName getConcept() {
+        return new ConceptName();
     }
 
     @ApiOperation(value = "getAttributes", nickname = "getAttributes")

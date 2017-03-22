@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by jont on 22.03.2017.
+ * Created by Jon Tingvold on 22.03.2017.
  */
 public class AmalgamationFunctions {
 

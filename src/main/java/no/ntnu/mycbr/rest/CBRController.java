@@ -69,7 +69,6 @@ public class CBRController {
         return new Query(casebase, concept, caseID);
     }
 
-
     @ApiOperation(value = "getCase", nickname = "getCase")
     @RequestMapping(method = RequestMethod.GET, value = "/case", headers="Accept=application/json")
     @ApiResponses(value = {
@@ -82,7 +81,6 @@ public class CBRController {
         return new Case(caseID);
     }
 
-
     @ApiOperation(value = "getCaseBases", nickname = "getCaseBases")
     @RequestMapping(method = RequestMethod.GET, path="/casebase", produces = "application/json")
     @ApiResponses(value = {
@@ -93,6 +91,18 @@ public class CBRController {
             @ApiResponse(code = 500, message = "Failure")})
     public CaseBases getCaseBases() {
         return new CaseBases();
+    }
+
+    @ApiOperation(value = "getAmalgamationFunctions", nickname = "getAmalgamationFunctions")
+    @RequestMapping(method = RequestMethod.GET, path="/amalgamationFunctions", produces = "application/json")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = AmalgamationFunctions.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
+    public AmalgamationFunctions getAmalgamationFunctions(@RequestParam(value="concept name", defaultValue="Car") String concept) {
+        return new AmalgamationFunctions(concept);
     }
 
     @ApiOperation(value = "getAttributes", nickname = "getAttributes")

@@ -19,7 +19,7 @@ import java.util.*;
  */
 public class Query {
 
-    private static LinkedHashMap<String, Double> resultList = new LinkedHashMap<>();
+    private LinkedHashMap<String, Double> resultList = new LinkedHashMap<>();
 
     public Query(String casebase, String concept, String attribute, String value) {
 

@@ -12,7 +12,7 @@ import java.util.*;
  */
 public class Attribute {
 
-    private static HashMap<String, String> attributes = new HashMap<String, String>();
+    private HashMap<String, String> attributes = new HashMap<String, String>();
 
     public Attribute(String concept) {
 

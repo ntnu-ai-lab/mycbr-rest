@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class Case {
 
-    private static HashMap<String, String> casecontent = new HashMap<String, String>();
+    private HashMap<String, String> casecontent = new HashMap<String, String>();
 
     public Case(String caseID) {
 

@@ -7,14 +7,16 @@ import de.dfki.mycbr.core.model.AttributeDesc;
 import no.ntnu.mycbr.CBREngine;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by kerstin on 05/08/16.
  */
 public class Case {
 
-    private static HashMap<String, String> casecontent = new HashMap<String, String>();
+    private static LinkedHashMap<String, String> casecontent = new LinkedHashMap<String, String>();
 
     public Case(String caseID) {
 
@@ -24,7 +26,7 @@ public class Case {
         Instance aInstance = myConcept.getInstance(caseID);
 
         HashMap<AttributeDesc, Attribute> atts = aInstance.getAttributes();
-        HashMap<String, String> casecontent = new HashMap<String, String>();
+        TreeMap<String, String> sortedCaseContent = new TreeMap<String, String>();
 
         for (Map.Entry<AttributeDesc, Attribute> entry : atts.entrySet()) {
             AttributeDesc attDesc = entry.getKey();
@@ -33,14 +35,15 @@ public class Case {
             value.trim();
             if (value.compareTo("_undefined_") != 0){
                 if (value.compareTo("") != 0){
-                    this.casecontent.put(attDesc.getName(), att.getValueAsString());
+                    sortedCaseContent.put(attDesc.getName(), att.getValueAsString());
                 }
             }
         }
 
+        casecontent = new LinkedHashMap<String, String>(sortedCaseContent);
     }
 
-    public HashMap<String, String> getCase() {
+    public LinkedHashMap<String, String> getCase() {
         return casecontent;
     }
 }

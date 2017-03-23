@@ -2,6 +2,7 @@ package no.ntnu.mycbr.rest;
 
 import de.dfki.mycbr.core.casebase.Instance;
 import io.swagger.annotations.*;
+import no.ntnu.mycbr.rest.utils.CSVTable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -81,7 +82,7 @@ public class CBRController {
     }
 
     @ApiOperation(value = "getSimilarCasesWithContent", nickname = "getSimilarCasesWithContent")
-    @RequestMapping(method = RequestMethod.POST, path="/retrievalWithContent", produces = "application/json")
+    @RequestMapping(method = RequestMethod.POST, path="/retrievalWithContent.json", produces = "application/json")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -102,7 +103,7 @@ public class CBRController {
     }
 
     @ApiOperation(value = "getSimilarCasesByIDWithContent", nickname = "getSimilarCasesByIDWithContent")
-    @RequestMapping(method = RequestMethod.GET, path="/retrievalByIDWithContent", produces = "application/json")
+    @RequestMapping(method = RequestMethod.GET, path="/retrievalByIDWithContent.json", produces = "application/json")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -123,7 +124,7 @@ public class CBRController {
     }
 
     @ApiOperation(value = "getSimilarCasesByAttributeWithContent", nickname = "getSimilarCasesByAttributeWithContent")
-    @RequestMapping(method = RequestMethod.GET, path="/retrievalWithContent", produces = "application/json")
+    @RequestMapping(method = RequestMethod.GET, path="/retrievalWithContent.json", produces = "application/json")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -142,6 +143,80 @@ public class CBRController {
         Query query = new Query(casebase, concept, amalFunc, attribute, value, k);
         List<LinkedHashMap<String, String>> cases = getFullResult(query, concept);
         return cases;
+    }
+
+    @ApiOperation(value = "getSimilarCasesWithContent", nickname = "getSimilarCasesWithContent")
+    @RequestMapping(method = RequestMethod.POST, path="/retrievalWithContent.csv", produces = "text/csv")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")
+    })
+    public @ResponseBody String getSimilarCasesWithContent(
+            @RequestParam(value="casebase", defaultValue="CaseBase0") String casebase,
+            @RequestParam(value="concept name", defaultValue="Car") String concept,
+            @RequestParam(value="amalgamation function", defaultValue="CarFunc") String amalFunc,
+            @RequestParam(value="delimiter", defaultValue=";") String delimiter,
+            @RequestParam(required = false, value="no of returned cases",defaultValue = "-1") int k,
+            @RequestBody(required = true)  HashMap<String, Object> queryContent) {
+
+        Query query = new Query(casebase, concept, amalFunc, queryContent, k);
+        List<LinkedHashMap<String, String>> cases = getFullResult(query, concept);
+        List<Map<String, String>> cases2 = new ArrayList<Map<String, String>>(cases);
+        String csvTable = new CSVTable(cases2).getTableAsString(delimiter);
+        return csvTable;
+    }
+
+
+    @ApiOperation(value = "getSimilarCasesByIDWithContent", nickname = "getSimilarCasesByIDWithContent")
+    @RequestMapping(method = RequestMethod.GET, path="/retrievalByIDWithContent.csv", produces = "text/csv")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")
+    })
+    public String getSimilarCasesByIDWithContentAsCSV(
+            @RequestParam(value="casebase", defaultValue="CaseBase0") String casebase,
+            @RequestParam(value="concept", defaultValue="Car") String concept,
+            @RequestParam(value="amalgamation function", defaultValue="CarFunc") String amalFunc,
+            @RequestParam(value="caseID", defaultValue="144_vw") String caseID,
+            @RequestParam(value="delimiter", defaultValue=";") String delimiter,
+            @RequestParam(required = false, value="no of returned cases",defaultValue = "-1") int k) {
+
+        Query query = new Query(casebase, concept, amalFunc, caseID, k);
+        List<LinkedHashMap<String, String>> cases = getFullResult(query, concept);
+        List<Map<String, String>> cases2 = new ArrayList<Map<String, String>>(cases);
+        String csvTable = new CSVTable(cases2).getTableAsString(delimiter);
+        return csvTable;
+    }
+
+    @ApiOperation(value = "getSimilarCasesByAttributeWithContent", nickname = "getSimilarCasesByAttributeWithContent")
+    @RequestMapping(method = RequestMethod.GET, path="/retrievalWithContent.csv", produces = "text/csv")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")
+    })
+    public @ResponseBody String getSimilarCasesByAttributeWithContent(
+            @RequestParam(value="casebase", defaultValue="CaseBase0") String casebase,
+            @RequestParam(value="concept name", defaultValue="Car") String concept,
+            @RequestParam(value="amalgamation function", defaultValue="CarFunc") String amalFunc,
+            @RequestParam(value="Symbol attribute name", defaultValue="Manufacturer") String attribute,
+            @RequestParam(value="value", defaultValue="vw") String value,
+            @RequestParam(value="delimiter", defaultValue=";") String delimiter,
+            @RequestParam(required = false, value="no of returned cases",defaultValue = "-1") int k) {
+
+        Query query = new Query(casebase, concept, amalFunc, attribute, value, k);
+        List<LinkedHashMap<String, String>> cases = getFullResult(query, concept);
+        List<Map<String, String>> cases2 = new ArrayList<Map<String, String>>(cases);
+        String csvTable = new CSVTable(cases2).getTableAsString(delimiter);
+        return csvTable;
     }
 
     @ApiOperation(value = "getCaseBases", nickname = "getCaseBases")

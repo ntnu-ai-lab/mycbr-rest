@@ -206,7 +206,7 @@ public class Query {
         }
     }
 
-    public HashMap<String, Double> getSimilarCases() {
+    public LinkedHashMap<String, Double> getSimilarCases() {
         return resultList;
     }
 }

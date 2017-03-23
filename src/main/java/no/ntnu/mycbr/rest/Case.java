@@ -16,19 +16,37 @@ import java.util.TreeMap;
  */
 public class Case {
 
-    private static LinkedHashMap<String, String> casecontent = new LinkedHashMap<String, String>();
+    private LinkedHashMap<String, String> casecontent = new LinkedHashMap<String, String>();
 
     public Case(String caseID) {
 
         Project project = App.getProject();
-        // create a concept and get the main concept of the project;
         de.dfki.mycbr.core.model.Concept myConcept = project.getConceptByID(CBREngine.getConceptName());
         Instance aInstance = myConcept.getInstance(caseID);
+        casecontent = new LinkedHashMap<String, String>(getSortedCaseContent(aInstance));
+    }
 
+    // Used by full results
+    public Case(String concept, String caseID, double similarity) {
+
+        Project project = App.getProject();
+        de.dfki.mycbr.core.model.Concept myConcept = project.getConceptByID(concept);
+        Instance aInstance = myConcept.getInstance(caseID);
+
+        casecontent.put("similarity", Double.toString(similarity));
+        casecontent.put("caseID", aInstance.getName());
+        casecontent.putAll(getSortedCaseContent(aInstance));
+    }
+
+    public LinkedHashMap<String, String> getCase() {
+        return casecontent;
+    }
+
+    private static TreeMap<String, String> getSortedCaseContent(Instance aInstance) {
         HashMap<AttributeDesc, Attribute> atts = aInstance.getAttributes();
         TreeMap<String, String> sortedCaseContent = new TreeMap<String, String>();
 
-        for (Map.Entry<AttributeDesc, Attribute> entry : atts.entrySet()) {
+        for(Map.Entry<AttributeDesc, Attribute> entry : atts.entrySet()) {
             AttributeDesc attDesc = entry.getKey();
             Attribute att = entry.getValue();
             String value = att.getValueAsString();
@@ -40,10 +58,6 @@ public class Case {
             }
         }
 
-        casecontent = new LinkedHashMap<String, String>(sortedCaseContent);
-    }
-
-    public LinkedHashMap<String, String> getCase() {
-        return casecontent;
+        return sortedCaseContent;
     }
 }

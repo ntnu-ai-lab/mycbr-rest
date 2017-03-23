@@ -26,24 +26,6 @@ public class CBRController {
     }
 
     @ApiOperation(value = "getSimilarCases", nickname = "getSimilarCases")
-    @RequestMapping(method = RequestMethod.GET, path="/retrieval", produces = "application/json")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success", response = Query.class),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")
-    })
-    public Query getSimilarCases(
-            @RequestParam(value="casebase", defaultValue="CaseBase0") String casebase,
-            @RequestParam(value="concept name", defaultValue="Car") String concept,
-            @RequestParam(value="Symbol attribute name", defaultValue="Manufacturer") String attribute,
-            @RequestParam(value="value", defaultValue="vw") String value,
-            @RequestParam(required = false, value="no of returned cases",defaultValue = "-1") int k) {
-        return new Query(casebase, concept, attribute, value, k);
-    }
-
-    @ApiOperation(value = "getSimilarCases", nickname = "getSimilarCases")
     @RequestMapping(method = RequestMethod.POST, path="/retrieval", produces = "application/json")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success", response = Query.class),
@@ -55,9 +37,10 @@ public class CBRController {
     public Query getSimilarCases(
             @RequestParam(value="casebase", defaultValue="CaseBase0") String casebase,
             @RequestParam(value="concept name", defaultValue="Car") String concept,
+            @RequestParam(value="amalgamation function", defaultValue="CarFunc") String amalFunc,
             @RequestParam(required = false, value="no of returned cases",defaultValue = "-1") int k,
             @RequestBody(required = true)  HashMap<String, Object> queryContent) {
-        return new Query(casebase, concept, queryContent, k);
+        return new Query(casebase, concept, amalFunc, queryContent, k);
     }
 
     @ApiOperation(value = "getSimilarCasesByID", nickname = "getSimilarCasesByID")
@@ -69,12 +52,32 @@ public class CBRController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")
     })
-    public Query getSimilarCases(
+    public Query getSimilarCasesByID(
             @RequestParam(value="casebase", defaultValue="CaseBase0") String casebase,
             @RequestParam(value="concept", defaultValue="Car") String concept,
+            @RequestParam(value="amalgamation function", defaultValue="CarFunc") String amalFunc,
             @RequestParam(value="caseID", defaultValue="144_vw") String caseID,
             @RequestParam(required = false, value="no of returned cases",defaultValue = "-1") int k) {
-        return new Query(casebase, concept, caseID, k);
+        return new Query(casebase, concept, amalFunc, caseID, k);
+    }
+
+    @ApiOperation(value = "getSimilarCasesByAttribute", nickname = "getSimilarCases")
+    @RequestMapping(method = RequestMethod.GET, path="/retrieval", produces = "application/json")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = Query.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")
+    })
+    public Query getSimilarCasesByAttribute(
+            @RequestParam(value="casebase", defaultValue="CaseBase0") String casebase,
+            @RequestParam(value="concept name", defaultValue="Car") String concept,
+            @RequestParam(value="amalgamation function", defaultValue="CarFunc") String amalFunc,
+            @RequestParam(value="Symbol attribute name", defaultValue="Manufacturer") String attribute,
+            @RequestParam(value="value", defaultValue="vw") String value,
+            @RequestParam(required = false, value="no of returned cases",defaultValue = "-1") int k) {
+        return new Query(casebase, concept, amalFunc, attribute, value, k);
     }
 
     @ApiOperation(value = "getCaseBases", nickname = "getCaseBases")
@@ -143,5 +146,4 @@ public class CBRController {
 
         return new ValueRange(concept, attributeName);
     }
-
 }

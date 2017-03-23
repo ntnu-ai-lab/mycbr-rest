@@ -25,7 +25,7 @@
         <point x="200.0" y="0.9" />
       </fct>
     </desc>
-    <desc name="Color" type="Symbol" mult="false" >
+    <desc name="Color" type="Symbol" mult="true" >
       <symbol value="dark_red" />
       <symbol value="green" />
       <symbol value="dark_green" />
@@ -45,24 +45,24 @@
       <symbol value="silver" />
       <symbol value="anthracite" />
       <fct name="tax" type="Taxonomy" mt="PARTNER_QUERY" r="REUSE" t="MAX" qconfig="INNER_NODES_ANY" cconfig="INNER_NODES_ANY" top="Color" sim="0.0" symm="true" >
-        <node name="light_gray" sim="1.0" parent="gray" />
-        <node name="orange" sim="1.0" parent="red" />
-        <node name="red" sim="0.5" parent="Color" />
-        <node name="dark_green" sim="1.0" parent="green" />
-        <node name="dark_red" sim="1.0" parent="red" />
-        <node name="dark_gray" sim="1.0" parent="gray" />
-        <node name="black" sim="1.0" parent="Color" />
-        <node name="dark_blue" sim="1.0" parent="blue" />
-        <node name="blue" sim="0.5" parent="Color" />
-        <node name="white" sim="1.0" parent="Color" />
         <node name="turquoise" sim="1.0" parent="Color" />
-        <node name="anthracite" sim="1.0" parent="Color" />
-        <node name="green" sim="0.5" parent="Color" />
-        <node name="violet" sim="1.0" parent="Color" />
-        <node name="yellow" sim="1.0" parent="Color" />
-        <node name="light_blue" sim="1.0" parent="blue" />
-        <node name="silver" sim="1.0" parent="Color" />
         <node name="gray" sim="0.5" parent="Color" />
+        <node name="blue" sim="0.5" parent="Color" />
+        <node name="light_blue" sim="1.0" parent="blue" />
+        <node name="dark_blue" sim="1.0" parent="blue" />
+        <node name="violet" sim="1.0" parent="Color" />
+        <node name="silver" sim="1.0" parent="Color" />
+        <node name="yellow" sim="1.0" parent="Color" />
+        <node name="dark_red" sim="1.0" parent="red" />
+        <node name="green" sim="0.5" parent="Color" />
+        <node name="red" sim="0.5" parent="Color" />
+        <node name="dark_gray" sim="1.0" parent="gray" />
+        <node name="dark_green" sim="1.0" parent="green" />
+        <node name="black" sim="1.0" parent="Color" />
+        <node name="orange" sim="1.0" parent="red" />
+        <node name="white" sim="1.0" parent="Color" />
+        <node name="light_gray" sim="1.0" parent="gray" />
+        <node name="anthracite" sim="1.0" parent="Color" />
       </fct>
     </desc>
     <desc name="CCM" type="Integer" min="1000" max="6000" mult="false" >
@@ -158,61 +158,61 @@
       <symbol value="slk_230_kompressor" />
       <symbol value="c_230_kompressor" />
       <fct name="ModelFunc" type="Taxonomy" mt="PARTNER_QUERY" r="REUSE" t="MAX" qconfig="INNER_NODES_ANY" cconfig="INNER_NODES_ANY" top="Model" sim="0.0" symm="true" >
-        <node name="a4_1.9_tdi" sim="1.0" parent="AUDI" />
-        <node name="328i" sim="1.0" parent="3_series" />
-        <node name="VW" sim="0.25" parent="Model" />
-        <node name="535i" sim="1.0" parent="5_series" />
-        <node name="323i" sim="1.0" parent="3_series" />
-        <node name="m3" sim="1.0" parent="BMW" />
-        <node name="e_290_diesel" sim="1.0" parent="e_class" />
-        <node name="325tds" sim="1.0" parent="3_series" />
-        <node name="a6_2.4" sim="1.0" parent="AUDI" />
-        <node name="e_220_diesel" sim="1.0" parent="e_class" />
-        <node name="5_series" sim="0.5" parent="BMW" />
-        <node name="316i" sim="1.0" parent="3_series" />
-        <node name="a4_1.8_t" sim="1.0" parent="AUDI" />
-        <node name="c_class" sim="0.5" parent="Mercedes" />
-        <node name="e_320" sim="1.0" parent="e_class" />
-        <node name="AUDI" sim="0.5" parent="Model" />
-        <node name="passat" sim="1.0" parent="VW" />
-        <node name="z3_1.9" sim="1.0" parent="z3_series" />
-        <node name="540i" sim="1.0" parent="5_series" />
-        <node name="e_430" sim="1.0" parent="e_class" />
-        <node name="320i" sim="1.0" parent="3_series" />
         <node name="e_300_diesel" sim="1.0" parent="e_class" />
-        <node name="e_200" sim="1.0" parent="e_class" />
-        <node name="c_200" sim="1.0" parent="c_class" />
-        <node name="e_class" sim="0.5" parent="Mercedes" />
+        <node name="535i" sim="1.0" parent="5_series" />
         <node name="slk_200" sim="1.0" parent="slk" />
-        <node name="a4_1.8" sim="1.0" parent="AUDI" />
-        <node name="a6_2.8" sim="1.0" parent="AUDI" />
-        <node name="a4_2.8" sim="1.0" parent="AUDI" />
-        <node name="525tds" sim="1.0" parent="5_series" />
+        <node name="z3_1.9" sim="1.0" parent="z3_series" />
+        <node name="m3" sim="1.0" parent="BMW" />
         <node name="c_280" sim="1.0" parent="c_class" />
-        <node name="Mercedes" sim="0.25" parent="Model" />
-        <node name="e_280" sim="1.0" parent="e_class" />
-        <node name="a6_1.8_t" sim="1.0" parent="AUDI" />
-        <node name="3_series" sim="0.5" parent="BMW" />
-        <node name="z3_1.8" sim="1.0" parent="z3_series" />
-        <node name="318i" sim="1.0" parent="3_series" />
-        <node name="c_180" sim="1.0" parent="c_class" />
-        <node name="m_roadster" sim="1.0" parent="BMW" />
-        <node name="c_220_diesel" sim="1.0" parent="c_class" />
-        <node name="z3_series" sim="0.5" parent="BMW" />
-        <node name="c_250_diesel" sim="1.0" parent="c_class" />
-        <node name="BMW" sim="0.5" parent="Model" />
-        <node name="a6_1.9_tdi" sim="1.0" parent="AUDI" />
-        <node name="golf" sim="0.5" parent="VW" />
-        <node name="528i" sim="1.0" parent="5_series" />
         <node name="325td" sim="1.0" parent="3_series" />
-        <node name="520i" sim="1.0" parent="5_series" />
-        <node name="a4_1.6" sim="1.0" parent="AUDI" />
-        <node name="c_240" sim="1.0" parent="c_class" />
+        <node name="a6_2.8" sim="1.0" parent="AUDI" />
+        <node name="m_roadster" sim="1.0" parent="BMW" />
+        <node name="318i" sim="1.0" parent="3_series" />
         <node name="slk_230_kompressor" sim="1.0" parent="slk" />
-        <node name="523i" sim="1.0" parent="5_series" />
-        <node name="slk" sim="0.5" parent="Mercedes" />
-        <node name="z3_2.8" sim="1.0" parent="z3_series" />
+        <node name="e_290_diesel" sim="1.0" parent="e_class" />
+        <node name="a4_2.8" sim="1.0" parent="AUDI" />
+        <node name="e_320" sim="1.0" parent="e_class" />
+        <node name="e_430" sim="1.0" parent="e_class" />
         <node name="c_230_kompressor" sim="1.0" parent="c_class" />
+        <node name="AUDI" sim="0.5" parent="Model" />
+        <node name="a6_1.9_tdi" sim="1.0" parent="AUDI" />
+        <node name="3_series" sim="0.5" parent="BMW" />
+        <node name="c_180" sim="1.0" parent="c_class" />
+        <node name="VW" sim="0.25" parent="Model" />
+        <node name="a4_1.8" sim="1.0" parent="AUDI" />
+        <node name="BMW" sim="0.5" parent="Model" />
+        <node name="c_class" sim="0.5" parent="Mercedes" />
+        <node name="520i" sim="1.0" parent="5_series" />
+        <node name="c_220_diesel" sim="1.0" parent="c_class" />
+        <node name="528i" sim="1.0" parent="5_series" />
+        <node name="c_240" sim="1.0" parent="c_class" />
+        <node name="525tds" sim="1.0" parent="5_series" />
+        <node name="z3_1.8" sim="1.0" parent="z3_series" />
+        <node name="z3_2.8" sim="1.0" parent="z3_series" />
+        <node name="5_series" sim="0.5" parent="BMW" />
+        <node name="328i" sim="1.0" parent="3_series" />
+        <node name="540i" sim="1.0" parent="5_series" />
+        <node name="523i" sim="1.0" parent="5_series" />
+        <node name="Mercedes" sim="0.25" parent="Model" />
+        <node name="e_200" sim="1.0" parent="e_class" />
+        <node name="a6_1.8_t" sim="1.0" parent="AUDI" />
+        <node name="passat" sim="1.0" parent="VW" />
+        <node name="a4_1.9_tdi" sim="1.0" parent="AUDI" />
+        <node name="e_class" sim="0.5" parent="Mercedes" />
+        <node name="c_250_diesel" sim="1.0" parent="c_class" />
+        <node name="c_200" sim="1.0" parent="c_class" />
+        <node name="325tds" sim="1.0" parent="3_series" />
+        <node name="316i" sim="1.0" parent="3_series" />
+        <node name="a6_2.4" sim="1.0" parent="AUDI" />
+        <node name="a4_1.6" sim="1.0" parent="AUDI" />
+        <node name="e_220_diesel" sim="1.0" parent="e_class" />
+        <node name="323i" sim="1.0" parent="3_series" />
+        <node name="320i" sim="1.0" parent="3_series" />
+        <node name="a4_1.8_t" sim="1.0" parent="AUDI" />
+        <node name="slk" sim="0.5" parent="Mercedes" />
+        <node name="golf" sim="0.5" parent="VW" />
+        <node name="z3_series" sim="0.5" parent="BMW" />
+        <node name="e_280" sim="1.0" parent="e_class" />
       </fct>
     </desc>
     <desc name="Manufacturer" type="Symbol" mult="false" >
@@ -308,11 +308,27 @@
       <entry name="Body" active="true" fct="BodyFunc" weight="5.0"/>
       <entry name="Power" active="true" fct="PowerFunc" weight="3.0"/>
     </amalgam>
+    <amalgam name="EqualWeighting" type="WEIGHTED_SUM" active="false" >
+      <entry name="ZIP" active="true" fct="default function" weight="1"/>
+      <entry name="Speed" active="true" fct="SpeedFunc" weight="1"/>
+      <entry name="Color" active="true" fct="tax" weight="1"/>
+      <entry name="CCM" active="true" fct="CCMFunc" weight="1"/>
+      <entry name="Car Code" active="true" fct="default function" weight="1"/>
+      <entry name="Miles" active="true" fct="MilesFunc" weight="1"/>
+      <entry name="Year" active="true" fct="YearFunc" weight="1"/>
+      <entry name="Price" active="true" fct="PriceFunc" weight="1"/>
+      <entry name="Doors" active="true" fct="DoorsFunc" weight="1"/>
+      <entry name="Model" active="true" fct="ModelFunc" weight="1"/>
+      <entry name="Manufacturer" active="true" fct="ManufacturerFunc" weight="1"/>
+      <entry name="Gas" active="true" fct="GasFunc" weight="1"/>
+      <entry name="Body" active="true" fct="BodyFunc" weight="1"/>
+      <entry name="Power" active="true" fct="PowerFunc" weight="1"/>
+    </amalgam>
   </concept>
 </model>
 <hierarchy>
-  <fct name="default function" type="Taxonomy" mt="PARTNER_QUERY" r="REUSE" t="MAX" qconfig="NO_INNERNODES" cconfig="NO_INNERNODES" top="inheritanceDesc" sim="0.0" symm="true" >
-    <node name="Car" sim="0.5" parent="inheritanceDesc" />
+  <fct name="default function" type="Taxonomy" mt="PARTNER_QUERY" r="REUSE" t="MAX" qconfig="INNER_NODES_ANY" cconfig="INNER_NODES_ANY" top="inheritanceDesc" sim="0.0" symm="true" >
+    <node name="Car" sim="1.0" parent="inheritanceDesc" />
   </fct>
 </hierarchy>
 <cases no="956" cb="CaseBase0"/>

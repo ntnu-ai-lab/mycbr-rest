@@ -14,7 +14,6 @@ public class ConceptName {
 
     private Set concepts = new HashSet();
 
-
     public ConceptName() {
 
         concepts.clear();

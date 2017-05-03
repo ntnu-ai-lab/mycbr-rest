@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public class ValueRange {
 
-    private static HashMap<String, Object> attributes = new HashMap<String, Object>();
+    private HashMap<String, Object> attributes = new HashMap<String, Object>();
 
     public ValueRange(String concept, String attributeName) {
 

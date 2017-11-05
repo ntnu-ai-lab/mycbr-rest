@@ -7,12 +7,10 @@ This project puts myCBR into Spring.io and provides the created REST calls throu
 * First clone the project 
 * To build it go into its root folder and run: 
 ```
-#!bash
 mvn clean install
 ```
 * In order to deploy the Spring app, run: 
 ```
-#!bash
 java -jar ./target/mycbr-rest-example-1.0-SNAPSHOT.jar 
 ```
 * After Spring has started, you can find the API documentation here: http://localhost:8080/swagger-ui.html#!/

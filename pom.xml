@@ -11,7 +11,7 @@
   <properties>
     <junit.version>3.8.1</junit.version>
     <java.version>1.8</java.version>
-    <mycbr.version>3.2-SNAPSHOT</mycbr.version>
+    <mycbr.version>3.2.BM-SNAPSHOT</mycbr.version>
     <spring.version>1.4.1.RELEASE</spring.version>
     <springfox.version>2.4.0</springfox.version>
     <jackson.version>1.9.12</jackson.version>
@@ -40,8 +40,8 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>de.dfki.mycbr</groupId>
-      <artifactId>mycbr-sdk</artifactId>
+      <groupId>myCBR3</groupId>
+      <artifactId>myCBR3</artifactId>
       <version>${mycbr.version}</version>
     </dependency>
 
@@ -78,6 +78,17 @@
       <artifactId>hibernate-jpa-2.0-api</artifactId>
       <version>${hibernate.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.googlecode.json-simple</groupId>
+      <artifactId>json-simple</artifactId>
+      <version>1.1.1</version>
+    </dependency>
+      <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>RELEASE</version>
+          <scope>test</scope>
+      </dependency>
 
   </dependencies>
 

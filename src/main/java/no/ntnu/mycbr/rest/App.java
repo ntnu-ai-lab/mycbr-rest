@@ -22,7 +22,13 @@ public class App {
     public static void main(String[] args) {
 
         engine = new CBREngine();
-        project = engine.createProjectFromPRJ();
+        String userDefinedProjectFile = System.getProperty("MYCBR.PROJECT.FILE");
+        if(userDefinedProjectFile != null && userDefinedProjectFile.length() > 0)
+            project = engine.createProjectFromPRJ(userDefinedProjectFile);
+        else{
+            project = engine.createemptyCBRProject();
+        }
+
         SpringApplication.run(App.class, args);
     }
 

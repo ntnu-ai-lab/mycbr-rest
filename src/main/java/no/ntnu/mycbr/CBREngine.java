@@ -2,20 +2,24 @@ package no.ntnu.mycbr;
 
 import de.dfki.mycbr.core.Project;
 import de.dfki.mycbr.core.casebase.SymbolAttribute;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import java.awt.peer.ChoicePeer;
+import java.io.File;
 import java.util.logging.Logger;
 
 public class CBREngine {
 
-
+	private final Log logger = LogFactory.getLog(getClass());
 	/* Get actual class name to be printed on */
 
 	// set path to myCBR projects	
 	private static String data_path = System.getProperty("user.dir") + "/src/main/resources/";
 	/* project specific: NewExampleProject*/
 	// name of the project file
-	private static String projectName = "used_cars_flat.prj";
-	// name of the central concept 
+	private static String  projectName = "anteo-fix.prj";
+	// name of the central concept
 	private static String conceptName = "Car";
 	// name of the csv containing the instances
 	private static String csv = "cars_casebase.csv";
@@ -60,15 +64,14 @@ public class CBREngine {
 	/**
 	 * This methods creates a myCBR project and loads the project from a .prj file
 	 */	
-	public Project createProjectFromPRJ(){
-
-		System.out.println("Trying to load prj file with : "+data_path.trim()+ " "+projectName+" "+conceptName+" ");
+	public Project createProjectFromPRJ(String projectFile){
+		System.out.println("Trying to load prj file with : "+projectFile+" ");
 
 		Project project = null;
 
 		try{
 
-			project = new Project(data_path + projectName);
+			project = new Project(projectFile);
 
 			// Sehr wichtig hier das Warten einzubauen, sonst gibts leere 
 			// Retrieval Results, weil die Faelle noch nicht geladen sind wenn das 
@@ -85,7 +88,7 @@ public class CBREngine {
 		}
 		catch(Exception ex){
 
-			System.out.println("Error when loading the project");
+			logger.error("Error when loading the project",ex);
 		}		
 		return project;		
 	}	
@@ -102,18 +105,33 @@ public class CBREngine {
 		Project project = null;
 		try {
 			// load new project
-			project = new Project(data_path+projectName);
-			// create a concept and get the main concept of the project; 
-			// the name has to be specified at the beginning of this class
-			while (project.isImporting()){
-				Thread.sleep(1000);
-				System.out.print(".");
-			}
-			System.out.print("\n");	//console pretty print
+			project = this.create(data_path+"tempproject.prj");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return project;
+	}
+	public Project create(String filename) {
+		if(filename.endsWith(".zip") || filename.endsWith(".prj")) {
+			filename = filename.substring(0, filename.lastIndexOf('.'));
+		}
+		File file = new File(filename);
+		if(file.exists()) {
+			if(!file.delete()) {
+				logger.error("could not delete existing temporary project file, please delete it or specify other project file via -DMYCBR.PROJECT.FILE=");
+				System.exit(1);
+			}
+		}
+		try {
+			Project project = new Project();
+			project.setName(file.getName());
+			project.setPath(file.getParent() + "/");
+			project.save();
+			return project;
+		} catch (Exception e) {
+			logger.error("error during creating of empty project",e);
+			return null;
+		}
 	}
 }

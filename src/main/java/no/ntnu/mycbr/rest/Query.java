@@ -6,6 +6,7 @@ import de.dfki.mycbr.core.casebase.Attribute;
 import de.dfki.mycbr.core.casebase.Instance;
 import de.dfki.mycbr.core.casebase.MultipleAttribute;
 import de.dfki.mycbr.core.model.*;
+import de.dfki.mycbr.core.retrieval.NeuralRetrieval;
 import de.dfki.mycbr.core.retrieval.Retrieval;
 import de.dfki.mycbr.core.similarity.Similarity;
 import de.dfki.mycbr.util.Pair;
@@ -21,6 +22,17 @@ public class Query {
 
     private LinkedHashMap<String, Double> resultList = new LinkedHashMap<>();
 
+    public Query(String casebase) {
+        Project project = App.getProject();
+        // create case bases and assign the case bases that will be used for submitting a query
+        DefaultCaseBase cb = (DefaultCaseBase)project.getCaseBases().get(casebase);
+        List<Instance> cases = (List<Instance>) cb.getCases();
+
+        for (Instance c : cases) {
+            this.resultList.put(c.getName(), new Double(1.0));
+        }
+    }
+
     public Query(String casebase, String concept, String amalFunc, HashMap<String, Object> queryContent, int k) {
 
         Project project = App.getProject();
@@ -35,6 +47,7 @@ public class Query {
             tempAmalgamFctManager.changeAmalgamFct(amalFunc);
 
             Retrieval r = new Retrieval(myConcept, cb);
+            r.setRetrievalEngine(new NeuralRetrieval(project,r));
 
             try {
                 Instance query = r.getQueryInstance();
@@ -103,20 +116,20 @@ public class Query {
     }
 
     public Query(String casebase, String concept, String amalFunc, String caseID, int k) {
-
+        System.out.println("in query by id");
         Project project = App.getProject();
         // create case bases and assign the case bases that will be used for submitting a query
         DefaultCaseBase cb = (DefaultCaseBase)project.getCaseBases().get(casebase);
         // create a concept and get the main concept of the project;
         Concept myConcept = project.getConceptByID(concept);
 
-        TemporaryAmalgamFctManager tempAmalgamFctManager = new TemporaryAmalgamFctManager(myConcept);
+        //TemporaryAmalgamFctManager tempAmalgamFctManager = new TemporaryAmalgamFctManager(myConcept);
 
         try {
-            tempAmalgamFctManager.changeAmalgamFct(amalFunc);
+            //tempAmalgamFctManager.changeAmalgamFct(amalFunc);
 
             Retrieval r = new Retrieval(myConcept, cb);
-
+            r.setRetrievalEngine(new NeuralRetrieval(project,r));
             try {
                 Instance query = r.getQueryInstance();
 
@@ -125,13 +138,6 @@ public class Query {
                 for (Map.Entry<AttributeDesc, Attribute> e : caze.getAttributes()
                         .entrySet()) {
                     query.addAttribute(e.getKey(), e.getValue());
-                }
-
-                if (k > -1) {
-                    r.setK(k);
-                    r.setRetrievalMethod(Retrieval.RetrievalMethod.RETRIEVE_K_SORTED);
-                } else {
-                    r.setRetrievalMethod(Retrieval.RetrievalMethod.RETRIEVE_SORTED);
                 }
 
                 r.start();
@@ -148,9 +154,6 @@ public class Query {
                 e.printStackTrace();
             }
 
-        } catch (TemporaryAmalgamFctNotChangedException e) {
-            // Return empty result
-            return;
         } finally {
             //tempAmalgamFctManager.rollBack();
         }

@@ -2,7 +2,7 @@
 <metadata modelVersion="1.1.0">
   <groupId>de.dfki.mycbr</groupId>
   <artifactId>mycbr-sdk</artifactId>
-  <version>3.2-SNAPSHOT</version>
+  <version>3.2.BM-SNAPSHOT</version>
   <versioning>
     <snapshot>
       <localCopy>true</localCopy>
@@ -11,12 +11,12 @@
     <snapshotVersions>
       <snapshotVersion>
         <extension>jar</extension>
-        <value>3.2-SNAPSHOT</value>
+        <value>3.2.BM-SNAPSHOT</value>
         <updated>20161002100904</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>pom</extension>
-        <value>3.2-SNAPSHOT</value>
+        <value>3.2.BM-SNAPSHOT</value>
         <updated>20161002100904</updated>
       </snapshotVersion>
     </snapshotVersions>

@@ -15,7 +15,6 @@ import no.ntnu.mycbr.rest.*;
 import no.ntnu.mycbr.rest.utils.CSVTable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

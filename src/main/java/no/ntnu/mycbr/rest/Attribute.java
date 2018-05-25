@@ -17,7 +17,7 @@ public class Attribute {
     public Attribute(String concept) {
 
         Project project = App.getProject();
-        // create a concept and get the main concept of the project;
+        // get a concept and get the main concept of the project;
         de.dfki.mycbr.core.model.Concept myConcept = project.getConceptByID(concept);
 
         HashMap<String, AttributeDesc> atts = myConcept.getAllAttributeDescs();

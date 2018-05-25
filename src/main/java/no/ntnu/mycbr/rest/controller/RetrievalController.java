@@ -47,12 +47,11 @@ public class RetrievalController {
             @ApiResponse(code = 500, message = "Failure")
     })
     public Query getSimilarCasesByID(
-            @RequestParam(value="casebase", defaultValue="InstanceBase0") String casebase,
-            @RequestParam(value="concept", defaultValue="Car") String concept,
-            @RequestParam(value="amalgamation function", defaultValue="CarFunc") String amalFunc,
-            @RequestParam(value="caseID", defaultValue="144_vw") String caseID,
+            @PathVariable(value="conceptID") String conceptID,
+            @PathVariable(value="casebaseID") String casebaseID,
+            @RequestParam(value="caseID") String caseID,
             @RequestParam(required = false, value="no of returned cases",defaultValue = "-1") int k) {
-        return new Query(casebase, concept, amalFunc, caseID, k);
+        return new Query(casebaseID, conceptID, null, caseID, k);
     }
 
     @ApiOperation(value = "getSimilarInstancesByAttribute", nickname = "getSimilarInstances")

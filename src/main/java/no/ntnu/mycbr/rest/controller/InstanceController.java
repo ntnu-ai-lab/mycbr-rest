@@ -68,8 +68,40 @@ public class InstanceController
         return true;
     }
 
-    // Get all instances
+    // Get all instances in case base of a concept
     @ApiOperation(value = "getAllInstances", nickname = "getAllInstances")
+    @RequestMapping(method = RequestMethod.GET, value = "/concepts/{conceptID}/instances", headers="Accept=application/json")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")
+    })
+    public Collection<Case> getAllInstances(@PathVariable(value="conceptID") String conceptID) {
+        Project p = App.getProject();
+
+        /*Query query = new Query(conceptID);
+
+        System.out.println("p get all instances size: "+p.getAllInstances().size());
+        //System.out.println("is getallcases"+App.getProject().getSuperConcept().getAllInstances().size());
+        //System.out.println("is getallcases"+App.getProject().getSuperConcept().getAllInstances().size());
+        List<Instance> instances = new ArrayList<>();
+        for(ICaseBase iCaseBase : p.getCaseBases().values()){
+            logger.info("casebase has "+iCaseBase.getCases().size()+" cases ");
+            instances.addAll(iCaseBase.getCases());
+        }*/
+        Collection<Instance> instances = p.getAllInstances();
+        Collection<Case> ret = new LinkedList<>();
+        for(Instance instance : instances){
+            if(instance.getConcept().getName().contentEquals(conceptID))
+                ret.add(new Case(instance.getName(),conceptID));
+        }
+        return ret;
+    }
+
+    // Get all instances of a concept
+    @ApiOperation(value = "getAllInstancesInCaseBase", nickname = "getAllInstancesInCaseBase")
     @RequestMapping(method = RequestMethod.GET, value = "/concepts/{conceptID}/casebases/{casebaseID}/instances", headers="Accept=application/json")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success", response = Case.class),
@@ -78,14 +110,15 @@ public class InstanceController
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")
     })
-    public List<LinkedHashMap<String, String>> getAllInstances(@PathVariable(value="conceptID") String conceptID,
-                                                               @RequestParam(value="casebase", defaultValue="CaseBase0") String casebase,
-            @RequestParam(value="concept name", defaultValue="Car") String concept) {
-        Query query = new Query(casebase);
-        System.out.println("is getallcases");
-        List<LinkedHashMap<String, String>> cases = getFullResult(query, concept);
+    public List<LinkedHashMap<String, String>> getAllInstancesInCaseBase(@PathVariable(value="conceptID") String conceptID,
+                                                               @PathVariable(value="casebaseID") String casebaseID) {
+        Query query = new Query(casebaseID,conceptID);
+        //TODO: filter to one type of concept
+        System.out.println("is getallcases"+App.getProject().getSuperConcept().getAllInstances().size());
+        List<LinkedHashMap<String, String>> cases = getFullResult(query, conceptID);
         return cases;
     }
+
 
     //Delete all instances
     @ApiOperation(value="deleteInstances", nickname="deleteInstances")
@@ -160,32 +193,34 @@ public class InstanceController
     @ApiOperation(value = "addInstancesJSON", nickname = "addInstancesJSON")
     @RequestMapping(method = RequestMethod.PUT, value = "/concepts/{conceptID}/casebases/{casebaseID}/instances", headers="Accept=application/json")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success", response = ValueRange.class),
+            @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")
     })
     public boolean addInstancesJSON(
-            @RequestParam(value="JSON data", defaultValue="{}") String jsonData,
-            @RequestParam(value="caseBase",defaultValue="cb") String caseBase,
-            @RequestParam(value="concept" ,defaultValue = "concept" ) String concept) {
+            @PathVariable(value="conceptID") String conceptID,
+            @PathVariable(value="casebaseID") String casebaseID,
+            @RequestParam(value="cases", defaultValue="{}") String cases
+            ) {
+        System.out.println("in addinstances JSON jsondata is \""+cases+"\"");
         Project p = App.getProject();
-        if(!p.getCaseBases().containsKey(caseBase)){
+        if(!p.getCaseBases().containsKey(casebaseID)){
             return false;
         }
-        ICaseBase cb = p.getCaseBases().get(caseBase);
-        Concept c = (Concept)p.getSubConcepts().get(concept);
+        ICaseBase cb = p.getCaseBases().get(casebaseID);
+        Concept c = (Concept)p.getSubConcepts().get(conceptID);
 
         int counter = c.getDirectInstances().size();
 
         Instance i = null;
-        cb.addCase(i);
+        //cb.addCase(i);
 
         JSONParser parser = new JSONParser();
         JSONObject json = null;
         try {
-            json = (JSONObject) parser.parse(jsonData);
+            json = (JSONObject) parser.parse(cases);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -194,17 +229,22 @@ public class InstanceController
         List<HashMap<String,String>> newCases = new ArrayList<>();
         try {
             while (it.hasNext()) {
+
                 JSONObject ob = it.next();
+                //Instance instance = c.addInstance(ob.get("caseID"));
                 Instance instance = null;
                 HashMap<String, String> values = new HashMap<>();
                 instance = new Instance(c, (String) ob.get("caseID"));
+                ob.remove("caseID");
                 for (Object key : ob.keySet()) {
                     values.put((String) key, (String) ob.get(key));
                     AttributeDesc attributeDesc = c.getAllAttributeDescs().get((String) key);
                     instance.addAttribute(attributeDesc, ob.get(key));
                 }
+                p.getCaseBases().get(casebaseID).addCase(instance);
                 newCases.add(values);
             }
+
         }
         catch (java.text.ParseException e) {
             e.printStackTrace();

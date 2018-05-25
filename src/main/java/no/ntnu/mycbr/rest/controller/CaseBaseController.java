@@ -38,14 +38,31 @@ public class CaseBaseController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")
     })
-    public boolean createConcept(@PathVariable(value="casebase") String casebase,
-                                 @RequestParam(value="concept") String concept){
+    public boolean createCaseBase(@PathVariable(value="casebase") String casebase){
         Project p = App.getProject();
         try {
             p.createDefaultCB(casebase);
         } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            logger.error("got an error creating the casebase", e);
+        }
+        return true;
+    }
+
+    @ApiOperation(value="deleteCaseBase", nickname="deleteCaseBase")
+    @RequestMapping(method=RequestMethod.DELETE, value = "/casebases/{casebase}")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")
+    })
+    public boolean deleteCaseBase(@PathVariable(value="casebase") String casebase){
+        Project p = App.getProject();
+        try {
+            p.deleteCaseBase(casebase);
+        } catch (Exception e) {
+            logger.error("got an error creating the casebase", e);
         }
         return true;
     }

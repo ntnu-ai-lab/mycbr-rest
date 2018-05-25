@@ -27,6 +27,14 @@ public class Case {
         casecontent = new LinkedHashMap<String, String>(getSortedCaseContent(aInstance));
     }
 
+    public Case(String caseID, String conceptID) {
+
+        Project project = App.getProject();
+        de.dfki.mycbr.core.model.Concept myConcept = project.getConceptByID(conceptID);
+        Instance aInstance = myConcept.getInstance(caseID);
+        casecontent = new LinkedHashMap<String, String>(getSortedCaseContent(aInstance));
+    }
+
     // Used by full results
     public Case(String concept, String caseID, double similarity) {
 
@@ -46,7 +54,7 @@ public class Case {
     private static TreeMap<String, String> getSortedCaseContent(Instance aInstance) {
         HashMap<AttributeDesc, Attribute> atts = aInstance.getAttributes();
         TreeMap<String, String> sortedCaseContent = new TreeMap<String, String>();
-
+        sortedCaseContent.put("caseID",aInstance.getName()) ;
         for(Map.Entry<AttributeDesc, Attribute> entry : atts.entrySet()) {
             AttributeDesc attDesc = entry.getKey();
             Attribute att = entry.getValue();

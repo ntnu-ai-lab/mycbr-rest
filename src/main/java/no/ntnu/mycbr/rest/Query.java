@@ -1,6 +1,7 @@
 package no.ntnu.mycbr.rest;
 
 import de.dfki.mycbr.core.DefaultCaseBase;
+import de.dfki.mycbr.core.ICaseBase;
 import de.dfki.mycbr.core.Project;
 import de.dfki.mycbr.core.casebase.Attribute;
 import de.dfki.mycbr.core.casebase.Instance;
@@ -22,17 +23,30 @@ public class Query {
 
     private LinkedHashMap<String, Double> resultList = new LinkedHashMap<>();
 
-    public Query(String casebase) {
+    public Query(String casebase, String concept) {
         Project project = App.getProject();
         // create case bases and assign the case bases that will be used for submitting a query
         DefaultCaseBase cb = (DefaultCaseBase)project.getCaseBases().get(casebase);
         List<Instance> cases = (List<Instance>) cb.getCases();
 
         for (Instance c : cases) {
+            if(c.getConcept().getName().contentEquals(concept))
+                this.resultList.put(c.getName(), new Double(1.0));
+        }
+    }
+    public Query(String concept) {
+        Project project = App.getProject();
+        // create case bases and assign the case bases that will be used for submitting a query
+        HashMap<String, ICaseBase> cbs = project.getCaseBases();
+        List<Instance> cases = new ArrayList<>();
+        for(ICaseBase iCaseBase : cbs.values()) {
+            cases.addAll( iCaseBase.getCases());
+        }
+
+        for (Instance c : cases) {
             this.resultList.put(c.getName(), new Double(1.0));
         }
     }
-
     public Query(String casebase, String concept, String amalFunc, HashMap<String, Object> queryContent, int k) {
 
         Project project = App.getProject();
@@ -123,13 +137,16 @@ public class Query {
         // create a concept and get the main concept of the project;
         Concept myConcept = project.getConceptByID(concept);
 
-        //TemporaryAmalgamFctManager tempAmalgamFctManager = new TemporaryAmalgamFctManager(myConcept);
+        TemporaryAmalgamFctManager tempAmalgamFctManager = null;
+        if(amalFunc!= null)
+            new TemporaryAmalgamFctManager(myConcept);
 
         try {
-            //tempAmalgamFctManager.changeAmalgamFct(amalFunc);
+            if(amalFunc!=null)
+                tempAmalgamFctManager.changeAmalgamFct(amalFunc);
 
             Retrieval r = new Retrieval(myConcept, cb);
-            r.setRetrievalEngine(new NeuralRetrieval(project,r));
+            //r.setRetrievalEngine(new NeuralRetrieval(project,r));
             try {
                 Instance query = r.getQueryInstance();
 
@@ -153,6 +170,9 @@ public class Query {
             catch (Exception e) {
                 e.printStackTrace();
             }
+
+        } catch (TemporaryAmalgamFctNotChangedException e )
+        {
 
         } finally {
             //tempAmalgamFctManager.rollBack();

@@ -6,7 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
-
+/*
 @Configuration
 @ComponentScan
 public class AppConfig extends WebMvcConfigurationSupport {
@@ -17,4 +17,4 @@ public class AppConfig extends WebMvcConfigurationSupport {
         m.setDefaultHandler(new MyDefaultHandler());
         return m;
     }
-}
+}*/

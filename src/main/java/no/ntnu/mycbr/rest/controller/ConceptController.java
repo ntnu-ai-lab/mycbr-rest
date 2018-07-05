@@ -6,8 +6,8 @@ import de.dfki.mycbr.core.model.*;
 import de.dfki.mycbr.core.similarity.*;
 import de.dfki.mycbr.core.similarity.config.AmalgamationConfig;
 import de.dfki.mycbr.core.similarity.config.NumberConfig;
+import it.unimi.dsi.fastutil.Hash;
 import no.ntnu.mycbr.rest.*;
-import org.apache.commons.lang.ObjectUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -253,7 +253,18 @@ public class ConceptController {
             @ApiResponse(code = 500, message = "Failure")
     })
     public boolean deleteConcepts() {
-        Concept superConcept = App.getProject().getSuperConcept();
+        Project proj = App.getProject();
+        HashMap<String,Concept> subConcepts = proj.getSubConcepts();
+        Concept superConcept = proj.getSuperConcept();
+        if(superConcept == null && subConcepts.size() == 0)
+            return true;
+        else if(superConcept == null && subConcepts.size() > 0){
+            for(String key : subConcepts.keySet()){
+                Concept c = subConcepts.remove(key);
+                logger.info("removing Concept "+c.getName());
+            }
+            return true;
+        }
         return recDeleteConcept(superConcept);
     }
 
@@ -261,8 +272,11 @@ public class ConceptController {
     private static boolean recDeleteConcept(Concept superConcept){
         HashMap<String,Concept> subConcepts = superConcept.getAllSubConcepts();
         boolean ret = true;
-        for(String key : subConcepts.keySet())
-            ret = ret && recDeleteConcept(subConcepts.get(key));
+        for(Iterator<Map.Entry<String,Concept>> it = subConcepts.entrySet().iterator();it.hasNext();) {
+            Map.Entry<String, Concept> entry = it.next();
+            recDeleteConcept(entry.getValue());
+            it.remove();
+        }
         superConcept.getSuperConcept().removeSubConcept(superConcept.getName());
         return ret;
     }

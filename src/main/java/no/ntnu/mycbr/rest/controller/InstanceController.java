@@ -191,7 +191,7 @@ public class InstanceController
     }
      */
     @ApiOperation(value = "addInstancesJSON", nickname = "addInstancesJSON")
-    @RequestMapping(method = RequestMethod.PUT, value = "/concepts/{conceptID}/casebases/{casebaseID}/instances", headers="Accept=application/json")
+    @RequestMapping(method = RequestMethod.PUT, value = "/concepts/{conceptID}/casebases/{casebaseID}/instances/", headers="Accept=application/json")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -252,6 +252,59 @@ public class InstanceController
         //cb.getProject()
         return true;
     }
+    @ApiOperation(value = "addInstanceJSON", nickname = "addInstancesJSON")
+    @RequestMapping(method = RequestMethod.PUT, value = "/concepts/{conceptID}/casebases/{casebaseID}/instances/{caseID}", headers="Accept=application/json")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")
+    })
+    public boolean addInstanceJSON(
+            @PathVariable(value="conceptID") String conceptID,
+            @PathVariable(value="casebaseID") String casebaseID,
+            @PathVariable(value="caseID") String caseID,
+            @RequestParam(value="casedata", defaultValue="{}") String casedata
+    ) {
+        System.out.println("in addinstances JSON jsondata is \""+casedata+"\"");
+        Project p = App.getProject();
+        if(!p.getCaseBases().containsKey(casebaseID)){
+            return false;
+        }
+        ICaseBase cb = p.getCaseBases().get(casebaseID);
+        Concept c = (Concept)p.getSubConcepts().get(conceptID);
 
+        Instance i = null;
+        //cb.addCase(i);
+
+        JSONParser parser = new JSONParser();
+        JSONObject json = null;
+        try {
+            json = (JSONObject) parser.parse(casedata);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        logger.info("json data:"+json);
+        JSONObject inpcase = json;
+        Set keySet = inpcase.keySet();
+        Instance instance = new Instance(c, (String) inpcase.get("caseID"));
+        try {
+            for(Object key : keySet) {
+                String strKey = (String) key;
+                logger.info("key is: "+ strKey);
+
+                AttributeDesc attributeDesc = c.getAllAttributeDescs().get(strKey);
+                logger.info("value is"+inpcase.get(key));
+                instance.addAttribute(attributeDesc, inpcase.get(key));
+            }
+        }
+        catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+        cb.addCase(instance);
+        //cb.getProject()
+        return true;
+    }
 
 }

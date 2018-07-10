@@ -69,6 +69,37 @@ calls through a Swagger API
   the new project
 
 * REST API
+The REST API created for the mycbr backend is trying to adhere to the REST semantics.
+
+- POST: POST operations should be used when the REST api user does not know exactly
+  where the item in question should be located. Typically due to undefined
+  behaviour or bad documentation. This operation shold return a URL that
+  contains an ID for that item, that also gives the user the location the REST
+  server moved the item to.
+- PUT: Instead PUT should be used to put an item at the exact location. This
+  operation should typically contain a ID/name given by the REST api user. It
+  should return a failure if the item already exists.
+- UPDATE: Both of the above URLs (returned by REST server on the first instance, and
+  specified by the user on the second) should accept UPDATE operations on the
+  item in question.
+- DELETE: this also goes for deleting items from that URL.
+
+Some concepts in mycbr is not so easy to represent in REST, such as one-to-many
+relations such as those between casebases and concepts. One concept could have
+one or more casebases for segmenting instances of that concept into more case
+bases.
+
+Also recursive attributes, such as concepts that are attributes of other
+concepts, which could result in circular dependencies, which should be
+restricted on the REST server. Right now directed acyclic graph of concepts are
+supported, and DELETE operations are now supported for those types of
+structures.
+
+However not everything representable in mycbr has been implemented to that
+standard yet.
+
+
+** Semantics
 #+BEGIN_SRC 
 /instances
 /casebases
@@ -82,10 +113,11 @@ calls through a Swagger API
 #+END_SRC
 
 
-Semantically one can PUT and DELETE to each of these endpoints, such that a HTTP DELETE to "http://host:port/casbases" would delete all casebases.
-Each PUT operation has it's own associated JSON format, e.g. for describing a instances or a similarity function of a concept or attribute.
-Below we describe the JSON format for each of the PUT operations.
-
+Semantically one can PUT and DELETE to each of these endpoints, such that a HTTP
+DELETE to "http://host:port/casbases" would delete all casebases. Each PUT
+operation has it's own associated JSON format, e.g. for describing a instances
+or a similarity function of a concept or attribute. Below we describe the JSON
+format for each of the PUT operations.
 ** Not yet implemented..
 
 #+BEGIN_EXAMPLE

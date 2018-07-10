@@ -191,7 +191,7 @@ public class InstanceController
     }
      */
     @ApiOperation(value = "addInstancesJSON", nickname = "addInstancesJSON")
-    @RequestMapping(method = RequestMethod.PUT, value = "/concepts/{conceptID}/casebases/{casebaseID}/instances/", headers="Accept=application/json")
+    @RequestMapping(method = RequestMethod.POST, value = "/concepts/{conceptID}/casebases/{casebaseID}/instances", headers="Accept=application/json")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -199,7 +199,7 @@ public class InstanceController
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")
     })
-    public boolean addInstancesJSON(
+    public ArrayList<String> addInstancesJSON(
             @PathVariable(value="conceptID") String conceptID,
             @PathVariable(value="casebaseID") String casebaseID,
             @RequestParam(value="cases", defaultValue="{}") String cases
@@ -207,7 +207,7 @@ public class InstanceController
         System.out.println("in addinstances JSON jsondata is \""+cases+"\"");
         Project p = App.getProject();
         if(!p.getCaseBases().containsKey(casebaseID)){
-            return false;
+            return new ArrayList<>();
         }
         ICaseBase cb = p.getCaseBases().get(casebaseID);
         Concept c = (Concept)p.getSubConcepts().get(conceptID);
@@ -227,17 +227,26 @@ public class InstanceController
         JSONArray inpcases = (JSONArray) json.get("cases");
         Iterator<JSONObject>  it = inpcases.iterator();
         List<HashMap<String,String>> newCases = new ArrayList<>();
+        String idPrefix = c.getName() + "-" + casebaseID;
+        ArrayList<String> ret = new ArrayList<>();
         try {
             while (it.hasNext()) {
-
+                counter ++;
                 JSONObject ob = it.next();
                 //Instance instance = c.addInstance(ob.get("caseID"));
                 Instance instance = null;
                 HashMap<String, String> values = new HashMap<>();
-                instance = new Instance(c, (String) ob.get("caseID"));
-                ob.remove("caseID");
+                String id = idPrefix + Integer.toString(counter);
+                ret.add(id);
+                instance = new Instance(c, id);
                 for (Object key : ob.keySet()) {
-                    values.put((String) key, (String) ob.get(key));
+                    Object retObj = ob.get(key);
+                    String input = null;
+                    if(retObj instanceof Double){
+                        input = ((Double)retObj).toString();
+                    }else if(retObj instanceof String)
+                        input = (String)retObj;
+                    values.put((String) key,input );
                     AttributeDesc attributeDesc = c.getAllAttributeDescs().get((String) key);
                     instance.addAttribute(attributeDesc, ob.get(key));
                 }
@@ -250,7 +259,7 @@ public class InstanceController
             e.printStackTrace();
         }
         //cb.getProject()
-        return true;
+        return ret;
     }
     @ApiOperation(value = "addInstanceJSON", nickname = "addInstancesJSON")
     @RequestMapping(method = RequestMethod.PUT, value = "/concepts/{conceptID}/casebases/{casebaseID}/instances/{caseID}", headers="Accept=application/json")
@@ -289,6 +298,7 @@ public class InstanceController
         JSONObject inpcase = json;
         Set keySet = inpcase.keySet();
         Instance instance = new Instance(c, (String) inpcase.get("caseID"));
+
         try {
             for(Object key : keySet) {
                 String strKey = (String) key;

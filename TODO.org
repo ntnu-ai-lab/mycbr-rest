@@ -1,0 +1,4 @@
+* Integrate changes from Amar.
+The best solution is probably for Amar to rebase his code onto the new mycbr-rest project.
+-Support for epheremeral casebases, as a defined subset of the original casebase.
+-Also use a subset of the casebase as a query, 

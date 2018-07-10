@@ -421,6 +421,18 @@ public class ConceptController {
                 }else
                     return false;
 
+            } else if(type.contains("Symbol")){
+                if(json.containsKey("allowedValues")) {
+                    //This attribute registers with the concept through callback!
+                    JSONArray arr = (JSONArray) json.get("allowedValues");
+                    Set<String> allowedValues = new HashSet<String>();
+                    for(Object o : arr){
+                        allowedValues.add((String)o);
+                    }
+                    new SymbolDesc(c, attributeName, allowedValues);
+                }else
+                    return false;
+
             }
         }catch (Exception e){
             logger.error("got an exception: ",e);

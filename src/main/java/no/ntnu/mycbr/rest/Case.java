@@ -1,9 +1,9 @@
 package no.ntnu.mycbr.rest;
 
-import de.dfki.mycbr.core.Project;
-import de.dfki.mycbr.core.casebase.Attribute;
-import de.dfki.mycbr.core.casebase.Instance;
-import de.dfki.mycbr.core.model.AttributeDesc;
+import no.ntnu.mycbr.core.Project;
+import no.ntnu.mycbr.core.casebase.Attribute;
+import no.ntnu.mycbr.core.casebase.Instance;
+import no.ntnu.mycbr.core.model.AttributeDesc;
 import no.ntnu.mycbr.CBREngine;
 
 import java.util.HashMap;
@@ -22,7 +22,7 @@ public class Case {
     public Case(String caseID) {
 
         Project project = App.getProject();
-        de.dfki.mycbr.core.model.Concept myConcept = project.getConceptByID(CBREngine.getConceptName());
+        no.ntnu.mycbr.core.model.Concept myConcept = project.getConceptByID(CBREngine.getConceptName());
         Instance aInstance = myConcept.getInstance(caseID);
         casecontent = new LinkedHashMap<String, String>(getSortedCaseContent(aInstance));
     }
@@ -30,7 +30,7 @@ public class Case {
     public Case(String caseID, String conceptID) {
 
         Project project = App.getProject();
-        de.dfki.mycbr.core.model.Concept myConcept = project.getConceptByID(conceptID);
+        no.ntnu.mycbr.core.model.Concept myConcept = project.getConceptByID(conceptID);
         Instance aInstance = myConcept.getInstance(caseID);
         casecontent = new LinkedHashMap<String, String>(getSortedCaseContent(aInstance));
     }
@@ -39,7 +39,7 @@ public class Case {
     public Case(String concept, String caseID, double similarity) {
 
         Project project = App.getProject();
-        de.dfki.mycbr.core.model.Concept myConcept = project.getConceptByID(concept);
+        no.ntnu.mycbr.core.model.Concept myConcept = project.getConceptByID(concept);
         Instance aInstance = myConcept.getInstance(caseID);
 
         casecontent.put("similarity", Double.toString(similarity));

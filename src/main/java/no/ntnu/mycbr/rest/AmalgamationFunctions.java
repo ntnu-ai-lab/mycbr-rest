@@ -1,7 +1,7 @@
 package no.ntnu.mycbr.rest;
 
-import de.dfki.mycbr.core.model.Concept;
-import de.dfki.mycbr.core.similarity.AmalgamationFct;
+import no.ntnu.mycbr.core.model.Concept;
+import no.ntnu.mycbr.core.similarity.AmalgamationFct;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +16,7 @@ public class AmalgamationFunctions {
 
     public AmalgamationFunctions(String conceptID) {
 
-        de.dfki.mycbr.core.Project project = App.getProject();
+        no.ntnu.mycbr.core.Project project = App.getProject();
         Concept concept = project.getConceptByID(conceptID);
 
         List<AmalgamationFct> amalgamationFunctions = concept.getAvailableAmalgamFcts();

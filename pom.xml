@@ -40,8 +40,8 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>myCBR3</groupId>
-      <artifactId>myCBR3</artifactId>
+      <groupId>myCBR</groupId>
+      <artifactId>myCBR</artifactId>
       <version>${mycbr.version}</version>
     </dependency>
     <dependency>
@@ -55,13 +55,11 @@
       <version>${spring.version}</version>
       <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>org.codehaus.jackson</groupId>
       <artifactId>jackson-mapper-asl</artifactId>
       <version>${jackson.version}</version>
     </dependency>
-
     <dependency>
       <groupId>io.springfox</groupId>
       <artifactId>springfox-swagger-ui</artifactId>

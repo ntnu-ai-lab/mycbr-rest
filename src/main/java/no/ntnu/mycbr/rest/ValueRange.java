@@ -1,7 +1,7 @@
 package no.ntnu.mycbr.rest;
 
-import de.dfki.mycbr.core.Project;
-import de.dfki.mycbr.core.model.*;
+import no.ntnu.mycbr.core.Project;
+import no.ntnu.mycbr.core.model.*;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,7 +19,7 @@ public class ValueRange {
 
         Project project = App.getProject();
         // create a concept and get the main concept of the project;
-        de.dfki.mycbr.core.model.Concept myConcept = project.getConceptByID(concept);
+        no.ntnu.mycbr.core.model.Concept myConcept = project.getConceptByID(concept);
         attributes.clear();
 
         AttributeDesc attdesc = myConcept.getAttributeDesc(attributeName);

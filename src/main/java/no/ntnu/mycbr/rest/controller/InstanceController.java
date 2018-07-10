@@ -1,10 +1,10 @@
 package no.ntnu.mycbr.rest.controller;
 
-import de.dfki.mycbr.core.ICaseBase;
-import de.dfki.mycbr.core.Project;
-import de.dfki.mycbr.core.casebase.Instance;
-import de.dfki.mycbr.core.model.AttributeDesc;
-import de.dfki.mycbr.core.model.Concept;
+import no.ntnu.mycbr.core.ICaseBase;
+import no.ntnu.mycbr.core.Project;
+import no.ntnu.mycbr.core.casebase.Instance;
+import no.ntnu.mycbr.core.model.AttributeDesc;
+import no.ntnu.mycbr.core.model.Concept;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -248,7 +248,7 @@ public class InstanceController
                         input = (String)retObj;
                     values.put((String) key,input );
                     AttributeDesc attributeDesc = c.getAllAttributeDescs().get((String) key);
-                    instance.addAttribute(attributeDesc, ob.get(key));
+                    instance.addAttribute(attributeDesc, attributeDesc.getAttribute(input));
                 }
                 p.getCaseBases().get(casebaseID).addCase(instance);
                 newCases.add(values);

@@ -1,16 +1,16 @@
 package no.ntnu.mycbr.rest;
 
-import de.dfki.mycbr.core.DefaultCaseBase;
-import de.dfki.mycbr.core.ICaseBase;
-import de.dfki.mycbr.core.Project;
-import de.dfki.mycbr.core.casebase.Attribute;
-import de.dfki.mycbr.core.casebase.Instance;
-import de.dfki.mycbr.core.casebase.MultipleAttribute;
-import de.dfki.mycbr.core.model.*;
-import de.dfki.mycbr.core.retrieval.NeuralRetrieval;
-import de.dfki.mycbr.core.retrieval.Retrieval;
-import de.dfki.mycbr.core.similarity.Similarity;
-import de.dfki.mycbr.util.Pair;
+import no.ntnu.mycbr.core.DefaultCaseBase;
+import no.ntnu.mycbr.core.ICaseBase;
+import no.ntnu.mycbr.core.Project;
+import no.ntnu.mycbr.core.casebase.Attribute;
+import no.ntnu.mycbr.core.casebase.Instance;
+import no.ntnu.mycbr.core.casebase.MultipleAttribute;
+import no.ntnu.mycbr.core.model.*;
+import no.ntnu.mycbr.core.retrieval.NeuralRetrieval;
+import no.ntnu.mycbr.core.retrieval.Retrieval;
+import no.ntnu.mycbr.core.similarity.Similarity;
+import no.ntnu.mycbr.util.Pair;
 import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctNotChangedException;
 import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctManager;
 

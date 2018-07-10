@@ -1,6 +1,6 @@
 package no.ntnu.mycbr.rest.controller;
 
-import de.dfki.mycbr.core.Project;
+import no.ntnu.mycbr.core.Project;
 import no.ntnu.mycbr.rest.App;
 import no.ntnu.mycbr.rest.CaseBases;
 import org.apache.commons.logging.Log;

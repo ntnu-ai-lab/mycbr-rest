@@ -1,21 +1,18 @@
 package no.ntnu.mycbr.rest.controller;
 
-import de.dfki.mycbr.core.ICaseBase;
-import de.dfki.mycbr.core.Project;
-import de.dfki.mycbr.core.model.*;
-import de.dfki.mycbr.core.similarity.*;
-import de.dfki.mycbr.core.similarity.config.AmalgamationConfig;
-import de.dfki.mycbr.core.similarity.config.NumberConfig;
-import it.unimi.dsi.fastutil.Hash;
+import no.ntnu.mycbr.core.ICaseBase;
+import no.ntnu.mycbr.core.Project;
+import no.ntnu.mycbr.core.model.*;
+import no.ntnu.mycbr.core.similarity.*;
+import no.ntnu.mycbr.core.similarity.config.AmalgamationConfig;
+import no.ntnu.mycbr.core.similarity.config.NumberConfig;
 import no.ntnu.mycbr.rest.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -183,7 +180,7 @@ public class ConceptController {
         }
         String firstfile = jsonfile.getOriginalFilename();
         String baseFileName = firstfile.substring(firstfile.lastIndexOf("/")+1,firstfile.lastIndexOf("."));
-        baseFileName = file_path+"/"+baseFileName;
+        baseFileName = file_path+baseFileName;
         try {
             HashMap<MultipartFile,String> map = new HashMap<>();
             map.put(h5file,baseFileName+".h5");
@@ -408,6 +405,7 @@ public class ConceptController {
             e.printStackTrace();
         }
         String type = (String) json.get("type");
+        String solution = (String) json.get("solution");
         try {
             if (type.contains("String")) {
                 //This attribute registers with the concept through callback!
@@ -417,7 +415,9 @@ public class ConceptController {
                     double min = Double.parseDouble((String) json.get("min"));
                     double max = Double.parseDouble((String) json.get("max"));
                     //This attribute registers with the concept through callback!
-                    new DoubleDesc(c, attributeName, min, max);
+                    AttributeDesc attributeDesc = new DoubleDesc(c, attributeName, min, max);
+                    if(solution.contentEquals("True"))
+                        attributeDesc.setIsSolution(true);
                 }else
                     return false;
 
@@ -429,7 +429,9 @@ public class ConceptController {
                     for(Object o : arr){
                         allowedValues.add((String)o);
                     }
-                    new SymbolDesc(c, attributeName, allowedValues);
+                    SymbolDesc attributeDesc = new SymbolDesc(c, attributeName, allowedValues);
+                    if(solution.contentEquals("True"))
+                        attributeDesc.setIsSolution(true);
                 }else
                     return false;
 

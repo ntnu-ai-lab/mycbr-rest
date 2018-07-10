@@ -1,7 +1,7 @@
 package no.ntnu.mycbr.rest;
 
-import de.dfki.mycbr.core.DefaultCaseBase;
-import de.dfki.mycbr.core.model.Concept;
+import no.ntnu.mycbr.core.DefaultCaseBase;
+import no.ntnu.mycbr.core.model.Concept;
 import no.ntnu.mycbr.CBREngine;
 
 import java.util.HashSet;
@@ -17,7 +17,7 @@ public class ConceptName {
     public ConceptName() {
 
         concepts.clear();
-        de.dfki.mycbr.core.Project project = App.getProject();
+        no.ntnu.mycbr.core.Project project = App.getProject();
         // create case bases and assign the case bases that will be used for submitting a query
         concepts = project.getSubConcepts().keySet();
     }

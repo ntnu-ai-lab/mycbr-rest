@@ -1,7 +1,7 @@
 package no.ntnu.mycbr.rest;
 
-import de.dfki.mycbr.core.DefaultCaseBase;
-import de.dfki.mycbr.core.ICaseBase;
+import no.ntnu.mycbr.core.DefaultCaseBase;
+import no.ntnu.mycbr.core.ICaseBase;
 import no.ntnu.mycbr.rest.App;
 
 import java.util.HashMap;
@@ -19,7 +19,7 @@ public class CaseBases {
 
     public CaseBases() {
 
-        de.dfki.mycbr.core.Project project = App.getProject();
+        no.ntnu.mycbr.core.Project project = App.getProject();
 
         for (Map.Entry<String, ICaseBase> cb : project.getCaseBases().entrySet()) {
             casebases.add(cb.getKey());

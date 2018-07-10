@@ -1,7 +1,7 @@
 package no.ntnu.mycbr.rest.utils;
 
-import de.dfki.mycbr.core.model.Concept;
-import de.dfki.mycbr.core.similarity.AmalgamationFct;
+import no.ntnu.mycbr.core.model.Concept;
+import no.ntnu.mycbr.core.similarity.AmalgamationFct;
 
 /**
  * Created by jont on 23.03.2017.

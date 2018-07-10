@@ -1,8 +1,8 @@
 package no.ntnu.mycbr.rest;
 
-import de.dfki.mycbr.core.Project;
-import de.dfki.mycbr.core.casebase.Instance;
-import de.dfki.mycbr.core.model.AttributeDesc;
+import no.ntnu.mycbr.core.Project;
+import no.ntnu.mycbr.core.casebase.Instance;
+import no.ntnu.mycbr.core.model.AttributeDesc;
 import no.ntnu.mycbr.CBREngine;
 
 import java.util.*;
@@ -18,7 +18,7 @@ public class Attribute {
 
         Project project = App.getProject();
         // get a concept and get the main concept of the project;
-        de.dfki.mycbr.core.model.Concept myConcept = project.getConceptByID(concept);
+        no.ntnu.mycbr.core.model.Concept myConcept = project.getConceptByID(concept);
 
         HashMap<String, AttributeDesc> atts = myConcept.getAllAttributeDescs();
         for (Map.Entry<String, AttributeDesc> att : atts.entrySet()) {

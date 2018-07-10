@@ -1,15 +1,15 @@
 package no.ntnu.mycbr.rest.controller;
 
-import de.dfki.mycbr.core.ICaseBase;
-import de.dfki.mycbr.core.Project;
-import de.dfki.mycbr.core.casebase.Instance;
-import de.dfki.mycbr.core.model.AttributeDesc;
-import de.dfki.mycbr.core.model.Concept;
-import de.dfki.mycbr.core.model.DoubleDesc;
-import de.dfki.mycbr.core.model.StringDesc;
-import de.dfki.mycbr.core.similarity.DoubleFct;
-import de.dfki.mycbr.core.similarity.ISimFct;
-import de.dfki.mycbr.core.similarity.config.NumberConfig;
+import no.ntnu.mycbr.core.ICaseBase;
+import no.ntnu.mycbr.core.Project;
+import no.ntnu.mycbr.core.casebase.Instance;
+import no.ntnu.mycbr.core.model.AttributeDesc;
+import no.ntnu.mycbr.core.model.Concept;
+import no.ntnu.mycbr.core.model.DoubleDesc;
+import no.ntnu.mycbr.core.model.StringDesc;
+import no.ntnu.mycbr.core.similarity.DoubleFct;
+import no.ntnu.mycbr.core.similarity.ISimFct;
+import no.ntnu.mycbr.core.similarity.config.NumberConfig;
 import io.swagger.annotations.*;
 import no.ntnu.mycbr.rest.*;
 import no.ntnu.mycbr.rest.utils.CSVTable;

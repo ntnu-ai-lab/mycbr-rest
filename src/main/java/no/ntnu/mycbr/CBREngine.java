@@ -1,7 +1,7 @@
 package no.ntnu.mycbr;
 
-import de.dfki.mycbr.core.Project;
-import de.dfki.mycbr.core.casebase.SymbolAttribute;
+import no.ntnu.mycbr.core.Project;
+import no.ntnu.mycbr.core.casebase.SymbolAttribute;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

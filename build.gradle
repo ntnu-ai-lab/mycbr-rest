@@ -17,7 +17,7 @@ repositories {
      maven { url "http://repo.maven.apache.org/maven2" }
 }
 dependencies {
-    compile group: 'myCBR3', name: 'myCBR3', version:'3.3-SNAPSHOT'
+    compile group: 'myCBR', name: 'myCBR', version:'3.3-SNAPSHOT'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version:'1.4.1.RELEASE'
     compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version:'1.9.12'
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version:'2.4.0'

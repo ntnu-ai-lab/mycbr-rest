@@ -1,6 +1,6 @@
 package no.ntnu.mycbr.rest;
 
-import de.dfki.mycbr.core.Project;
+import no.ntnu.mycbr.core.Project;
 import no.ntnu.mycbr.CBREngine;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

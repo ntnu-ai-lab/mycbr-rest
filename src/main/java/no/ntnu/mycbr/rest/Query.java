@@ -9,17 +9,21 @@ import no.ntnu.mycbr.core.casebase.MultipleAttribute;
 import no.ntnu.mycbr.core.model.*;
 import no.ntnu.mycbr.core.retrieval.NeuralRetrieval;
 import no.ntnu.mycbr.core.retrieval.Retrieval;
+import no.ntnu.mycbr.core.retrieval.Retrieval.RetrievalCustomer;
+import no.ntnu.mycbr.core.retrieval.RetrievalResult;
 import no.ntnu.mycbr.core.similarity.Similarity;
+import no.ntnu.mycbr.rest.utils.ConcurrentCustomer;
 import no.ntnu.mycbr.util.Pair;
 import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctNotChangedException;
 import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctManager;
 
 import java.util.*;
+import java.util.concurrent.*;
 
 /**
  * Created by kerstin on 05/08/16.
  */
-public class Query {
+public class Query implements RetrievalCustomer {
 
     private LinkedHashMap<String, Double> resultList = new LinkedHashMap<>();
 
@@ -60,7 +64,7 @@ public class Query {
         try {
             tempAmalgamFctManager.changeAmalgamFct(amalFunc);
 
-            Retrieval r = new Retrieval(myConcept, cb);
+            Retrieval r = new Retrieval(myConcept, cb,this);
             r.setRetrievalEngine(new NeuralRetrieval(project,r));
 
             try {
@@ -108,7 +112,7 @@ public class Query {
                 }
 
                 r.start();
-                List<Pair<Instance, Similarity>> results = r.getResult();
+                List<Pair<Instance, Similarity>> results = this.results;
 
                 for (Pair<Instance, Similarity> result : results) {
                     this.resultList.put(result.getFirst().getName(), result.getSecond().getValue());
@@ -129,8 +133,96 @@ public class Query {
         }
     }
 
+    public static HashMap<String,HashMap<String,Double>> retrieve(String casebase, String concept, String amalFunc, List<String> caseIDs, int k) {
+        Project project = App.getProject();
+        // create case bases and assign the case bases that will be used for submitting a query
+        DefaultCaseBase cb = (DefaultCaseBase)project.getCaseBases().get(casebase);
+        // create a concept and get the main concept of the project;
+        Concept myConcept = project.getConceptByID(concept);
+        HashMap<String,HashMap<String,Double>> ret = new HashMap<String,HashMap<String,Double>>();
+        ConcurrentCustomer concurrentCustomer = new ConcurrentCustomer();
+        TemporaryAmalgamFctManager tempAmalgamFctManager = null;
+        if(amalFunc!= null)
+            new TemporaryAmalgamFctManager(myConcept);
+
+        try {
+            if(amalFunc!=null)
+                tempAmalgamFctManager.changeAmalgamFct(amalFunc);
+
+            ExecutorService executor = Executors.newFixedThreadPool(48);
+            ArrayList<Retrieval> retrievalThreads = new ArrayList<>();
+            HashMap<String,Retrieval> retrievals = new HashMap<>();
+            //r.setRetrievalEngine(new NeuralRetrieval(project,r));
+            for(String caseID : caseIDs) {
+                Retrieval r = new Retrieval(myConcept, cb,concurrentCustomer,caseID);
+                //concurrentCustomer.addRetriever(r,caseID);
+                r.setK(k);
+                if(k>0){
+                    r.setRetrievalMethod(Retrieval.RetrievalMethod.RETRIEVE_K_SORTED);
+                }
+                try {
+                    Instance query = r.getQueryInstance();
+                    Instance caze = myConcept.getInstance(caseID);
+
+                    for (Map.Entry<AttributeDesc, Attribute> e : caze.getAttributes()
+                            .entrySet()) {
+                        query.addAttribute(e.getKey(), e.getValue());
+                    }
+                    retrievals.put(caseID,r);
+                    retrievalThreads.add(r);
+
+
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            List<Future<RetrievalResult>> futureList = executor.invokeAll(retrievalThreads);
+            for(Future<RetrievalResult> future : futureList){
+                try {
+                    RetrievalResult result = future.get();
+                    List<Pair<Instance,Similarity>> thisRetList = result.getResult();
+                    HashMap<String,Double> thismap = new HashMap<>();
+                    for(Pair<Instance,Similarity> p : thisRetList){
+                        thismap.put(p.getFirst().getName(),p.getSecond().getValue());
+                    }
+                    ret.put(result.getRetrevalID(),thismap);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }
+            //executor.shutdown();
+
+            //while(!executor.awaitTermination(100L,TimeUnit.SECONDS)){
+            //    Thread.sleep(100);
+            //}
+/*
+            ConcurrentHashMap<String,List<Pair<Instance, Similarity>>> results = concurrentCustomer.getResults();
+            for(String caseID : retrievals.keySet()){
+                //Retrieval r = retrievals.get(caseID);
+                HashMap<String,Double> thisMap = new HashMap<>();
+                for (Pair<Instance,Similarity> pair: results.get(caseID)) {
+                    thisMap.put(pair.getFirst().getName(), pair.getSecond().getValue());
+                }
+                ret.put(caseID,thisMap);
+
+            }
+*/
+
+
+
+        } catch (TemporaryAmalgamFctNotChangedException e )
+        {
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            //tempAmalgamFctManager.rollBack();
+        }
+        return ret;
+    }
+
     public Query(String casebase, String concept, String amalFunc, String caseID, int k) {
-        System.out.println("in query by id");
         Project project = App.getProject();
         // create case bases and assign the case bases that will be used for submitting a query
         DefaultCaseBase cb = (DefaultCaseBase)project.getCaseBases().get(casebase);
@@ -145,7 +237,11 @@ public class Query {
             if(amalFunc!=null)
                 tempAmalgamFctManager.changeAmalgamFct(amalFunc);
 
-            Retrieval r = new Retrieval(myConcept, cb);
+            Retrieval r = new Retrieval(myConcept, cb,this);
+            r.setK(k);
+            if(k>0){
+                r.setRetrievalMethod(Retrieval.RetrievalMethod.RETRIEVE_K_SORTED);
+            }
             //r.setRetrievalEngine(new NeuralRetrieval(project,r));
             try {
                 Instance query = r.getQueryInstance();
@@ -158,7 +254,7 @@ public class Query {
                 }
 
                 r.start();
-                List<Pair<Instance, Similarity>> results = r.getResult();
+                List<Pair<Instance, Similarity>> results = this.results;
 
                 for (Pair<Instance, Similarity> result : results) {
                     this.resultList.put(result.getFirst().getName(), result.getSecond().getValue());
@@ -192,7 +288,7 @@ public class Query {
         try {
             tempAmalgamFctManager.changeAmalgamFct(amalFunc);
 
-            Retrieval r = new Retrieval(myConcept, cb);
+            Retrieval r = new Retrieval(myConcept, cb, this);
 
             try {
                 Instance query = r.getQueryInstance();
@@ -208,7 +304,7 @@ public class Query {
                 }
 
                 r.start();
-                List<Pair<Instance, Similarity>> results = r.getResult();
+                List<Pair<Instance, Similarity>> results = this.results;
 
                 for (Pair<Instance, Similarity> result : results) {
                     this.resultList.put(result.getFirst().getName(), result.getSecond().getValue());
@@ -231,5 +327,13 @@ public class Query {
 
     public LinkedHashMap<String, Double> getSimilarCases() {
         return resultList;
+    }
+
+    List<Pair<Instance,Similarity>> results;
+
+    @Override
+    public void addResults(Retrieval ret, List<Pair<Instance, Similarity>> results) {
+
+            this.results = results;
     }
 }

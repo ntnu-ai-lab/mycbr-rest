@@ -180,7 +180,10 @@ public class ConceptController {
         }
         String firstfile = jsonfile.getOriginalFilename();
         String baseFileName = firstfile.substring(firstfile.lastIndexOf("/")+1,firstfile.lastIndexOf("."));
-        baseFileName = file_path+baseFileName;
+        if(baseFileName.contentEquals("/"))
+            baseFileName = file_path+baseFileName;
+        else
+            baseFileName = file_path+"/"+baseFileName;
         try {
             HashMap<MultipartFile,String> map = new HashMap<>();
             map.put(h5file,baseFileName+".h5");
@@ -293,6 +296,9 @@ public class ConceptController {
         logger.info("deleting concept with id:"+conceptID);
         logger.info("concepts:"+p.getSubConcepts().keySet());
         Concept c = p.getSubConcepts().get(conceptID);
+        //TODO: this should be filtered by concept...
+        for(String cb : p.getCaseBases().keySet())
+            p.deleteCaseBase(cb);
         c.getSuperConcept().removeSubConcept(conceptID);
         p.save();
         return true;

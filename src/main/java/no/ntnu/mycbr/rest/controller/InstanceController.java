@@ -8,6 +8,8 @@ import no.ntnu.mycbr.core.model.Concept;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import no.ntnu.mycbr.core.similarity.AmalgamationFct;
+import no.ntnu.mycbr.core.similarity.config.AmalgamationConfig;
 import no.ntnu.mycbr.rest.App;
 import no.ntnu.mycbr.rest.Case;
 import no.ntnu.mycbr.rest.Query;
@@ -114,7 +116,6 @@ public class InstanceController
                                                                @PathVariable(value="casebaseID") String casebaseID) {
         Query query = new Query(casebaseID,conceptID);
         //TODO: filter to one type of concept
-        System.out.println("is getallcases"+App.getProject().getSuperConcept().getAllInstances().size());
         List<LinkedHashMap<String, String>> cases = getFullResult(query, conceptID);
         return cases;
     }
@@ -204,7 +205,6 @@ public class InstanceController
             @PathVariable(value="casebaseID") String casebaseID,
             @RequestParam(value="cases", defaultValue="{}") String cases
             ) {
-        System.out.println("in addinstances JSON jsondata is \""+cases+"\"");
         Project p = App.getProject();
         if(!p.getCaseBases().containsKey(casebaseID)){
             return new ArrayList<>();
@@ -229,6 +229,7 @@ public class InstanceController
         List<HashMap<String,String>> newCases = new ArrayList<>();
         String idPrefix = c.getName() + "-" + casebaseID;
         ArrayList<String> ret = new ArrayList<>();
+        ArrayList<Instance> newInstances = new ArrayList<>();
         try {
             while (it.hasNext()) {
                 counter ++;
@@ -244,14 +245,22 @@ public class InstanceController
                     String input = null;
                     if(retObj instanceof Double){
                         input = ((Double)retObj).toString();
-                    }else if(retObj instanceof String)
-                        input = (String)retObj;
+                    }else if(retObj instanceof String) {
+                        input = (String) retObj;
+                    }else if(retObj instanceof  Long) {
+                        input = ((Long) retObj).toString();
+                    }
                     values.put((String) key,input );
                     AttributeDesc attributeDesc = c.getAllAttributeDescs().get((String) key);
                     instance.addAttribute(attributeDesc, attributeDesc.getAttribute(input));
                 }
+                newInstances.add(instance);
                 p.getCaseBases().get(casebaseID).addCase(instance);
                 newCases.add(values);
+            }
+            AmalgamationFct afct = c.getActiveAmalgamFct();
+            if(afct.getType() == AmalgamationConfig.NEURAL_NETWORK_SOLUTION_DIRECTLY){
+                afct.cacheNeuralSims(newInstances);
             }
 
         }
@@ -276,7 +285,6 @@ public class InstanceController
             @PathVariable(value="caseID") String caseID,
             @RequestParam(value="casedata", defaultValue="{}") String casedata
     ) {
-        System.out.println("in addinstances JSON jsondata is \""+casedata+"\"");
         Project p = App.getProject();
         if(!p.getCaseBases().containsKey(casebaseID)){
             return false;
@@ -294,7 +302,6 @@ public class InstanceController
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        logger.info("json data:"+json);
         JSONObject inpcase = json;
         Set keySet = inpcase.keySet();
         Instance instance = new Instance(c, (String) inpcase.get("caseID"));
@@ -302,10 +309,8 @@ public class InstanceController
         try {
             for(Object key : keySet) {
                 String strKey = (String) key;
-                logger.info("key is: "+ strKey);
 
                 AttributeDesc attributeDesc = c.getAllAttributeDescs().get(strKey);
-                logger.info("value is"+inpcase.get(key));
                 instance.addAttribute(attributeDesc, inpcase.get(key));
             }
         }
@@ -313,6 +318,12 @@ public class InstanceController
             e.printStackTrace();
         }
         cb.addCase(instance);
+        AmalgamationFct afct = c.getActiveAmalgamFct();
+        if(afct.getType() == AmalgamationConfig.NEURAL_NETWORK_SOLUTION_DIRECTLY){
+            ArrayList<Instance> instances = new ArrayList<>();
+            instances.add(instance);
+            afct.cacheNeuralSims(instances);
+        }
         //cb.getProject()
         return true;
     }

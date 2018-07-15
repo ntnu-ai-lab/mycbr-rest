@@ -15,7 +15,10 @@ public class CBREngine {
 	/* Get actual class name to be printed on */
 
 	// set path to myCBR projects	
-	private static String data_path = System.getProperty("user.dir") + "/src/main/resources/";
+	//private static String data_path = System.getProperty("user.dir") + "/src/main/resources/";
+
+	// set path to myCBR projects
+	private static String data_path = "/tmp/";
 	/* project specific: NewExampleProject*/
 	// name of the project file
 	private static String  projectName = "anteo-fix.prj";

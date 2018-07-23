@@ -173,7 +173,7 @@ public class ConceptController {
                                                             @RequestParam(value="jsonfile") MultipartFile jsonfile
     ) {
 
-        logger.info("Single file upload!");
+
 
         if (h5file.isEmpty() || jsonfile.isEmpty()) {
             return new ResponseEntity("please select a file!", HttpStatus.OK);
@@ -193,7 +193,7 @@ public class ConceptController {
         } catch (IOException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        logger.info("setting NeuralRetrievalModelFilePath to \""+baseFileName+"\"");
+
         System.setProperty("NeuralRetrievalModelFilePath",baseFileName);
         //Then create the function
         Concept concept = App.getProject().getSubConcepts().get(conceptID);
@@ -294,7 +294,6 @@ public class ConceptController {
     public boolean deleteConcept(@PathVariable(value="conceptID") String conceptID){
         Project p = App.getProject();
         logger.info("deleting concept with id:"+conceptID);
-        logger.info("concepts:"+p.getSubConcepts().keySet());
         Concept c = p.getSubConcepts().get(conceptID);
         //TODO: this should be filtered by concept...
         for(String cb : p.getCaseBases().keySet())
@@ -317,7 +316,6 @@ public class ConceptController {
     public boolean addConcept(@PathVariable(value="conceptID") String conceptID){
         Project p = App.getProject();
         logger.info("creating concept with id:"+conceptID);
-        logger.info("concepts:"+p.getSubConcepts().keySet());
         int concepts = p.getSubConcepts().size();
         if (concepts == 0 )
             createTopConcept(conceptID);

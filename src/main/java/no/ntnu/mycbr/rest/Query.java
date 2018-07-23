@@ -1,5 +1,6 @@
 package no.ntnu.mycbr.rest;
 
+import lombok.Builder;
 import no.ntnu.mycbr.core.DefaultCaseBase;
 import no.ntnu.mycbr.core.ICaseBase;
 import no.ntnu.mycbr.core.Project;
@@ -19,6 +20,8 @@ import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctManager;
 
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Created by kerstin on 05/08/16.
@@ -133,6 +136,38 @@ public class Query implements RetrievalCustomer {
         }
     }
 
+    public static HashMap<String,HashMap<String,Double>> retrieve(String casebase,
+                                                                  String concept,
+                                                                  String amalFunc,
+                                                                  List<String> caseIDs,
+                                                                  List<String> queryBase,
+                                                                  int k) {
+        Project project = App.getProject();
+        // create case bases and assign the case bases that will be used for submitting a query
+        DefaultCaseBase ocb = (DefaultCaseBase)project.getCaseBases().get(casebase);
+        DefaultCaseBase tcb = null;
+        try {
+            tcb = project.createDefaultCB("tempCB");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Collection<Instance> instances = ocb.getCases();
+        /*HashMap<String,Instance> instanceMap = .
+                collect(Collectors.
+                        toMap(Instance::getName, i->i));*/
+        HashMap<String,Instance> instanceMap = instances.stream().collect(HashMap::new,
+                (m,c) -> m.put(c.getName(),c),
+                (m,u) -> {});
+        for(String queryBaseCase : queryBase){
+            if(instanceMap.containsKey(queryBaseCase)){
+                tcb.addCase(instanceMap.get(queryBaseCase));
+            }
+        }
+        HashMap<String,HashMap<String,Double>> ret = retrieve("tempCB",concept,amalFunc,caseIDs,k);
+        project.deleteCaseBase("tempCB");
+        return ret;
+
+    }
     public static HashMap<String,HashMap<String,Double>> retrieve(String casebase, String concept, String amalFunc, List<String> caseIDs, int k) {
         Project project = App.getProject();
         // create case bases and assign the case bases that will be used for submitting a query

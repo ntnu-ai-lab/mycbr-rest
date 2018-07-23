@@ -82,6 +82,45 @@ public class RetrievalController {
         return Query.retrieve(casebaseIDs, conceptID, null, caseIDs, k);
     }
 
+    @ApiOperation(value = "getSimilarInstancesByID", nickname = "getSimilarInstancesByIDWithinIDs")
+    @RequestMapping(method = RequestMethod.GET, path="/concepts/{conceptID}/casebases/{casebaseID}/retrievalByIDsInIDs", produces = "application/json")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = Query.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")
+    })
+    public HashMap<String, HashMap<String,Double>> getSimilarInstancesByIDWithinIDs(
+            @PathVariable(value="conceptID") String conceptID,
+            @PathVariable(value="casebaseID") String casebaseIDs,
+            @RequestParam(value="caseIDs") String caseIDsJson,
+            @RequestParam(value="querybaseIDset") String querybaseIDsJson,
+            @RequestParam(required = false, value="k",defaultValue = "-1") int k) {
+        ArrayList<String> caseIDs = new ArrayList<>();
+        JSONParser parser = new JSONParser();
+        JSONArray inpcases = null;
+        try {
+            inpcases = (JSONArray) parser.parse(caseIDsJson);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Iterator<String>  it = inpcases.iterator();
+        while(it.hasNext())
+            caseIDs.add(it.next());
+        ArrayList<String> queryBaseIDs = new ArrayList<>();
+        JSONArray queryBase = null;
+        try {
+            queryBase = (JSONArray) parser.parse(querybaseIDsJson);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        it = queryBase.iterator();
+        while(it.hasNext())
+            queryBaseIDs.add(it.next());
+        return Query.retrieve(casebaseIDs, conceptID, null, caseIDs, queryBaseIDs, k);
+    }
+
     @ApiOperation(value = "getSimilarInstancesByAttribute", nickname = "getSimilarInstances")
     @RequestMapping(method = RequestMethod.GET, path="/concepts/{conceptID}/casebases/{casebaseID}/retrievalByAttribute", produces = "application/json")
     @ApiResponses(value = {

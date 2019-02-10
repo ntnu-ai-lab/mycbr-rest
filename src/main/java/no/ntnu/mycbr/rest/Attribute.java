@@ -1,9 +1,7 @@
 package no.ntnu.mycbr.rest;
 
 import no.ntnu.mycbr.core.Project;
-import no.ntnu.mycbr.core.casebase.Instance;
 import no.ntnu.mycbr.core.model.AttributeDesc;
-import no.ntnu.mycbr.CBREngine;
 
 import java.util.*;
 
@@ -26,11 +24,9 @@ public class Attribute {
             AttributeDesc attdesc = att.getValue();
             attributes.put(name, attdesc.getClass().getSimpleName());
         }
-
     }
 
     public HashMap<String, String> getAttributes() {
         return attributes;
     }
-
 }

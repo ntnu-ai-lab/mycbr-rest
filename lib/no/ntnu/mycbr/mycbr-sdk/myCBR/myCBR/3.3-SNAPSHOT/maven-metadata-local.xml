@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata modelVersion="1.1.0">
-  <groupId>de.dfki.mycbr</groupId>
-  <artifactId>mycbr-sdk</artifactId>
-  <version>3.2.BM-SNAPSHOT</version>
+  <groupId>myCBR</groupId>
+  <artifactId>myCBR</artifactId>
+  <version>3.3-SNAPSHOT</version>
   <versioning>
     <snapshot>
       <localCopy>true</localCopy>
     </snapshot>
-    <lastUpdated>20161002100904</lastUpdated>
+    <lastUpdated>20190210173444</lastUpdated>
     <snapshotVersions>
       <snapshotVersion>
         <extension>jar</extension>
-        <value>3.2.BM-SNAPSHOT</value>
-        <updated>20161002100904</updated>
+        <value>3.3-SNAPSHOT</value>
+        <updated>20190210173444</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>pom</extension>
-        <value>3.2.BM-SNAPSHOT</value>
-        <updated>20161002100904</updated>
+        <value>3.3-SNAPSHOT</value>
+        <updated>20190210173444</updated>
       </snapshotVersion>
     </snapshotVersions>
   </versioning>

@@ -12,8 +12,8 @@
     <junit.version>3.8.1</junit.version>
     <java.version>1.8</java.version>
     <mycbr.version>3.3-SNAPSHOT</mycbr.version>
-    <spring.version>1.4.1.RELEASE</spring.version>
-    <springfox.version>2.4.0</springfox.version>
+    <spring.version>2.1.1.RELEASE</spring.version>
+    <springfox.version>2.9.2</springfox.version>
     <jackson.version>1.9.12</jackson.version>
     <mvn.compiler.version>3.5.1</mvn.compiler.version>
     <hibernate.version>1.0.1.Final</hibernate.version>

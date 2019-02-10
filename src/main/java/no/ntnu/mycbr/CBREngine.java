@@ -1,36 +1,33 @@
 package no.ntnu.mycbr;
 
 import no.ntnu.mycbr.core.Project;
-import no.ntnu.mycbr.core.casebase.SymbolAttribute;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.awt.peer.ChoicePeer;
 import java.io.File;
-import java.util.logging.Logger;
+
+import static no.ntnu.mycbr.rest.utils.Constants.*;
 
 public class CBREngine {
 
-	private final Log logger = LogFactory.getLog(getClass());
 	/* Get actual class name to be printed on */
+	private final Log logger = LogFactory.getLog(getClass());
 
-	// set path to myCBR projects	
-	//private static String data_path = System.getProperty("user.dir") + "/src/main/resources/";
-
+	public static final String DOT = ".";
 	// set path to myCBR projects
-	private static String data_path = "/tmp/";
+	private static String data_path = DATA_PATH;
 	/* project specific: NewExampleProject*/
 	// name of the project file
-	private static String  projectName = "anteo-fix.prj";
+	private static String projectName = PROJECT_NAME;
 	// name of the central concept
-	private static String conceptName = "Car";
+	private static String conceptName = CONCEPT_NAME;
 	// name of the csv containing the instances
 	private static String csv = "cars_casebase.csv";
 	// set the separators that are used in the csv file
 	private static String columnseparator = ";";
 	private static String multiplevalueseparator = ",";
 	// name of the case base that should be used; the default name in myCBR is CB_csvImport
-	private static String casebase = "CaseBase0";
+	private static String casebase = CASEBASE_NAME;
 	// Getter for the ConceptName meta data
 	public static String getCaseBase() {
 		return casebase;
@@ -76,12 +73,10 @@ public class CBREngine {
 
 			project = new Project(projectFile);
 
-			// Sehr wichtig hier das Warten einzubauen, sonst gibts leere 
-			// Retrieval Results, weil die Faelle noch nicht geladen sind wenn das 
-			// Erste Retrieval laueft		
+			// Need to wait until entire project is loaded - otherwise the project object will be corrupted
 			while (project.isImporting()){
 				Thread.sleep(1000);
-				System.out.print(".");
+				System.out.print(DOT);
 			}		
 			System.out.print("\n");	//console pretty print
 

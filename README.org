@@ -10,7 +10,7 @@ calls through a Swagger API
   :PROPERTIES:
   :CUSTOM_ID: how-to
   :END:
-
+- Build and install the newest [[https://githuc.com/ntnu-ai-lab/mycbr-myCBR-SDK][myCBR-SDK]]
 - First clone the project
 - To build it go into its root folder and run:
 

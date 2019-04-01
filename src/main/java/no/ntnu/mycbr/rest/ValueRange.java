@@ -19,7 +19,7 @@ public class ValueRange {
 
         Project project = App.getProject();
         // create a concept and get the main concept of the project;
-        no.ntnu.mycbr.core.model.Concept myConcept = project.getConceptByID(concept);
+        Concept myConcept = project.getConceptByID(concept);
         attributes.clear();
 
         AttributeDesc attdesc = myConcept.getAttributeDesc(attributeName);

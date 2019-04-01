@@ -1,6 +1,5 @@
 package no.ntnu.mycbr.rest;
 
-import lombok.Builder;
 import no.ntnu.mycbr.core.DefaultCaseBase;
 import no.ntnu.mycbr.core.ICaseBase;
 import no.ntnu.mycbr.core.Project;
@@ -20,8 +19,6 @@ import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctManager;
 
 import java.util.*;
 import java.util.concurrent.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * Created by kerstin on 05/08/16.

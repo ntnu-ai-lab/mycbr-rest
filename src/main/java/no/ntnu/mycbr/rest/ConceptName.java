@@ -1,8 +1,6 @@
 package no.ntnu.mycbr.rest;
 
-import no.ntnu.mycbr.core.DefaultCaseBase;
-import no.ntnu.mycbr.core.model.Concept;
-import no.ntnu.mycbr.CBREngine;
+import no.ntnu.mycbr.core.Project;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,17 +10,17 @@ import java.util.Set;
  */
 public class ConceptName {
 
-    private Set concepts = new HashSet();
+    private Set<String> concepts;
 
     public ConceptName() {
 
-        concepts.clear();
-        no.ntnu.mycbr.core.Project project = App.getProject();
+        getConcept().clear();
+        Project project = App.getProject();
         // create case bases and assign the case bases that will be used for submitting a query
         concepts = project.getSubConcepts().keySet();
     }
 
-    public Set getConcept() {
+    public Set<String> getConcept() {
         return concepts;
     }
 }

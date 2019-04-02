@@ -14,7 +14,7 @@ public class ConceptName {
 
     public ConceptName() {
 
-        getConcept().clear();
+        //getConcept().clear();
         Project project = App.getProject();
         // create case bases and assign the case bases that will be used for submitting a query
         concepts = project.getSubConcepts().keySet();

@@ -7,10 +7,12 @@ import no.ntnu.mycbr.core.similarity.*;
 import no.ntnu.mycbr.core.similarity.config.AmalgamationConfig;
 import no.ntnu.mycbr.core.similarity.config.NumberConfig;
 import no.ntnu.mycbr.rest.*;
+import no.ntnu.mycbr.rest.service.ConceptService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,6 +35,8 @@ import java.util.stream.Collectors;
 public class ConceptController {
     private final Log logger = LogFactory.getLog(getClass());
     private String file_path =  System.getProperty("java.io.tmpdir");
+    @Autowired
+    private ConceptService conceptService;
 
     //get all amalgationfunctions
     @ApiOperation(value = "getAmalgamationFunctions", nickname = "getAmalgamationFunctions")
@@ -320,21 +324,7 @@ public class ConceptController {
             @ApiResponse(code = 500, message = "Failure")
     })
     public boolean addConcept(@PathVariable(value="conceptID") String conceptID){
-        Project p = App.getProject();
-        logger.info("creating concept with id:"+conceptID);
-        int concepts = p.getSubConcepts().size();
-        if (concepts == 0 )
-            createTopConcept(conceptID);
-        else if (p.getSuperConcept() == null)
-            createTopConcept(conceptID);
-        else {
-            try {
-                Concept c = new Concept(conceptID,p,p.getSuperConcept());
-            } catch (Exception e) {
-                logger.error("got exception trying to create concept:" , e);
-            }
-        }
-        return true;
+        return conceptService.addConcept(conceptID);
     }
 
     //get all  attributes
@@ -565,16 +555,7 @@ public class ConceptController {
 
     //helper methods.
 
-    public boolean createTopConcept(String concept){
-        Project p = App.getProject();
-        try {
-            p.createTopConcept(concept);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        p.save();
-        return true;
-    }
+
 
 
 

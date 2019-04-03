@@ -112,12 +112,12 @@ standard yet.
 /concepts/{conceptID}/instances
 #+END_SRC
 
-
 Semantically one can PUT and DELETE to each of these endpoints, such that a HTTP
 DELETE to "http://host:port/casbases" would delete all casebases. Each PUT
 operation has it's own associated JSON format, e.g. for describing a instances
 or a similarity function of a concept or attribute. Below we describe the JSON
 format for each of the PUT operations.
+
 ** Not yet implemented..
 
 #+BEGIN_EXAMPLE

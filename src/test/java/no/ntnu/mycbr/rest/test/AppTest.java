@@ -1,4 +1,4 @@
-package no.ntnu.mycbr;
+package no.ntnu.mycbr.rest.test;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

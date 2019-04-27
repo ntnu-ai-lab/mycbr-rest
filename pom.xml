@@ -23,7 +23,7 @@
   <repositories>
     <repository>
       <id>mycbr-repo</id>
-      <url>file://${basedir}/lib</url>
+      <url>file://${basedir}${file.separator}lib</url>
     </repository>
 
     <repository>

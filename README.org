@@ -67,7 +67,7 @@ calls through a Swagger API
 - The rest of the API is independent from the project, hence only the
   parameters such as case base and comcept names have to be adapted to
   the new project
-
+  
 * REST API
 The REST API created for the mycbr backend is trying to adhere to the REST semantics.
 

@@ -13,6 +13,7 @@ public class TemporaryAmalgamFctManager {
     private boolean changed = false;
 
     public TemporaryAmalgamFctManager(Concept concept) {
+        System.out.println("in TemporaryAmalgamFctManager for concept: " + concept);
         this.concept = concept;
         previousAmalgamationFunction = concept.getActiveAmalgamFct();
     }
@@ -28,6 +29,7 @@ public class TemporaryAmalgamFctManager {
     }
 
     public void changeAmalgamFct(String newAmalgamFct) throws TemporaryAmalgamFctNotChangedException {
+        System.out.println("newAmalgamFct: " + newAmalgamFct);
         for(AmalgamationFct amalgamFct : concept.getAvailableAmalgamFcts()) {
             if (newAmalgamFct.contentEquals(amalgamFct.getName())) {
                 changeAmalgamFct(amalgamFct);

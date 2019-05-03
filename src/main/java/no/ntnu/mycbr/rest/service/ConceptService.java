@@ -7,6 +7,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 @Service
 public class ConceptService {
     Project p = App.getProject();
@@ -40,7 +44,36 @@ public class ConceptService {
         p.save();
         return c;
     }
+
     public Project getProject(){
         return p;
+    }
+
+    public boolean deleteAllConcepts(){
+        Project proj = App.getProject();
+        HashMap<String,Concept> subConcepts = proj.getSubConcepts();
+        Concept superConcept = proj.getSuperConcept();
+        if(superConcept == null && subConcepts.size() == 0)
+            return true;
+        else if(superConcept == null && subConcepts.size() > 0){
+            for(String key : subConcepts.keySet()){
+                Concept c = subConcepts.remove(key);
+                logger.info("removing Concept "+c.getName());
+            }
+            return true;
+        }
+        return recDeleteConcept(superConcept);
+    }
+    //recursively deletes a concept and all subconcepts
+    private static boolean recDeleteConcept(Concept superConcept){
+        HashMap<String,Concept> subConcepts = superConcept.getAllSubConcepts();
+        boolean ret = true;
+        for(Iterator<Map.Entry<String,Concept>> it = subConcepts.entrySet().iterator(); it.hasNext();) {
+            Map.Entry<String, Concept> entry = it.next();
+            recDeleteConcept(entry.getValue());
+            it.remove();
+        }
+        superConcept.getSuperConcept().removeSubConcept(superConcept.getName());
+        return ret;
     }
 }

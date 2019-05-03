@@ -15,6 +15,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class App {
 
     public static Project getProject() {
+        if(project == null) {
+            startCBR();
+        }
         return project;
     }
 
@@ -22,7 +25,11 @@ public class App {
     private static Project project;
 
     public static void main(String[] args) {
+        startCBR();
+        SpringApplication.run(App.class, args);
+    }
 
+    public static void startCBR(){
         engine = new CBREngine();
         String userDefinedProjectFile = System.getProperty("MYCBR.PROJECT.FILE");
         if(userDefinedProjectFile != null && userDefinedProjectFile.length() > 0)
@@ -31,7 +38,7 @@ public class App {
             project = engine.createemptyCBRProject();
         }
 
-        SpringApplication.run(App.class, args);
+
     }
 
 }

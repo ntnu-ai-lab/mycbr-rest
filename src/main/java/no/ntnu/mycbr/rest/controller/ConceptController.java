@@ -263,33 +263,10 @@ public class ConceptController {
             @ApiResponse(code = 500, message = "Failure")
     })
     public boolean deleteConcepts() {
-        Project proj = App.getProject();
-        HashMap<String,Concept> subConcepts = proj.getSubConcepts();
-        Concept superConcept = proj.getSuperConcept();
-        if(superConcept == null && subConcepts.size() == 0)
-            return true;
-        else if(superConcept == null && subConcepts.size() > 0){
-            for(String key : subConcepts.keySet()){
-                Concept c = subConcepts.remove(key);
-                logger.info("removing Concept "+c.getName());
-            }
-            return true;
-        }
-        return recDeleteConcept(superConcept);
+        return conceptService.deleteAllConcepts();
     }
 
-    //recursively deletes a concept and all subconcepts
-    private static boolean recDeleteConcept(Concept superConcept){
-        HashMap<String,Concept> subConcepts = superConcept.getAllSubConcepts();
-        boolean ret = true;
-        for(Iterator<Map.Entry<String,Concept>> it = subConcepts.entrySet().iterator();it.hasNext();) {
-            Map.Entry<String, Concept> entry = it.next();
-            recDeleteConcept(entry.getValue());
-            it.remove();
-        }
-        superConcept.getSuperConcept().removeSubConcept(superConcept.getName());
-        return ret;
-    }
+
 
     //Delete one concept
     @ApiOperation(value="deleteConcept", nickname="deleteConcept")
@@ -412,8 +389,8 @@ public class ConceptController {
                 new StringDesc(c, attributeName);
             } else if(type.contains("Double")){
                 if(json.containsKey("min") && json.containsKey("max")) {
-                    double min = Double.parseDouble((String) json.get("min"));
-                    double max = Double.parseDouble((String) json.get("max"));
+                    double min = (Double)json.get("min");
+                    double max = (Double)json.get("max");
                     //This attribute registers with the concept through callback!
                     AttributeDesc attributeDesc = new DoubleDesc(c, attributeName, min, max);
                     if(solution.contentEquals("True"))

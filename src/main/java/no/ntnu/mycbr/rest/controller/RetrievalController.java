@@ -171,12 +171,12 @@ public class RetrievalController {
     })
     public @ResponseBody List<LinkedHashMap<String, String>> getSimilarInstancesByIDWithContent(
             @PathVariable(value="conceptID") String conceptID,
-            @PathVariable(value="casebaseID") String casebaseIDs,
+            @PathVariable(value="casebaseID") String casebaseID,
             @RequestParam(value="amalgamation function", defaultValue="CarFunc") String amalFunc,
             @RequestParam(value="caseID", defaultValue="144_vw") String caseID,
             @RequestParam(required = false, value="k",defaultValue = "-1") int k) {
 
-        Query query = new Query(casebaseIDs, conceptID, amalFunc, caseID, k);
+        Query query = new Query(casebaseID, conceptID, amalFunc, caseID, k);
         List<LinkedHashMap<String, String>> cases = getFullResult(query, conceptID);
         return cases;
     }
@@ -192,13 +192,13 @@ public class RetrievalController {
     })
     public @ResponseBody List<LinkedHashMap<String, String>> getSimilarInstancesByAttributeWithContent(
             @PathVariable(value="conceptID") String conceptID,
-            @PathVariable(value="casebaseID") String casebaseIDs,
+            @PathVariable(value="casebaseID") String casebaseID,
             @RequestParam(value="amalgamation function", defaultValue="CarFunc") String amalFunc,
             @RequestParam(value="Symbol attribute name", defaultValue="Manufacturer") String attribute,
             @RequestParam(value="value", defaultValue="vw") String value,
             @RequestParam(required = false, value="k",defaultValue = "-1") int k) {
 
-        Query query = new Query(casebaseIDs, conceptID, amalFunc, attribute, value, k);
+        Query query = new Query(casebaseID, conceptID, amalFunc, attribute, value, k);
         List<LinkedHashMap<String, String>> cases = getFullResult(query, conceptID);
         return cases;
     }

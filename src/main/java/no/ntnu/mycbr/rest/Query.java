@@ -113,7 +113,6 @@ public class Query implements RetrievalCustomer {
 
                 r.start();
                 List<Pair<Instance, Similarity>> results = this.results;
-                System.out.println(results);
 
                 for (Pair<Instance, Similarity> result : results) {
                     this.resultList.put(result.getFirst().getName(), result.getSecond().getValue());

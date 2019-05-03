@@ -203,7 +203,7 @@ public class InstanceController
     public ArrayList<String> addInstancesJSON(
             @PathVariable(value="conceptID") String conceptID,
             @PathVariable(value="casebaseID") String casebaseID,
-            @RequestParam(value="cases", defaultValue="{}") String cases
+            @RequestParam(value="cases", defaultValue="{'cases':[{'Att':'Value'},{'Att':'Value'}]}") String cases
             ) {
         Project p = App.getProject();
         if(!p.getCaseBases().containsKey(casebaseID)){

@@ -261,13 +261,11 @@ public class Query implements RetrievalCustomer {
         // create a concept and get the main concept of the project;
         Concept myConcept = project.getConceptByID(concept);
 
-        TemporaryAmalgamFctManager tempAmalgamFctManager = null;
-        if(amalFunc!= null)
-            new TemporaryAmalgamFctManager(myConcept);
+        // if an amalgamation Function is specified, set this amalgamation function for the retrieval - otherwise use the currently active function
+        if(!(amalFunc == null))
+            myConcept.setActiveAmalgamFct(project.getFct(amalFunc));
 
         try {
-            if(amalFunc!=null)
-                tempAmalgamFctManager.changeAmalgamFct(amalFunc);
 
             Retrieval r = new Retrieval(myConcept, cb,this);
             r.setK(k);
@@ -275,7 +273,7 @@ public class Query implements RetrievalCustomer {
                 r.setRetrievalMethod(Retrieval.RetrievalMethod.RETRIEVE_K_SORTED);
             }
             //r.setRetrievalEngine(new NeuralRetrieval(project,r));
-            try {
+
                 Instance query = r.getQueryInstance();
 
                 Instance caze = myConcept.getInstance(caseID);
@@ -298,13 +296,6 @@ public class Query implements RetrievalCustomer {
             catch (Exception e) {
                 e.printStackTrace();
             }
-
-        } catch (TemporaryAmalgamFctNotChangedException e )
-        {
-
-        } finally {
-            //tempAmalgamFctManager.rollBack();
-        }
     }
 
     public Query(String casebase, String concept, String amalFunc, String attribute, String value, int k) {

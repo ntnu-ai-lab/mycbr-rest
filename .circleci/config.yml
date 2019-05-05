@@ -40,7 +40,7 @@ jobs:
     # run tests!
     - run: |
         ls -l ./*
-        mvn install:install-file -Dfile=./external-jar/myCBR-3.3-SNAPSHOT.jar -DgroupId=no.ntnu -DartifactId=myCBR -Dversion=3.3-SNAPSHOT -Dpackaging=jar -DgeneratePom=true -DlocalRepositoryPath=lib/no/ntnu/mycbr/mycbr-sdk/
+        mvn install:install-file -Dfile=myCBR-3.3-SNAPSHOT.jar -DgroupId=no.ntnu -DartifactId=myCBR -Dversion=3.3-SNAPSHOT -Dpackaging=jar -DgeneratePom=true -DlocalRepositoryPath=lib/
         mvn package
 
     - store_test_results: # uploads the test metadata from the `target/surefire-reports` directory so that it can show up in the CircleCI dashboard.

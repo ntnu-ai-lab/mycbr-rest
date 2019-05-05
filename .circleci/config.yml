@@ -6,36 +6,37 @@ version: 2
 jobs:
   build:
     docker:
-      # specify the version you desire here
-      - image: circleci/openjdk:8-jdk
-      
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
+    # specify the version you desire here
+    - image: circleci/openjdk:8-jdk
+
+    # Specify service dependencies here if necessary
+    # CircleCI maintains a library of pre-built images
+    # documented at https://circleci.com/docs/2.0/circleci-images/
+    # - image: circleci/postgres:9.4
 
     working_directory: ~/repo
 
     environment:
       # Customize the JVM maximum heap limit
       MAVEN_OPTS: -Xmx3200m
-    
+
     steps:
-      - checkout
+    - checkout
 
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "pom.xml" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+    # Download and cache dependencies
+    - restore_cache: # restore the saved cache after the first run or if `pom.xml` has changed
+        # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+        key: mycbr-rest-{{ checksum "pom.xml" }}
 
-      - run: mvn dependency:go-offline
+    - run: mvn dependency:go-offline # gets the project dependencies
 
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: v1-dependencies-{{ checksum "pom.xml" }}
-        
-      # run tests!
-      - run: mvn clean install
+    - save_cache: # saves the project dependencies
+        paths:
+        - ~/.m2
+        key: mycbr-rest-{{ checksum "pom.xml" }}
+
+
+    # run tests!
+    - run: |
+        mvn install:install-file -Dfile=./external-jar/myCBR-3.3-SNAPSHOT.jar -DgroupId=no.ntnu -DartifactId=myCBR -Dversion=3.3-SNAPSHOT -Dpackaging=jar -DgeneratePom=false -DlocalRepositoryPath=lib/no/ntnu/mycbr/mycbr-sdk/
+        mvn package

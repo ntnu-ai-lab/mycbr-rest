@@ -38,6 +38,7 @@ jobs:
 
     # run tests!
     - run: |
+        ls -l ./*
         mvn install:install-file -Dfile=./external-jar/myCBR-3.3-SNAPSHOT.jar -DgroupId=no.ntnu -DartifactId=myCBR -Dversion=3.3-SNAPSHOT -Dpackaging=jar -DgeneratePom=false -DlocalRepositoryPath=lib/no/ntnu/mycbr/mycbr-sdk/
         mvn package
 

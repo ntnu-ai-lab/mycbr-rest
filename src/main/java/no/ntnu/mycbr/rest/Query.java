@@ -185,6 +185,7 @@ public class Query implements RetrievalCustomer {
             ArrayList<Retrieval> retrievalThreads = new ArrayList<>();
             HashMap<String,Retrieval> retrievals = new HashMap<>();
             //r.setRetrievalEngine(new NeuralRetrieval(project,r));
+            
             for(String caseID : caseIDs) {
                 Retrieval r = new Retrieval(myConcept, cb,concurrentCustomer,caseID);
                 //concurrentCustomer.addRetriever(r,caseID);

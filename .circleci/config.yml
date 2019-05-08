@@ -29,7 +29,8 @@ jobs:
           - v1-dependencies-{{ checksum "pom.xml" }}
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
-
+      - run: git clone https://github.com/ntnu-ai-lab/mycbr-sdk.git
+      - run: (cd mycbr-sdk && mvn clean install)
       - run: mvn dependency:go-offline
 
       - save_cache:

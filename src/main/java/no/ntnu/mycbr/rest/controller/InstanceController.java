@@ -14,12 +14,14 @@ import no.ntnu.mycbr.rest.App;
 import no.ntnu.mycbr.rest.Case;
 import no.ntnu.mycbr.rest.Query;
 import no.ntnu.mycbr.rest.ValueRange;
+import no.ntnu.mycbr.rest.service.InstanceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -29,6 +31,9 @@ import static no.ntnu.mycbr.rest.utils.RESTCBRUtils.getFullResult;
 @RestController
 public class InstanceController
 {
+    @Autowired
+    private InstanceService instanceService;
+
     private final Log logger = LogFactory.getLog(getClass());
 
     //Get one instance
@@ -209,13 +214,7 @@ public class InstanceController
         if(!p.getCaseBases().containsKey(casebaseID)){
             return new ArrayList<>();
         }
-        ICaseBase cb = p.getCaseBases().get(casebaseID);
         Concept c = (Concept)p.getSubConcepts().get(conceptID);
-
-        int counter = c.getDirectInstances().size();
-
-        Instance i = null;
-        //cb.addCase(i);
 
         JSONParser parser = new JSONParser();
         JSONObject json = null;
@@ -225,50 +224,8 @@ public class InstanceController
             e.printStackTrace();
         }
         JSONArray inpcases = (JSONArray) json.get("cases");
-        Iterator<JSONObject>  it = inpcases.iterator();
-        List<HashMap<String,String>> newCases = new ArrayList<>();
-        String idPrefix = c.getName() + "-" + casebaseID;
-        ArrayList<String> ret = new ArrayList<>();
-        ArrayList<Instance> newInstances = new ArrayList<>();
-        try {
-            while (it.hasNext()) {
-                counter ++;
-                JSONObject ob = it.next();
-                //Instance instance = c.addInstance(ob.get("caseID"));
-                Instance instance = null;
-                HashMap<String, String> values = new HashMap<>();
-                String id = idPrefix + Integer.toString(counter);
-                ret.add(id);
-                instance = new Instance(c, id);
-                for (Object key : ob.keySet()) {
-                    Object retObj = ob.get(key);
-                    String input = null;
-                    if(retObj instanceof Double){
-                        input = ((Double)retObj).toString();
-                    }else if(retObj instanceof String) {
-                        input = (String) retObj;
-                    }else if(retObj instanceof  Long) {
-                        input = ((Long) retObj).toString();
-                    }
-                    values.put((String) key,input );
-                    AttributeDesc attributeDesc = c.getAllAttributeDescs().get((String) key);
-                    instance.addAttribute(attributeDesc, attributeDesc.getAttribute(input));
-                }
-                newInstances.add(instance);
-                p.getCaseBases().get(casebaseID).addCase(instance);
-                newCases.add(values);
-            }
-            AmalgamationFct afct = c.getActiveAmalgamFct();
-            if(afct.getType() == AmalgamationConfig.NEURAL_NETWORK_SOLUTION_DIRECTLY){
-                afct.cacheNeuralSims(newInstances);
-            }
 
-        }
-        catch (java.text.ParseException e) {
-            e.printStackTrace();
-        }
-        //cb.getProject()
-        return ret;
+        return instanceService.addInstances(c,casebaseID,inpcases);
     }
     @ApiOperation(value = "addInstanceJSON", nickname = "addInstancesJSON")
     @RequestMapping(method = RequestMethod.PUT, value = "/concepts/{conceptID}/casebases/{casebaseID}/instances/{caseID}", headers="Accept=application/json")
@@ -292,9 +249,6 @@ public class InstanceController
         ICaseBase cb = p.getCaseBases().get(casebaseID);
         Concept c = (Concept)p.getSubConcepts().get(conceptID);
 
-        Instance i = null;
-        //cb.addCase(i);
-
         JSONParser parser = new JSONParser();
         JSONObject json = null;
         try {
@@ -303,29 +257,8 @@ public class InstanceController
             e.printStackTrace();
         }
         JSONObject inpcase = json;
-        Set keySet = inpcase.keySet();
-        Instance instance = new Instance(c, (String) inpcase.get("caseID"));
+        return null != instanceService.addInstance(c,cb,caseID,inpcase);
 
-        try {
-            for(Object key : keySet) {
-                String strKey = (String) key;
-
-                AttributeDesc attributeDesc = c.getAllAttributeDescs().get(strKey);
-                instance.addAttribute(attributeDesc, inpcase.get(key));
-            }
-        }
-        catch (java.text.ParseException e) {
-            e.printStackTrace();
-        }
-        cb.addCase(instance);
-        AmalgamationFct afct = c.getActiveAmalgamFct();
-        if(afct.getType() == AmalgamationConfig.NEURAL_NETWORK_SOLUTION_DIRECTLY){
-            ArrayList<Instance> instances = new ArrayList<>();
-            instances.add(instance);
-            afct.cacheNeuralSims(instances);
-        }
-        //cb.getProject()
-        return true;
     }
 
 }

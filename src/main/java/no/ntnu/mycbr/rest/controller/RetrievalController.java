@@ -125,20 +125,20 @@ public class RetrievalController {
     public HashMap<String, HashMap<String,Double>> getSimilarInstancesByIDsWithinIDs(
             @PathVariable(value="conceptID") String conceptID,
             @PathVariable(value="casebaseID") String casebaseID,
-            @RequestParam(value="caseIDs", defaultValue = "[queryCase1, queryCase2]") String caseIDsJson,
+            @RequestParam(value="caseIDs", defaultValue = "[queryCase1, queryCase2]") String caseIDs,
             @RequestParam(value="filterCaseIDs", defaultValue = "[caseID1, caseID2, caseID3]") String filterCaseIDs,
             @RequestParam(required = false, value="k",defaultValue = "-1") int k) {
-        ArrayList<String> caseIDs = new ArrayList<>();
+        ArrayList<String> caseIDList = new ArrayList<>();
         JSONParser parser = new JSONParser();
         JSONArray inpcases = null;
         try {
-            inpcases = (JSONArray) parser.parse(caseIDsJson);
+            inpcases = (JSONArray) parser.parse(caseIDs);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         Iterator<String>  it = inpcases.iterator();
         while(it.hasNext())
-            caseIDs.add(it.next());
+            caseIDList.add(it.next());
         ArrayList<String> queryBaseIDs = new ArrayList<>();
         JSONArray queryBase = null;
         try {
@@ -149,7 +149,7 @@ public class RetrievalController {
         it = queryBase.iterator();
         while(it.hasNext())
             queryBaseIDs.add(it.next());
-        return Query.retrieve(casebaseID, conceptID, null, caseIDs, queryBaseIDs, k);
+        return Query.retrieve(casebaseID, conceptID, null, caseIDList, queryBaseIDs, k);
     }
 
     @ApiOperation(value = "getSimilarInstancesByAttribute", nickname = "getSimilarInstances")

@@ -82,7 +82,7 @@ public class InstanceService {
     public ArrayList<String> addInstances(Concept c, String casebaseID, JSONArray inpcases){
         return  addInstances(c,casebaseID,convertJSONArray(c,inpcases));
     }
-    public Set<Map<AttributeDesc, String>> convertJSONArray(Concept c, JSONArray inpcases){
+    private Set<Map<AttributeDesc, String>> convertJSONArray(Concept c, JSONArray inpcases){
         Set<Map<AttributeDesc, String>> ret = new HashSet<>();
         Iterator<JSONObject> it = inpcases.iterator();
 

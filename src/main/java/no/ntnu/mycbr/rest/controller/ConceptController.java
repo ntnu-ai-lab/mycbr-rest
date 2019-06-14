@@ -301,7 +301,7 @@ public class ConceptController {
             @ApiResponse(code = 500, message = "Failure")
     })
     public boolean addConcept(@PathVariable(value="conceptID") String conceptID){
-        return conceptService.addConcept(conceptID);
+        return null != conceptService.addConcept(conceptID);
     }
 
     //get all  attributes
@@ -371,13 +371,13 @@ public class ConceptController {
     public boolean addAttribute(
             @PathVariable(value="conceptID") String conceptID,
             @PathVariable(value="attributeName") String attributeName,
-            @RequestParam(value="attributeJSON", defaultValue = "{}") String attributeJson) {
+            @RequestParam(value="attributeJSON", defaultValue = "{}") String attributeJSON) {
         Project p = App.getProject();
         Concept c = p.getSubConcepts().get(conceptID);
         JSONParser parser = new JSONParser();
         JSONObject json = null;
         try {
-            json = (JSONObject) parser.parse(attributeJson);
+            json = (JSONObject) parser.parse(attributeJSON);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -386,15 +386,13 @@ public class ConceptController {
         try {
             if (type.contains("String")) {
                 //This attribute registers with the concept through callback!
-                new StringDesc(c, attributeName);
+                conceptService.addStringAttribute(c,attributeName,solution.contentEquals("True"));
             } else if(type.contains("Double")){
                 if(json.containsKey("min") && json.containsKey("max")) {
                     double min = (Double)json.get("min");
                     double max = (Double)json.get("max");
                     //This attribute registers with the concept through callback!
-                    AttributeDesc attributeDesc = new DoubleDesc(c, attributeName, min, max);
-                    if(solution.contentEquals("True"))
-                        attributeDesc.setIsSolution(true);
+                    AttributeDesc attributeDesc = conceptService.addDoubleAttribute(c, attributeName, min, max,solution.contentEquals("True"));
                 }else
                     return false;
 
@@ -516,17 +514,10 @@ public class ConceptController {
         if(!p.getCaseBases().containsKey(caseBase)){
             return false;
         }
-        ICaseBase cb = p.getCaseBases().get(caseBase);
         //p.createTopConcept("heh");
         Concept c = (Concept)p.getSubConcepts().get(concept);
-        //TODO need to check the type of attrdesc..
-        DoubleDesc attributeDesc = (DoubleDesc) c.getAllAttributeDescs().get(attributeName);
-        DoubleFct doubleFct = new DoubleFct(p,attributeDesc,similarityFunctionName);
-        doubleFct.setSymmetric(true);
-        doubleFct.setFunctionTypeL(NumberConfig.POLYNOMIAL_WITH);
-        doubleFct.setFunctionParameterL(parameter);
+        return conceptService.addDoubleSimilarityFunction(c,attributeName,similarityFunctionName,parameter);
 
-        return true;
     }
 
 

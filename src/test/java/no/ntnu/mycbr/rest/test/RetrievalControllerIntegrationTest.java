@@ -72,12 +72,13 @@ public class RetrievalControllerIntegrationTest {
 
 
     @Test
-    public void testSimpleRetrieve()
-            throws Exception {
+    public void testSimpleRetrieve() throws Exception {
 
         String casesArray = "[\""+caseIDs.get(0)+"\"";
+
         for(int i = 1; i<caseIDs.size();i++)
             casesArray += ",\""+caseIDs.get(i)+"\"";
+
         casesArray += "]";
 
         // do retrieval test for getting a matrix of sims back.. should run in parallell..

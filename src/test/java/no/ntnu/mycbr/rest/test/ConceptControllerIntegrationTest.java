@@ -59,6 +59,7 @@ public class ConceptControllerIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.concept").value("mytestconcept"));
         logger.debug("results..");
+
     }
 
     @Test

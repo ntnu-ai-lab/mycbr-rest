@@ -1,4 +1,4 @@
-package no.ntnu.mycbr.rest.test.utils;
+package no.ntnu.mycbr.rest.controller.utils;
 
 import no.ntnu.mycbr.core.model.Concept;
 import no.ntnu.mycbr.rest.service.CaseBaseService;

@@ -1,39 +1,46 @@
 package no.ntnu.mycbr.rest.test.utils;
 
 import no.ntnu.mycbr.core.model.Concept;
-import no.ntnu.mycbr.rest.test.InstanceControllerIntegrationTest;
+import no.ntnu.mycbr.rest.service.CaseBaseService;
+import no.ntnu.mycbr.rest.service.ConceptService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import static no.ntnu.mycbr.rest.test.InstanceControllerIntegrationTest.AMALGAMATION_FUNC;
-private static final String DOUBLEATT_1 = "doubleatt_1";
-private static final String DOUBLEATT_2 = "doubleatt_2";
-import static no.ntnu.mycbr.rest.utils.Constants.SIMILARITY;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 
 public class TestSetup {
 
-    private static final String TEST_CONCEPT_NAME = "cars";
-    private static final String TEST_CASEBASE_NAME = "carCB";
-    private static final String DOUBLEATT_1 = "doubleatt_1";
-    private static final String DOUBLEATT_2 = "doubleatt_2";
+    public static final String ATT_DOUBLE_1 = "attDouble1";
+    public static final String ATT_DOUBLE_2 = "attDouble2";
+    public static final String ATT_DOUBLE_3 = "attDouble3";
+    public static final String AMALGAMATION_FUNC_1 = "amalgamationFunc1";
     private static final String SIMILARITY = "sim";
-    private static final String AMALGAMATION_FUNC = "amalgamationFunc";
-    
-     conceptService.deleteAllConcepts();
-    Concept c = conceptService.addConcept(TestSetup.TEST_CONCEPT_NAME);
-        try
+    private final Log logger = LogFactory.getLog(getClass());
 
+    public static final String CASE_BASE_NAME = "testCaseBase";
 
-    {
-        conceptService.addDoubleAttribute(c, DOUBLEATT_1,0,1,false);
-        conceptService.addDoubleAttribute(c, DOUBLEATT_2,0,1,false);
+    public static final String CONCEPT_NAME = "testConcept";
 
-        caseBaseService.addCaseBase(TestSetup.TEST_CASEBASE_NAME);
+    public void createTestCaseBase(ConceptService conceptService, CaseBaseService caseBaseService) {
+        //MockitoAnnotations.initMocks(this);
+        //this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).dispatchOptions(true).build();
+        conceptService.deleteAllConcepts();
+        Concept c = conceptService.addConcept(TestSetup.CONCEPT_NAME);
+        try {
+            conceptService.addDoubleAttribute(c, ATT_DOUBLE_1, 0, 1, false);
+            conceptService.addDoubleAttribute(c, ATT_DOUBLE_2, 0, 1, false);
+            conceptService.addDoubleAttribute(c, ATT_DOUBLE_3, 0, 1, false);
 
-        conceptService.addDoubleSimilarityFunction(c, DOUBLEATT_1,DOUBLEATT_1+SIMILARITY,0.5);
-        conceptService.addDoubleSimilarityFunction(c, DOUBLEATT_2,DOUBLEATT_2+SIMILARITY,0.5);
+            caseBaseService.addCaseBase(TestSetup.CASE_BASE_NAME);
 
-        conceptService.addAmalgamationFunction(c,AMALGAMATION_FUNC, "EUCLIDEAN");
+            conceptService.addDoubleSimilarityFunction(c, ATT_DOUBLE_1, ATT_DOUBLE_1 +SIMILARITY,0.5);
+            conceptService.addDoubleSimilarityFunction(c, ATT_DOUBLE_2, ATT_DOUBLE_2 +SIMILARITY,0.5);
+            conceptService.addDoubleSimilarityFunction(c, ATT_DOUBLE_3, ATT_DOUBLE_3 +SIMILARITY,0.5);
+            conceptService.addAmalgamationFunction(c,AMALGAMATION_FUNC_1, "EUCLIDEAN");
 
-    } catch (Exception e) {
-        logger.error("got exception during setup of instance tests", e);
+        } catch (Exception e) {
+            logger.error("got exception during setup of retrieval tests",e);
+        }
     }
 }

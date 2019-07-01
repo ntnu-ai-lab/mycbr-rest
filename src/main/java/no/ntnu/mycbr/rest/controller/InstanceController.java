@@ -128,7 +128,7 @@ public class InstanceController
 
     //Delete all instances
     @ApiOperation(value="deleteInstances", nickname="deleteInstances")
-    @RequestMapping(method=RequestMethod.DELETE, value = "/concepts/{conceptID}/casebases/{casebaseID}/cases")
+    @RequestMapping(method=RequestMethod.DELETE, value = "/concepts/{concept}/casebases/{casebaseID}/cases")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success", response = ValueRange.class),
             @ApiResponse(code = 401, message = "Unauthorized"),

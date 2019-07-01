@@ -36,13 +36,11 @@ import static no.ntnu.mycbr.rest.common.CommonConstants.*;
 public class InstanceControllerIntegrationTest {
 
     private static final String TEST_CASE_ID = "car1";
-    private final Log logger = LogFactory.getLog(getClass());
     private static final String INSTANCE = "{\"cases\":[{\""+ATT_DOUBLE_1+"\":0.3},{\""+ATT_DOUBLE_2+"\":0.5}]}";
 
+    private final Log logger = LogFactory.getLog(getClass());
 
     private MockMvc mockMvc;
-
-    private ArrayList<String> caseIDs;
 
     @Autowired
     WebApplicationContext wac;
@@ -56,7 +54,6 @@ public class InstanceControllerIntegrationTest {
     @Autowired
     private InstanceService instanceService;
 
-    // the method addInstancesJSON does not seem to work properly, since an empty string is returned when the getter is called
     @Test
     public void addInstancesJSON() throws Exception {
         // add an instance
@@ -64,14 +61,14 @@ public class InstanceControllerIntegrationTest {
                 .param("cases", INSTANCE)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-        // check if it exists(last ".andExpect" in the code under might be wrong, but method itself does not work)
+        // check if it exists
         mockMvc.perform(get(PATH_CONCEPT +CONCEPT_NAME+ PATH_INSTANCES)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect((jsonPath(JSON_PATH+ATT_DOUBLE_1).value("0.3")));
         logger.debug("results..");
-
     }
+
     @Test
     public void addInstanceJSONTest() throws Exception {
         // add an instance
@@ -82,16 +79,34 @@ public class InstanceControllerIntegrationTest {
                        "}")
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk());
-        // check if it exists
-        // todo: use getInstance instead of getAllInstancesInCaseBase
+        // check if it exists with method: "getAllInstancesInCaseBase"
         mockMvc.perform(get(PATH_CONCEPT + CONCEPT_NAME + PATH_CASEBASE + CASE_BASE_NAME + PATH_INSTANCES)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect((jsonPath(JSON_PATH+ATT_DOUBLE_1).value("0.7")))
                 .andExpect((jsonPath(JSON_PATH+ATT_DOUBLE_2).value("0.4")))
-                .andExpect((jsonPath(JSON_PATH+"caseID").value("car1"))
-        );
+                .andExpect((jsonPath(JSON_PATH+"caseID").value("car1")));
     }
+
+    @Test
+    public void getInstanceTest() throws Exception {
+        // add an instance
+        mockMvc.perform(put(PATH_CONCEPT + CONCEPT_NAME + PATH_CASEBASE + CASE_BASE_NAME + PATH_INSTANCES + TEST_CASE_ID)
+                .param("casedata", "{" +
+                        "\"" + ATT_DOUBLE_1 + "\"" + ":0.7," +
+                        "\"" + ATT_DOUBLE_2 + "\"" + ":0.4" +
+                        "}")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        // check if it exists with method: "getInstance"
+        mockMvc.perform(get(PATH_CONCEPT + CONCEPT_NAME + PATH_CASEBASE + CASE_BASE_NAME + PATH_INSTANCES + TEST_CASE_ID)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect((jsonPath(JSON_PATH + ATT_DOUBLE_1).value("0.7")))
+                .andExpect((jsonPath(JSON_PATH + ATT_DOUBLE_2).value("0.4")))
+                .andExpect((jsonPath(JSON_PATH + "caseID").value("car1")));
+    }
+
     @Test
     public void deleteInstanceTest() throws Exception {
         // add an instance: "car1"
@@ -103,12 +118,35 @@ public class InstanceControllerIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         // delete the instance: "car1"
-        mockMvc.perform(delete(PATH_CONCEPT + CONCEPT_NAME + PATH_CASEBASE + CASE_BASE_NAME+ PATH_INSTANCES + TEST_CASE_ID)
+        mockMvc.perform(delete(PATH_CONCEPT + CONCEPT_NAME + PATH_CASEBASE + CASE_BASE_NAME + PATH_INSTANCES + TEST_CASE_ID)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("true"));
+    }
 
-
+    @Test
+    public void deleteInstancesTest() throws Exception {
+        // add an instance: "car1"
+        mockMvc.perform(put(PATH_CONCEPT + CONCEPT_NAME + PATH_CASEBASE + CASE_BASE_NAME + PATH_INSTANCES + TEST_CASE_ID)
+                .param("casedata", "{" +
+                        "\"" + ATT_DOUBLE_1 +"\""+ ":0.7,"+
+                        "\"" + ATT_DOUBLE_2 +"\""+ ":0.4"+
+                        "}")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        // delete the instance: "car1"
+        mockMvc.perform(delete(PATH_CONCEPT + CONCEPT_NAME + PATH_CASEBASE + CASE_BASE_NAME + PATH_CASES)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("true"));
+        // check if instance "car1" is deleted
+        mockMvc.perform(get(PATH_CONCEPT + CONCEPT_NAME + PATH_CASEBASE + CASE_BASE_NAME + PATH_INSTANCES)
+                .contentType(MediaType.APPLICATION_JSON))
+                // Code under might need improvement
+                .andExpect(status().isBadRequest())
+                .andExpect((jsonPath(JSON_PATH+ATT_DOUBLE_1).isEmpty()))
+                .andExpect((jsonPath(JSON_PATH+ATT_DOUBLE_2).isEmpty()))
+                .andExpect((jsonPath(JSON_PATH+"caseID").isEmpty()));
     }
 
     @Before
@@ -118,6 +156,5 @@ public class InstanceControllerIntegrationTest {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).dispatchOptions(true).build();
         TestSetup ts = new TestSetup();
         ts.createTestCaseBase(conceptService, caseBaseService);
-
     }
 }

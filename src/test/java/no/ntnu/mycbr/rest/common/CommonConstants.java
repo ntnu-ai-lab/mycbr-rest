@@ -11,6 +11,9 @@ public class CommonConstants {
     // Path variable for instances
     public static final String PATH_INSTANCES = "/instances/";
 
+    // Path variable for cases
+    public static final String PATH_CASES = "/cases/";
+
     // Root and two steps into the JSON file.
     public static final String JSON_PATH = "$..";
 

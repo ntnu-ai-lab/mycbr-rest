@@ -80,6 +80,7 @@ public class RetrievalControllerIntegrationTest {
             casesArray += ",\""+caseIDs.get(i)+"\"";
 
         casesArray += "]";
+        System.out.println(casesArray);
 
         // do retrieval test for getting a matrix of sims back.. should run in parallell..
         MockHttpServletRequestBuilder call = get("/concepts/"+RetrievalControllerIntegrationTest.conceptID

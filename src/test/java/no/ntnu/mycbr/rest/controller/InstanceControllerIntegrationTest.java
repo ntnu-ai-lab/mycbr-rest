@@ -23,7 +23,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import org.springframework.web.context.WebApplicationContext;
@@ -32,9 +31,9 @@ import java.util.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import no.ntnu.mycbr.rest.controller.utils.TestSetup;
+import no.ntnu.mycbr.rest.controller.utils.TestSetupInstanceController;
 
-import static no.ntnu.mycbr.rest.controller.utils.TestSetup.*;
+import static no.ntnu.mycbr.rest.controller.utils.TestSetupInstanceController.*;
 import static no.ntnu.mycbr.rest.common.CommonConstants.*;
 
 @RunWith(SpringRunner.class)
@@ -50,7 +49,7 @@ public class InstanceControllerIntegrationTest {
     private static final String INSTANCE_WITH_ERROR = "{\"" + ATT_DOUBLE_1 +"\":0.7,\"" + ATT_DOUBLE_2 +"\":0,4}";
     private static final String EMPTY_INSTANCES = "";
 
-    private TestSetup ts;
+    private TestSetupInstanceController ts;
 
     private final Log logger = LogFactory.getLog(getClass());
 
@@ -306,7 +305,7 @@ public class InstanceControllerIntegrationTest {
     }
 
     // Delete Instance should use delete method in InstanceService, not remove a collection
-    // todo: Unclear what the purpose of two deleteInstances are. This is using the one with "cases" at the end of the URI
+    // todo: Rename "deleteInstances" to "deleteAllInstances" to avoid confusion.
     @Test
     public void deleteInstancesTest() throws Exception {
         // add an instance: "car1"
@@ -327,8 +326,8 @@ public class InstanceControllerIntegrationTest {
                 .andExpect((jsonPath(JSON_PATH+"caseID").isEmpty()));
     }
 
-
     // Delete all cases with 3 cases in the Case Base. Using the method with "delete" at the end of the URI
+    // TODO: Delete method "deleteInstances" with URI ending with "delete". Bjørn says its enough with one deleteInstances.
     @Test
     public void deleteAllInstancesTest() throws Exception {
         // Confirm that the case base is empty
@@ -441,7 +440,7 @@ public class InstanceControllerIntegrationTest {
         MockitoAnnotations.initMocks(this);
         logger.info(conceptService);
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).dispatchOptions(true).build();
-        ts = new TestSetup();
+        ts = new TestSetupInstanceController();
         ts.createTestCaseBase(conceptService, caseBaseService);
     }
 

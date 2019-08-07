@@ -9,7 +9,7 @@ import org.apache.commons.logging.LogFactory;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static no.ntnu.mycbr.rest.common.CommonConstants.*;
 
-public class TestSetup {
+public class TestSetupInstanceController {
 
     public static final String ATT_DOUBLE_1 = "attDouble1";
     public static final String ATT_DOUBLE_2 = "attDouble2";

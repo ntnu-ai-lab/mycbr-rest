@@ -26,8 +26,17 @@ public class CommonConstants {
     // Path variable for retrievalByAttribute used in Retrieval tests
     public static final String PATH_RETRIEVAL_BY_ATTRIBUTE = "/retrievalByAttribute";
 
+    // Path variable for retrievalByAttributeWithContent used in Retrieval tests
+    public static final String PATH_RETRIEVAL_BY_ATTRIBUTE_WITH_CONTENT = "/retrievalWithContent";
+
     // Path variable for retrievalByID used in Retrieval tests
     public static final String PATH_RETRIEVAL_BY_ID = "/retrievalByID";
+
+    // Path variable for retrievalByIDs used in Retrieval tests
+    public static final String PATH_RETRIEVAL_BY_IDs = "/retrievalByIDs";
+
+    // Path variable for retrievalByIDWithContent used in Retrieval tests
+    public static final String PATH_RETRIEVAL_BY_ID_WITH_CONTENT = "/retrievalByIDWithContent";
 
     // Name for case base testing
     public static final String CASE_BASE_NAME = "testCaseBase";

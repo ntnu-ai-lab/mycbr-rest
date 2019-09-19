@@ -26,7 +26,7 @@ calls through a Swagger API
 
 - After Spring has started, you can find the API documentation here:
   http://localhost:8080/swagger-ui.html#!/
-- Greeting controller is the sample I used to build the app
+- Greeting no.ntnu.mycbr.rest.controller is the sample I used to build the app
 - CBR Controller contains the myCBR bits
 - ctrl + C shuts down the server
 

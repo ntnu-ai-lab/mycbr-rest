@@ -21,7 +21,7 @@ calls through a Swagger API
 - In order to deploy the Spring app, run:
 
 #+BEGIN_EXAMPLE
-    java -jar ./target/mycbr-rest-example-1.0-SNAPSHOT.jar 
+    java -DMYCBR.PROJECT.FILE={path to the project file} -jar ./target/mycbr-rest-1.0-SNAPSHOT.jar
 #+END_EXAMPLE
 
 - After Spring has started, you can find the API documentation here:

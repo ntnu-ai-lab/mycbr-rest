@@ -20,13 +20,7 @@ public class RetrievalController {
 
     @ApiOperation(value = "getSimilarInstances", nickname = "getSimilarInstances")
     @RequestMapping(method = RequestMethod.POST, path="/concepts/{conceptID}/casebases/{casebaseID}/retrieval", produces = "application/json")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success", response = Query.class),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")
-    })
+    @ApiResponsesForQuery
     public Query getSimilarInstances(
             @RequestParam(value="casebase", defaultValue="CaseBase0") String casebase,
             @RequestParam(value="concept name", defaultValue="Car") String concept,
@@ -38,13 +32,7 @@ public class RetrievalController {
 
     @ApiOperation(value = "getSimilarInstancesByID", nickname = "getSimilarInstancesByID")
     @RequestMapping(method = RequestMethod.GET, path="/concepts/{conceptID}/casebases/{casebaseID}/retrievalByID", produces = "application/json")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success", response = Query.class),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")
-    })
+    @ApiResponsesForQuery
     public Query getSimilarCasesByID(
             @PathVariable(value="conceptID") String conceptID,
             @PathVariable(value="casebaseID") String casebaseID,
@@ -55,13 +43,7 @@ public class RetrievalController {
 
     @ApiOperation(value = "getSimilarInstancesByIDs", nickname = "getSimilarInstancesByIDs")
     @RequestMapping(method = RequestMethod.GET, path="/concepts/{conceptID}/casebases/{casebaseID}/retrievalByIDs", produces = "application/json")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success", response = Query.class),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")
-    })
+    @ApiResponsesForQuery
     public HashMap<String, HashMap<String,Double>> getSimilarCasesByIDs(
             @PathVariable(value="conceptID") String conceptID,
             @PathVariable(value="casebaseID") String casebaseIDs,
@@ -83,13 +65,7 @@ public class RetrievalController {
 
     @ApiOperation(value = "getSimilarInstancesByIDWithinIDs", nickname = "getSimilarInstancesByIDWithinIDs")
     @RequestMapping(method = RequestMethod.GET, path="/concepts/{conceptID}/casebases/{casebaseID}/retrievalByIDInIDs", produces = "application/json")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success", response = Query.class),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")
-    })
+    @ApiResponsesForQuery
     public HashMap<String, HashMap<String,Double>> getSimilarInstancesByIDWithinIDs(
             @PathVariable(value="conceptID") String conceptID,
             @PathVariable(value="casebaseID") String casebaseID,
@@ -115,13 +91,7 @@ public class RetrievalController {
 
     @ApiOperation(value = "getSimilarInstancesByIDsWithinIDs", nickname = "getSimilarInstancesByIDWithinIDs")
     @RequestMapping(method = RequestMethod.GET, path="/concepts/{conceptID}/casebases/{casebaseID}/retrievalByIDsInIDs", produces = "application/json")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success", response = Query.class),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")
-    })
+    @ApiResponsesForQuery
     public HashMap<String, HashMap<String,Double>> getSimilarInstancesByIDsWithinIDs(
             @PathVariable(value="conceptID") String conceptID,
             @PathVariable(value="casebaseID") String casebaseID,
@@ -154,13 +124,7 @@ public class RetrievalController {
 
     @ApiOperation(value = "getSimilarInstancesByAttribute", nickname = "getSimilarInstances")
     @RequestMapping(method = RequestMethod.GET, path="/concepts/{conceptID}/casebases/{casebaseID}/retrievalByAttribute", produces = "application/json")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success", response = Query.class),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")
-    })
+    @ApiResponsesForQuery
     public Query getSimilarInstancesByAttribute(
             @RequestParam(value="casebase", defaultValue="CaseBase0") String casebase,
             @RequestParam(value="concept name", defaultValue="Car") String concept,
@@ -173,13 +137,7 @@ public class RetrievalController {
 
     @ApiOperation(value = "getSimilarInstancesWithContent", nickname = "getSimilarInstancesWithContent")
     @RequestMapping(method = RequestMethod.POST, path="/concepts/{conceptID}/casebases/{casebaseID}/retrievalWithContent", produces = "application/json")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success"),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")
-    })
+    @ApiResponsesDefault
     public @ResponseBody List<LinkedHashMap<String, String>> getSimilarInstancesWithContent(
             @RequestParam(value="casebase", defaultValue="CaseBase0") String casebase,
             @RequestParam(value="concept name", defaultValue="Car") String concept,
@@ -194,13 +152,7 @@ public class RetrievalController {
 
     @ApiOperation(value = "getSimilarInstancesByIDWithContent", nickname = "getSimilarInstancesByIDWithContent")
     @RequestMapping(method = RequestMethod.GET, path="/concepts/{conceptID}/casebases/{casebaseID}/retrievalByIDWithContent", produces = "application/json")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success"),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")
-    })
+    @ApiResponsesDefault
     public @ResponseBody List<LinkedHashMap<String, String>> getSimilarInstancesByIDWithContent(
             @PathVariable(value="conceptID") String conceptID,
             @PathVariable(value="casebaseID") String casebaseID,
@@ -215,13 +167,7 @@ public class RetrievalController {
 
     @ApiOperation(value = "getSimilarInstancesByAttributeWithContent", nickname = "getSimilarInstancesByAttributeWithContent")
     @RequestMapping(method = RequestMethod.GET, path="/concepts/{conceptID}/casebases/{casebaseID}/retrievalWithContent", produces = "application/json")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success"),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")
-    })
+    @ApiResponsesDefault
     public @ResponseBody List<LinkedHashMap<String, String>> getSimilarInstancesByAttributeWithContent(
             @PathVariable(value="conceptID") String conceptID,
             @PathVariable(value="casebaseID") String casebaseID,
@@ -234,6 +180,32 @@ public class RetrievalController {
         List<LinkedHashMap<String, String>> cases = getFullResult(query, conceptID);
         return cases;
     }
+
+ // All ApiResponses annotations definitions----------------------------------------------------------------------------------------------------------   
+
+ 	@ApiResponses(value = {
+ 			@ApiResponse(code = 200, message = SUCCESS),
+ 			@ApiResponse(code = 401, message = UNAUTHORIZED),
+ 			@ApiResponse(code = 403, message = FORBIDDEN),
+ 			@ApiResponse(code = 404, message = NOT_FOUND),
+ 			@ApiResponse(code = 500, message = FAILURE)
+ 	})
+ 	private @interface ApiResponsesDefault{}
+
+ 	@ApiResponses(value = {
+ 			@ApiResponse(code = 200, message = SUCCESS, response = Query.class),
+ 			@ApiResponse(code = 401, message = UNAUTHORIZED),
+ 			@ApiResponse(code = 403, message = FORBIDDEN),
+ 			@ApiResponse(code = 404, message = NOT_FOUND),
+ 			@ApiResponse(code = 500, message = FAILURE)
+ 	})
+ 	private @interface ApiResponsesForQuery{}
+ 	
+	private static final String SUCCESS = "Success";	
+	private static final String UNAUTHORIZED = "Unauthorized";
+	private static final String FORBIDDEN = "Forbidden";	
+	private static final String NOT_FOUND = "Not Found";
+	private static final String FAILURE = "Failure";   
 
 
 }

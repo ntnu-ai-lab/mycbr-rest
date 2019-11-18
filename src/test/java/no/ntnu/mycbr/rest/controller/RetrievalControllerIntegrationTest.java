@@ -32,7 +32,9 @@ import org.springframework.web.context.WebApplicationContext;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static no.ntnu.mycbr.rest.common.CommonConstants.*;
 import static org.mockito.Mockito.mock;
@@ -40,14 +42,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /*
-Method "setUp" takes care of System Properties. This is for importing the project file correctly (The alternatives are to alter the App.class or 
-manually change System properties as described under)
-Configurations can be changed by (intellij): Run -> Edit config. -> RetrievalCont... -> Change VM options to: -DMYCBR.PROJECT.FILE=used_cars_flat.prj
-Remember: You can't have the project file opened another place and run the test at the same time.
- */
+Tests are run with project "cars_for_testing.prj" located under "resources". Method "setUp" takes care of System Properties.
+This is for importing the project file correctly (The alternatives are to alter the App.class or manually change System properties as described under)
+Configurations can be changed by (intellij): Run -> Edit config. -> RetrievalCont... -> Change VM options to: -DMYCBR.PROJECT.FILE=cars_for_testing.prj
+NB: You can't have the project file opened in another program and run the test at the same time.
+*/
 
 
 @RunWith(SpringRunner.class)
@@ -76,6 +79,67 @@ public class RetrievalControllerIntegrationTest implements Retrieval.RetrievalCu
     @Autowired
     private InstanceService instanceService;
 
+    // Test similarity value and the order of the result with method "getSimilarInstances". Should be in descending order.
+    @Test
+    public void getSimilarInstancesTest() throws Exception {
+        ResultActions res = mockMvc.perform(post(PATH_CONCEPT + CAR_CONCEPT_NAME + PATH_CASEBASE + CAR_CASE_BASE + PATH_RETRIEVAL)
+                .param("amalgamation function", "carFunc")
+                .param("casebase","CaseBase0")
+                .param("concept name", "car" )
+                .content("{\"manufacturer\": \"vw\", \"price\": 30000, \"ccm\": 4000}" )
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk());
+
+        res.andExpect((jsonPath(JSON_PATH + CASE_ID_CAR_0).value(0.73)));
+        res.andExpect((jsonPath(JSON_PATH + CASE_ID_CAR_1).value(0.55)));
+        res.andExpect((jsonPath(JSON_PATH + CASE_ID_CAR_2).value(0.975)));
+
+        // Check that the ordering is descending
+        res.andExpect(content().string("{\"similarCases\":{\"car #2\":0.975,\"car #0\":0.73,\"car #1\":0.55}}"));
+    }
+
+    // Test similarity value and the order of the result with method "getSimilarInstancesByAttribute" with symbol attribute. Should be in descending order.
+    @Test
+    public void getSimilarInstancesByAttributeTestSymbol() throws Exception {
+        // Check similarity value
+        ResultActions res = mockMvc.perform(get(PATH_CONCEPT + CAR_CONCEPT_NAME + PATH_CASEBASE + CAR_CASE_BASE + PATH_RETRIEVAL_BY_ATTRIBUTE)
+                .param("amalgamation function", "carFunc")
+                .param("concept name", "car")
+                .param("Symbol attribute name", "manufacturer")
+                .param("value", "vw")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        res.andExpect((jsonPath(JSON_PATH + CASE_ID_CAR_0).value(0.6)));
+        res.andExpect((jsonPath(JSON_PATH + CASE_ID_CAR_1).value(0.5)));
+        res.andExpect((jsonPath(JSON_PATH + CASE_ID_CAR_2).value(1)));
+
+        // Check that the ordering is descending
+        res.andExpect(content().string("{\"similarCases\":{\"car #2\":1,\"car #0\":0.6,\"car #1\":0.5}}"));
+    }
+
+    // Test similarity value and the order of the result with method "getSimilarInstancesByAttribute" with numerical value. Should be in descending order.
+    @Test
+    public void getSimilarInstancesByAttributeTestNumerical() throws Exception {
+        // Check similarity value
+        ResultActions res = mockMvc.perform(get(PATH_CONCEPT + CAR_CONCEPT_NAME + PATH_CASEBASE + CAR_CASE_BASE + PATH_RETRIEVAL_BY_ATTRIBUTE)
+                .param("concept name", "car")
+                .param("amalgamation function", "carFunc")
+                .param("Symbol attribute name", "price")
+                .param("value", "30000.0")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk());
+
+        res.andExpect((jsonPath(JSON_PATH + CASE_ID_CAR_0).value(0.9)));
+        res.andExpect((jsonPath(JSON_PATH + CASE_ID_CAR_1).value(0.5)));
+        res.andExpect((jsonPath(JSON_PATH + CASE_ID_CAR_2).value(1)));
+
+        // Check that the ordering is descending
+        res.andExpect(content().string("{\"similarCases\":{\"car #2\":1,\"car #0\":0.9,\"car #1\":0.5}}"));
+    }
+
     // Test similarity value and the order of the result with method "getSimilarInstancesByID". Should be in descending order.
     @Test
     public void getSimilarInstancesByIDTest() throws Exception {
@@ -88,49 +152,7 @@ public class RetrievalControllerIntegrationTest implements Retrieval.RetrievalCu
                 .andExpect((jsonPath(JSON_PATH + CASE_ID_CAR_2).value(0.755)));
 
         // Check that the ordering is descending
-        res.andExpect(content().string("{\"similarCases\":{\"car #0\":1.0,\"car #2\":0.7550000000000001,\"car #1\":0.63}}"));
-    }
-
-    // Test similarity value and the order of the result with method "getSimilarInstancesByAttribute". Should be in descending order.
-    @Test
-    public void getSimilarInstancesByAttributeTest() throws Exception {
-        // todo: replace values with manually calculated similarity values
-
-        // Check similarity value
-        ResultActions res = mockMvc.perform(get(PATH_CONCEPT + CAR_CONCEPT_NAME + PATH_CASEBASE + CAR_CASE_BASE + PATH_RETRIEVAL_BY_ATTRIBUTE)
-                .param("concept name", "car")
-                .param("amalgamation function", "carFunc")
-                .param("Symbol attribute name", "manufacturer")
-                .param("value", "vw")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(status().isOk());
-
-            res.andExpect((jsonPath(JSON_PATH + CASE_ID_CAR_0).value(0.27)));
-            res.andExpect((jsonPath(JSON_PATH + CASE_ID_CAR_1).value(0.225)));
-            res.andExpect((jsonPath(JSON_PATH + CASE_ID_CAR_2).value(0.45)));
-
-        // Check that the ordering is descending
-        res.andExpect(content().string("{\"similarCases\":{\"car #2\":0.45,\"car #0\":0.27,\"car #1\":0.225}}"));
-
-    }
-
-    // Test similarity value and the order of the result with method "getSimilarInstancesByAttributeWithContent". Should be in descending order.
-    @Test
-    public void getSimilarInstancesByAttributeWithContentTest() throws Exception {
-        // Todo: Can't get the method to work, both on REST API and the test.
-        // Check similarity value
-        ResultActions res = mockMvc.perform(get(PATH_CONCEPT + CAR_CONCEPT_NAME + PATH_CASEBASE + CAR_CASE_BASE + PATH_RETRIEVAL_BY_ATTRIBUTE_WITH_CONTENT)
-                .param("conceptID", "car")
-                .param("casebaseID", "CaseBase0")
-                .param("amalgamation function", "carFunc")
-                .param("Symbol attribute name", "manufacturer")
-                .param("value", "mercedes")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(status().isOk());
-
-        //res.andExpect((jsonPath(JSON_PATH + CASE_ID_CAR_0).value(SIM_CAR_0)));
+        res.andExpect(content().string("{\"similarCases\":{\"car #0\":1.0,\"car #2\":0.755,\"car #1\":0.63}}"));
     }
 
     // Test similarity value and ordering of the result with method "getSimilarInstancesByIDs". Should be in descending order.
@@ -141,14 +163,13 @@ public class RetrievalControllerIntegrationTest implements Retrieval.RetrievalCu
                 .param("casebaseID", "CaseBase0")
                 .param("conceptID", "car")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk())
                 // Test similarity value of "car #1"
                 .andExpect(jsonPath("$.['car #1'].['car #0']").value(0.63))
                 .andExpect(jsonPath("$.['car #1'].['car #1']").value(1))
                 .andExpect(jsonPath("$.['car #1'].['car #2']").value(0.525))
                 // Test similarity value of "car #2"
-                .andExpect(jsonPath("$.['car #2'].['car #0']").value(0.7550000000000001))
+                .andExpect(jsonPath("$.['car #2'].['car #0']").value(0.755))
                 .andExpect(jsonPath("$.['car #2'].['car #1']").value(0.525))
                 .andExpect(jsonPath("$.['car #2'].['car #2']").value(1)
                 );
@@ -163,21 +184,46 @@ public class RetrievalControllerIntegrationTest implements Retrieval.RetrievalCu
                 .param("casebaseID", "CaseBase0")
                 .param("conceptID", "car")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk());
 
         // Check that the content and that the ordering is descending
-        res.andExpect(content().string("[{\"similarity\":\"0.63\",\"caseID\":\"car #1\",\"ccm\":\"5000\",\"manufacturer\":\"mercedes\",\"price\":\"80000.0\"},{\"similarity\":\"0.7550000000000001\",\"caseID\":\"car #2\",\"ccm\":\"3000\",\"manufacturer\":\"vw\",\"price\":\"30000.0\"},{\"similarity\":\"1.0\",\"caseID\":\"car #0\",\"ccm\":\"2000\",\"manufacturer\":\"bmw\",\"price\":\"40000.0\"}]"));
+        res.andExpect(content().string("[{\"similarity\":\"0.63\",\"caseID\":\"car #1\",\"ccm\":\"5000\",\"manufacturer\":\"mercedes\",\"price\":\"80000.0\"},{\"similarity\":\"0.755\",\"caseID\":\"car #2\",\"ccm\":\"3000\",\"manufacturer\":\"vw\",\"price\":\"30000.0\"},{\"similarity\":\"1.0\",\"caseID\":\"car #0\",\"ccm\":\"2000\",\"manufacturer\":\"bmw\",\"price\":\"40000.0\"}]"));
     }
 
+    // Test similarity value and the order of the result with method "getSimilarInstancesByAttributeWithContent". Should be in descending order.
     @Test
-    public void getSimilarInstancesByIDsWithinIDsTest() throws Exception {
-        mockMvc.perform(get(PATH_CONCEPT + CAR_CONCEPT_NAME + PATH_CASEBASE + CAR_CASE_BASE + PATH_RETRIEVAL_BY_IDS_IN_IDS)
-                .param("caseIDs", casesArray)
-                .param("filterCaseIDs", casesArray)
+    public void getSimilarInstancesByAttributeWithContentTest() throws Exception {
+        // Check similarity value
+        ResultActions res = mockMvc.perform(get(PATH_CONCEPT + CAR_CONCEPT_NAME + PATH_CASEBASE + CAR_CASE_BASE + PATH_RETRIEVAL_BY_ATTRIBUTE_WITH_CONTENT)
+                .param("conceptID", "car")
+                .param("casebaseID", "CaseBase0")
+                .param("amalgamation function", "carFunc")
+                .param("Symbol attribute name", "manufacturer")
+                .param("value", "mercedes")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andDo(MockMvcResultHandlers.print());
+                .andExpect(status().isOk());
+
+        // Check the similarity values and ordering
+        res.andExpect(content().string("[{\"similarity\":\"1\",\"caseID\":\"car #2\",\"ccm\":\"3000\",\"manufacturer\":\"vw\",\"price\":\"30000.0\"},{\"similarity\":\"0.6\",\"caseID\":\"car #0\",\"ccm\":\"2000\",\"manufacturer\":\"bmw\",\"price\":\"40000.0\"},{\"similarity\":\"0.5\",\"caseID\":\"car #1\",\"ccm\":\"5000\",\"manufacturer\":\"mercedes\",\"price\":\"80000.0\"}]"));
     }
+
+    // Test similarity value and the order of the result with method "getSimilarInstancesWithContent", Should be in descending order.
+    @Test
+    public void getSimilarInstancesWithContentTest() throws Exception {
+        ResultActions res = mockMvc.perform(post(PATH_CONCEPT + CAR_CONCEPT_NAME + PATH_CASEBASE + CAR_CASE_BASE + PATH_RETRIEVAL_INSTANCES_WITH_CONTENT)
+                .param("amalgamation function", "carFunc")
+                .param("casebase","CaseBase0")
+                .param("concept name", "car" )
+                .content("{\"manufacturer\": \"vw\", \"price\": 30000, \"ccm\": 4000}")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk());
+
+        // Check that the ordering is descending
+        res.andExpect(content().string("[{\"similarity\":\"0.975\",\"caseID\":\"car #2\",\"ccm\":\"3000\",\"manufacturer\":\"vw\",\"price\":\"30000.0\"},{\"similarity\":\"0.73\",\"caseID\":\"car #0\",\"ccm\":\"2000\",\"manufacturer\":\"bmw\",\"price\":\"40000.0\"},{\"similarity\":\"0.55\",\"caseID\":\"car #1\",\"ccm\":\"5000\",\"manufacturer\":\"mercedes\",\"price\":\"80000.0\"}]"));
+    }
+
+
 
     @BeforeClass
     public static void setUp() {
@@ -187,7 +233,6 @@ public class RetrievalControllerIntegrationTest implements Retrieval.RetrievalCu
     @Before
     public void before() throws Exception {
         try {
-            // todo change uri to file located under "resource folder"
             MockitoAnnotations.initMocks(this);
             logger.info(conceptService);
             this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).dispatchOptions(true).build();

@@ -201,7 +201,6 @@ public class InstanceControllerIntegrationTest {
         // check that the instance was added
         Assertions.assertTrue(numberOfInstances + 1 == p.getAllInstances().size(), "Instance was not added");
 
-        // todo: Check that the instance was added correctly
         logger.debug("results..");
     }
 
@@ -285,9 +284,6 @@ public class InstanceControllerIntegrationTest {
         Project p = App.getProject();
         int numberOfInstances = p.getAllInstances().size();
         Assertions.assertTrue(numberOfInstances == 2, "There should be two instances left in Case base, but there are not");
-
-        // todo check that the two cases left are "testConcept-testCaseBase1" and "testConcept-testCaseBase3"
-
     }
 
     //test to delete an instance with an empty Case Base
@@ -296,7 +292,7 @@ public class InstanceControllerIntegrationTest {
         // Confirm that the case base is empty
         Assertions.assertTrue(isCaseBaseEmpty(), "The case base should be empty but was not empty");
 
-        // try to delete an instance. Expect error 422 Unprosessable Entity.
+        // try to delete an instance. Expect error 422: Unprocessable Entity.
         mockMvc.perform(delete(PATH_CONCEPT + CONCEPT_NAME + PATH_CASEBASE + CASE_BASE_NAME + PATH_INSTANCES + TEST_CASE_ID)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
@@ -305,7 +301,6 @@ public class InstanceControllerIntegrationTest {
     }
 
     // Delete Instance should use delete method in InstanceService, not remove a collection
-    // todo: Rename "deleteInstances" to "deleteAllInstances" to avoid confusion.
     @Test
     public void deleteInstancesTest() throws Exception {
         // add an instance: "car1"
@@ -324,42 +319,6 @@ public class InstanceControllerIntegrationTest {
                 .andExpect((jsonPath(JSON_PATH+ATT_DOUBLE_1).isEmpty()))
                 .andExpect((jsonPath(JSON_PATH+ATT_DOUBLE_2).isEmpty()))
                 .andExpect((jsonPath(JSON_PATH+"caseID").isEmpty()));
-    }
-
-    // Delete all cases with 3 cases in the Case Base. Using the method with "delete" at the end of the URI
-    // TODO: Delete method "deleteInstances" with URI ending with "delete". Bjørn says its enough with one deleteInstances.
-    @Test
-    public void deleteAllInstancesTest() throws Exception {
-        // Confirm that the case base is empty
-        Assertions.assertTrue(isCaseBaseEmpty(), "The case base should be empty but was not empty");
-
-        // add three instances to case base
-        addInstancesWithCaseBaseService();
-
-        // delete all the instances
-        mockMvc.perform(delete(PATH_CONCEPT + CONCEPT_NAME + PATH_CASEBASE + CASE_BASE_NAME + PATH_INSTANCES + PATH_DELETE)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string("true"));
-
-        // Check that the case base is empty
-        Assertions.assertTrue(isCaseBaseEmpty(), "The case base should be empty but was not empty");
-
-    }
-    
-    // Delete 1 case with an empty Case Base
-    @Test
-    public void deleteInstancesWithEmptyCaseBaseTest() throws Exception {
-        // Confirm that the case base is empty
-        Assertions.assertTrue(isCaseBaseEmpty(), "The case base should be empty but was not empty");
-
-        // delete all the instances
-        // todo: what should be the expected return statement when no instance have been deleted correctly
-        mockMvc.perform(delete(PATH_CONCEPT + CONCEPT_NAME + PATH_CASEBASE + CASE_BASE_NAME + PATH_INSTANCES + PATH_DELETE)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string("true"));
-
     }
 
     // add an instance called "car1"
@@ -444,7 +403,6 @@ public class InstanceControllerIntegrationTest {
         ts.createTestCaseBase(conceptService, caseBaseService);
     }
 
-    // Alternatively use delete method with mockMvc to delete
     @After
     public void after() {
         ts.deleteTestCaseBase(caseBaseService);

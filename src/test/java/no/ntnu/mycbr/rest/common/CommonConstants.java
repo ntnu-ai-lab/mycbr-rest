@@ -20,6 +20,9 @@ public class CommonConstants {
     // Path variable for delete
     public static final String PATH_DELETE = "/delete/";
 
+    // Path variable for "retrieval" used in Retrieval tests
+    public static final String PATH_RETRIEVAL = "/retrieval";
+
     // Path variable for retrievalByIDsInIDs used in Retrieval tests
     public static final String PATH_RETRIEVAL_BY_IDS_IN_IDS = "/retrievalByIDsInIDs";
 
@@ -28,6 +31,9 @@ public class CommonConstants {
 
     // Path variable for retrievalByAttributeWithContent used in Retrieval tests
     public static final String PATH_RETRIEVAL_BY_ATTRIBUTE_WITH_CONTENT = "/retrievalWithContent";
+
+    // Path variable for retrievalByAttributeWithContent used in Retrieval tests
+    public static final String PATH_RETRIEVAL_INSTANCES_WITH_CONTENT = "/retrievalWithContent";
 
     // Path variable for retrievalByID used in Retrieval tests
     public static final String PATH_RETRIEVAL_BY_ID = "/retrievalByID";

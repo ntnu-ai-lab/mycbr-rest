@@ -210,5 +210,5 @@ public class RetrievalController {
 
 	return retrievalService.getCaseBaseSelfSimilarity(casebase, concept, amalFunc, k);
 	//return new RetrievalService(casebase, concept, amalFunc, k).getSelfSimilarityMatrix();
-    }s
+    }
 }

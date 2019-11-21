@@ -40,7 +40,7 @@ public class CBRController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response upload(@RequestParam("file") InputStream inputStream,
                            @RequestParam("file") FormDataContentDisposition fileMetaData) {
-    
+
     }*/
     /*@ApiOperation(value = "importCsv", nickname = "importCsv")
     @Path("/importCsv")

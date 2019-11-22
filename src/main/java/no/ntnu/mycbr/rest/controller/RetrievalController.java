@@ -1,14 +1,11 @@
 package no.ntnu.mycbr.rest.controller;
 
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import no.ntnu.mycbr.rest.Query;
-import no.ntnu.mycbr.rest.service.RetrievalService;
+import no.ntnu.mycbr.rest.service.SelfSimilarityRetrieval;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import org.json.simple.JSONArray;
@@ -24,9 +21,6 @@ import static no.ntnu.mycbr.rest.common.Constants.*;
 public class RetrievalController {
 
     private final Log logger = LogFactory.getLog(getClass());
-
-    @Autowired
-    private RetrievalService retrievalService;
 
     @ApiOperation(value = "getSimilarInstances", nickname = "getSimilarInstances")
     @RequestMapping(method = RequestMethod.POST, path=DEFAULT_PATH+"retrieval", produces=APPLICATION_JSON)
@@ -44,9 +38,9 @@ public class RetrievalController {
     @RequestMapping(method = RequestMethod.GET, path=DEFAULT_PATH+"retrievalByID", produces=APPLICATION_JSON)
     @ApiResponsesForQuery
     public Query getSimilarCasesByID(
-	    @PathVariable(value="conceptID") String conceptID,
-	    @PathVariable(value="casebaseID") String casebaseID,
-	    @RequestParam(value="caseID") String caseID,
+	    @PathVariable(value=CONCEPT_ID_STR) String conceptID,
+	    @PathVariable(value=CASEBASE_ID_STR) String casebaseID,
+	    @RequestParam(value=CASE_ID_STR) String caseID,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k) {
 	return new Query(casebaseID, conceptID, null, caseID, k);
     }
@@ -55,9 +49,9 @@ public class RetrievalController {
     @RequestMapping(method = RequestMethod.GET, path=DEFAULT_PATH+"retrievalByIDs", produces=APPLICATION_JSON)
     @ApiResponsesForQuery
     public HashMap<String, HashMap<String,Double>> getSimilarCasesByIDs(
-	    @PathVariable(value="conceptID") String conceptID,
-	    @PathVariable(value="casebaseID") String casebaseIDs,
-	    @RequestParam(value="caseIDs") String caseIDsJson,
+	    @PathVariable(value=CONCEPT_ID_STR) String conceptID,
+	    @PathVariable(value=CASEBASE_ID_STR) String casebaseIDs,
+	    @RequestParam(value=CASE_ID_S_STR) String caseIDsJson,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k) {
 	ArrayList<String> caseIDs = new ArrayList<>();
 	JSONParser parser = new JSONParser();
@@ -77,9 +71,9 @@ public class RetrievalController {
     @RequestMapping(method = RequestMethod.GET, path=DEFAULT_PATH+"retrievalByIDInIDs", produces=APPLICATION_JSON)
     @ApiResponsesForQuery
     public HashMap<String, HashMap<String,Double>> getSimilarInstancesByIDWithinIDs(
-	    @PathVariable(value="conceptID") String conceptID,
-	    @PathVariable(value="casebaseID") String casebaseID,
-	    @RequestParam(value="caseID", defaultValue = "queryCaseID1") String caseID,
+	    @PathVariable(value=CONCEPT_ID_STR) String conceptID,
+	    @PathVariable(value=CASEBASE_ID_STR) String casebaseID,
+	    @RequestParam(value=CASE_ID_STR, defaultValue = "queryCaseID1") String caseID,
 	    @RequestParam(value="filterCaseIDs", defaultValue = "[caseID1, caseID2, caseID3]") String filterCaseIDs,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k) {
 	JSONParser parser = new JSONParser();
@@ -103,9 +97,9 @@ public class RetrievalController {
     @RequestMapping(method = RequestMethod.GET, path=DEFAULT_PATH+"retrievalByIDsInIDs", produces=APPLICATION_JSON)
     @ApiResponsesForQuery
     public HashMap<String, HashMap<String,Double>> getSimilarInstancesByIDsWithinIDs(
-	    @PathVariable(value="conceptID") String conceptID,
-	    @PathVariable(value="casebaseID") String casebaseID,
-	    @RequestParam(value="caseIDs", defaultValue = "[queryCase1, queryCase2]") String caseIDs,
+	    @PathVariable(value=CONCEPT_ID_STR) String conceptID,
+	    @PathVariable(value=CASEBASE_ID_STR) String casebaseID,
+	    @RequestParam(value=CASE_ID_S_STR, defaultValue = "[queryCase1, queryCase2]") String caseIDs,
 	    @RequestParam(value="filterCaseIDs", defaultValue = "[caseID1, caseID2, caseID3]") String filterCaseIDs,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k) {
 	ArrayList<String> caseIDList = new ArrayList<>();
@@ -164,10 +158,10 @@ public class RetrievalController {
     @RequestMapping(method = RequestMethod.GET, path=DEFAULT_PATH+"retrievalByIDWithContent", produces=APPLICATION_JSON)
     @ApiResponsesDefault
     public @ResponseBody List<LinkedHashMap<String, String>> getSimilarInstancesByIDWithContent(
-	    @PathVariable(value="conceptID") String conceptID,
-	    @PathVariable(value="casebaseID") String casebaseID,
+	    @PathVariable(value=CONCEPT_ID_STR) String conceptID,
+	    @PathVariable(value=CASEBASE_ID_STR) String casebaseID,
 	    @RequestParam(value=AMALGAMATION_FUNCTION_STR, defaultValue=DEFAULT_AMALGAMATION_FUNCTION) String amalFunc,
-	    @RequestParam(value="caseID", defaultValue="144_vw") String caseID,
+	    @RequestParam(value=CASE_ID_STR, defaultValue="144_vw") String caseID,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k) {
 
 	Query query = new Query(casebaseID, conceptID, amalFunc, caseID, k);
@@ -179,8 +173,8 @@ public class RetrievalController {
     @RequestMapping(method = RequestMethod.GET, path=DEFAULT_PATH+"retrievalWithContent", produces=APPLICATION_JSON)
     @ApiResponsesDefault
     public @ResponseBody List<LinkedHashMap<String, String>> getSimilarInstancesByAttributeWithContent(
-	    @PathVariable(value="conceptID") String conceptID,
-	    @PathVariable(value="casebaseID") String casebaseID,
+	    @PathVariable(value=CONCEPT_ID_STR) String conceptID,
+	    @PathVariable(value=CASEBASE_ID_STR) String casebaseID,
 	    @RequestParam(value=AMALGAMATION_FUNCTION_STR, defaultValue=DEFAULT_AMALGAMATION_FUNCTION) String amalFunc,
 	    @RequestParam(value="Symbol attribute name", defaultValue="Manufacturer") String attribute,
 	    @RequestParam(value="value", defaultValue="vw") String value,
@@ -207,8 +201,7 @@ public class RetrievalController {
 	    @RequestParam(value=CONCEPT_NAME_STR, defaultValue=DEFAULT_CONCEPT) String concept,
 	    @RequestParam(value=AMALGAMATION_FUNCTION_STR, defaultValue=DEFAULT_AMALGAMATION_FUNCTION) String amalFunc,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES, defaultValue = DEFAULT_NO_OF_CASES) int k) {
-
-	return retrievalService.getCaseBaseSelfSimilarity(casebase, concept, amalFunc, k);
-	//return new RetrievalService(casebase, concept, amalFunc, k).getSelfSimilarityMatrix();
+	
+	return new SelfSimilarityRetrieval().getCaseBaseSelfSimilarity(casebase, concept, amalFunc, k);
     }
 }

@@ -17,6 +17,8 @@ import no.ntnu.mycbr.core.retrieval.Retrieval.RetrievalCustomer;
 import no.ntnu.mycbr.core.similarity.Similarity;
 import no.ntnu.mycbr.util.Pair;
 import no.ntnu.mycbr.rest.App;
+import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctManager;
+import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctNotChangedException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,13 +30,7 @@ public class SelfSimilarityRetrieval implements RetrievalCustomer{
     private final Log logger = LogFactory.getLog(getClass());
 
     private int k = -1;
-
     private List<Pair<Instance,Similarity>> results;
-
-    private LinkedHashMap<String, Double> resultList = new LinkedHashMap<>();
-
-    //TemporaryAmalgamFctManager tempAmalgamFctManager;
-
     private LinkedHashMap<String, LinkedHashMap<String, Double>> selfSimMatrix = new LinkedHashMap<>();
 
     public LinkedHashMap<String, LinkedHashMap<String, Double>> getCaseBaseSelfSimilarity(String casebase, 
@@ -47,6 +43,14 @@ public class SelfSimilarityRetrieval implements RetrievalCustomer{
 	Project project = App.getProject();
 	Concept concept = project.getConceptByID(conceptName);
 	ICaseBase cbFrom = (DefaultCaseBase)project.getCaseBases().get(casebase);
+	
+	TemporaryAmalgamFctManager tempAmalgamFctManager = new TemporaryAmalgamFctManager(concept);
+	
+	try {
+		tempAmalgamFctManager.changeAmalgamFct(amalFunc);
+	} catch (TemporaryAmalgamFctNotChangedException e) {
+		e.printStackTrace();
+	}
 
 	int parentCBSize = cbFrom.getCases().size();
 

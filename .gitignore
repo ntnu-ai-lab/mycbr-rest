@@ -15,3 +15,10 @@ hs_err_pid*
 
 # IntelliJ files
 .idea/*
+/target/
+
+# All myCBR project related files
+*.prj
+*.myExp
+*.myCBR
+*.myCB

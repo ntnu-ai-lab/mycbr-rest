@@ -17,8 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.bind.annotation.*;
@@ -53,7 +51,7 @@ public class ConceptController {
     @ApiOperation(value = "deleteAmalgamationFunctions", nickname = "deleteAmalgamationFunctions")
     @RequestMapping(method = RequestMethod.DELETE, path="/concepts/{conceptID}/amalgamationFunctions", produces = "application/json")
     @ApiResponsesDefault
-    public boolean deleteAmalgamationFunctions(@PathVariable(value="conceptID") String conceptID) {
+    public boolean deleteAmalgamationFunctions(@PathVariable(value=CONCEPT_ID_STR) String conceptID) {
 	Concept thisconcept = App.getProject().getAllSubConcepts().get(conceptID);
 	List<AmalgamationFct> list = thisconcept.getAvailableAmalgamFcts();
 	for(AmalgamationFct fct : list){
@@ -69,7 +67,7 @@ public class ConceptController {
     @ApiOperation(value = "addAmalgamationFunction", nickname = "addAmalgamationFunction")
     @RequestMapping(method = RequestMethod.PUT, path="/concepts/{conceptID}/amalgamationFunctions/{amalgamationFunctionID}", produces = "application/json")
     @ApiResponsesForAmalgamationFunctions
-    public boolean addAmalgamationFunctions(@PathVariable(value="conceptID") String conceptID,
+    public boolean addAmalgamationFunctions(@PathVariable(value=CONCEPT_ID_STR) String conceptID,
 	    @PathVariable(value="amalgamationFunctionID") String amalgamationFunctionID,
 	    @RequestParam(value="amalgamationFunctionType") String amalgamationFunctionType) {
 	logger.info("in add amalgamationfunction");
@@ -108,7 +106,7 @@ public class ConceptController {
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")})
-    public ResponseEntity<?> addNeuralAmalgamationFunctions(@PathVariable(value="conceptID") String conceptID,
+    public ResponseEntity<?> addNeuralAmalgamationFunctions(@PathVariable(value=CONCEPT_ID_STR) String conceptID,
                                                             @PathVariable(value="amalgamationFunctionID") String amalgamationFunctionID,
                                                             @RequestParam(value="files") MultipartFile[] uploadfiles) {
         //First collect the files, save them and check them
@@ -153,7 +151,7 @@ public class ConceptController {
     @RequestMapping(method = RequestMethod.PUT,
     path="/concepts/{conceptID}/neuralAmalgamationFunctions/{amalgamationFunctionID}", produces = "application/json")
     @ApiResponsesForResponseEntity
-    public ResponseEntity<?> addNeuralAmalgamationFunctions(@PathVariable(value="conceptID") String conceptID,
+    public ResponseEntity<?> addNeuralAmalgamationFunctions(@PathVariable(value=CONCEPT_ID_STR) String conceptID,
 	    @PathVariable(value="amalgamationFunctionID") String amalgamationFunctionID,
 	    @RequestParam(value="type") String type,
 	    @RequestParam(value="h5file") MultipartFile h5file,
@@ -201,7 +199,7 @@ public class ConceptController {
     @ApiOperation(value = "deleteAmalgamationFunction", nickname = "deleteAmalgamationFunction")
     @RequestMapping(method = RequestMethod.DELETE, path="/concepts/{conceptID}/amalgamationFunctions/{amalgamationFunction}", produces = "application/json")
     @ApiResponsesDefault
-    public boolean deleteAmalgamationFunction(@PathVariable(value="conceptID") String conceptID,
+    public boolean deleteAmalgamationFunction(@PathVariable(value=CONCEPT_ID_STR) String conceptID,
 	    @PathVariable(value="amalgamationFunction") String amalgamationFunction) {
 	Concept thisconcept = App.getProject().getAllSubConcepts().get(conceptID);
 	List<AmalgamationFct> list = thisconcept.getAvailableAmalgamFcts();
@@ -238,7 +236,7 @@ public class ConceptController {
     @ApiOperation(value="deleteConcept", nickname="deleteConcept")
     @RequestMapping(method=RequestMethod.DELETE, value = "/concepts/{conceptID}")
     @ApiResponsesForValueRange
-    public boolean deleteConcept(@PathVariable(value="conceptID") String conceptID){
+    public boolean deleteConcept(@PathVariable(value=CONCEPT_ID_STR) String conceptID){
 	Project p = App.getProject();
 	logger.info("deleting concept with id:"+conceptID);
 	Concept c = p.getSubConcepts().get(conceptID);
@@ -254,7 +252,7 @@ public class ConceptController {
     @ApiOperation(value="addConcept", nickname="addConcept")
     @RequestMapping(method=RequestMethod.PUT, value = "/concepts/{conceptID}")
     @ApiResponsesForValueRange
-    public boolean addConcept(@PathVariable(value="conceptID") String conceptID){
+    public boolean addConcept(@PathVariable(value=CONCEPT_ID_STR) String conceptID){
 	return null != conceptService.addConcept(conceptID);
     }
 
@@ -262,7 +260,7 @@ public class ConceptController {
     @ApiOperation(value = "getAttribute", nickname = "getAttribute")
     @RequestMapping(method = RequestMethod.GET, value = "/concepts/{conceptID}/attributes/{attributeID}", headers="Accept=application/json")
     @ApiResponsesForApiResponse
-    public HashMap<String, Object> getAttribute(@PathVariable(value="conceptID") String conceptID,
+    public HashMap<String, Object> getAttribute(@PathVariable(value=CONCEPT_ID_STR) String conceptID,
 	    @PathVariable(value="attributeID") String attributeID) {
 	Project p = App.getProject();
 	Concept c = p.getSubConcepts().get(conceptID);
@@ -277,7 +275,7 @@ public class ConceptController {
     @ApiOperation(value = "getAttributes", nickname = "getAttributes")
     @RequestMapping(method = RequestMethod.GET, value = "/concepts/{conceptID}/attributes", headers="Accept=application/json")
     @ApiResponsesForApiResponse
-    public Attribute getAttributes(@PathVariable(value="conceptID") String conceptID) {
+    public Attribute getAttributes(@PathVariable(value=CONCEPT_ID_STR) String conceptID) {
 	return new Attribute(conceptID);
     }
 
@@ -285,7 +283,7 @@ public class ConceptController {
     @ApiOperation(value = "deleteAttributes", nickname = "deleteAttributes")
     @RequestMapping(method = RequestMethod.DELETE, value = "/concepts/{concept}/attributes", headers="Accept=application/json")
     @ApiResponsesDefault
-    public boolean deleteAttributes(@PathVariable(value="conceptID") String conceptID) {
+    public boolean deleteAttributes(@PathVariable(value=CONCEPT_ID_STR) String conceptID) {
 	Project p = App.getProject();
 	Concept c = p.getSubConcepts().get(conceptID);
 	for(String attributeDescName : c.getAllAttributeDescs().keySet()) {
@@ -299,7 +297,7 @@ public class ConceptController {
     @RequestMapping(method = RequestMethod.PUT, value = "/concepts/{conceptID}/attributes/{attributeName}", headers="Accept=application/json")
     @ApiResponsesForValueRange
     public boolean addAttribute(
-	    @PathVariable(value="conceptID") String conceptID,
+	    @PathVariable(value=CONCEPT_ID_STR) String conceptID,
 	    @PathVariable(value="attributeName") String attributeName,
 	    @RequestParam(value="attributeJSON", defaultValue = "{}") String attributeJSON) {
 	Project p = App.getProject();
@@ -353,7 +351,7 @@ public class ConceptController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/concepts/{conceptID}/attributes/{attributeName}", headers="Accept=application/json")
     @ApiResponsesDefault
     public boolean deleteAttribute(
-	    @PathVariable(value="conceptID") String conceptID,
+	    @PathVariable(value=CONCEPT_ID_STR) String conceptID,
 	    @PathVariable(value="attributeName") String attributeName,
 	    @RequestParam(value="attributeType", defaultValue = "String") String attributeType) {
 	Project p = App.getProject();
@@ -374,7 +372,7 @@ public class ConceptController {
     @RequestMapping(method = RequestMethod.GET, value = "/concepts/{conceptID}/attributes/{attributeName}/similarityfunctions", headers="Accept=application/json")
     @ApiResponsesDefault
     public HashMap<String, Object> getSimilarityFunction(
-	    @PathVariable(value="conceptID") String conceptID,
+	    @PathVariable(value=CONCEPT_ID_STR) String conceptID,
 	    @PathVariable(value="attributeName") String attributeName) {
 	Project p = App.getProject();
 	Concept concept = p.getConceptByID(conceptID);
@@ -395,7 +393,7 @@ public class ConceptController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/concepts/{conceptID}/attributes/{attributeName}/similarityfunction", headers="Accept=application/json")
     @ApiResponsesDefault
     public boolean deleteSimilarityFunctions(
-	    @PathVariable(value="conceptID") String conceptID,
+	    @PathVariable(value=CONCEPT_ID_STR) String conceptID,
 	    @PathVariable(value="attributeName") String attributeName) {
 	Project p = App.getProject();
 	Concept concept = p.getConceptByID(conceptID);

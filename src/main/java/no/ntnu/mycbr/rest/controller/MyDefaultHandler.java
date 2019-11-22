@@ -15,9 +15,9 @@ public class MyDefaultHandler implements HttpRequestHandler {
 
     @Override
     public void handleRequest (HttpServletRequest request,
-                               HttpServletResponse response) throws ServletException, IOException {
-        logger.info("in default handler method: "+request.getMethod()+" url: "+request.getRequestURI());
-        PrintWriter writer = response.getWriter();
-        writer.write("response from MyDefaultHandler method: "+request.getMethod()+", uri: "+request.getRequestURI());
+	    HttpServletResponse response) throws ServletException, IOException {
+	logger.info("in default handler method: "+request.getMethod()+" url: "+request.getRequestURI());
+	PrintWriter writer = response.getWriter();
+	writer.write("response from MyDefaultHandler method: "+request.getMethod()+", uri: "+request.getRequestURI());
     }
 }

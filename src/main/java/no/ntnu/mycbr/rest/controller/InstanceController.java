@@ -26,7 +26,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import static no.ntnu.mycbr.rest.utils.RESTCBRUtils.getFullResult;
+import static no.ntnu.mycbr.rest.utils.QueryUtils.getFullResult;
 
 import static no.ntnu.mycbr.rest.common.ApiResponseAnnotations.*;
 import static no.ntnu.mycbr.rest.common.Constants.*;

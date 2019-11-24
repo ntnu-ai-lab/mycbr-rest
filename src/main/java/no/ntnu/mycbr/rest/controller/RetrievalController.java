@@ -196,12 +196,15 @@ public class RetrievalController {
     @ApiOperation(value = GET_CASE_BASE_SELF_SIMILARITY, nickname = GET_CASE_BASE_SELF_SIMILARITY)
     @RequestMapping(method = RequestMethod.GET, path=SLASH_GET_CASE_BASE_SELF_SIMILARITY, produces=APPLICATION_JSON)
     @ApiResponsesDefault
-    public LinkedHashMap<String, LinkedHashMap<String, Double>> getCaseBaseSelfSimilarity(
+    public Map<String, Map<String, Double>> getCaseBaseSelfSimilarity(
 	    @RequestParam(value=CASEBASE_STR, defaultValue=DEFAULT_CASEBASE) String casebase,
 	    @RequestParam(value=CONCEPT_NAME_STR, defaultValue=DEFAULT_CONCEPT) String concept,
 	    @RequestParam(value=AMALGAMATION_FUNCTION_STR, defaultValue=DEFAULT_AMALGAMATION_FUNCTION) String amalFunc,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES, defaultValue = DEFAULT_NO_OF_CASES) int k) {
 	
-	return new SelfSimilarityRetrieval().getCaseBaseSelfSimilarity(casebase, concept, amalFunc, k);
+	SelfSimilarityRetrieval selfSimilarityRetrieval = new SelfSimilarityRetrieval();
+	Map<String, Map<String,Double>> retrivalResults = selfSimilarityRetrieval.getCaseBaseSelfSimilarity(casebase, concept, amalFunc, k);
+	
+	return retrivalResults;
     }
 }

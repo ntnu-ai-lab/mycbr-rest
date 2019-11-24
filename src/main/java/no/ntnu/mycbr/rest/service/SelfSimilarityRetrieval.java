@@ -31,9 +31,9 @@ public class SelfSimilarityRetrieval implements RetrievalCustomer{
 
     private int k = -1;
     private List<Pair<Instance,Similarity>> results;
-    private LinkedHashMap<String, LinkedHashMap<String, Double>> selfSimMatrix = new LinkedHashMap<>();
+    private Map<String, Map<String, Double>> selfSimMatrix = new LinkedHashMap<String, Map<String, Double>>();
 
-    public LinkedHashMap<String, LinkedHashMap<String, Double>> getCaseBaseSelfSimilarity(String casebase, 
+    public Map<String, Map<String, Double>> getCaseBaseSelfSimilarity(String casebase, 
 	    String conceptName, String amalFunc, int k){
 
 	this.k = k;
@@ -46,6 +46,7 @@ public class SelfSimilarityRetrieval implements RetrievalCustomer{
 	
 	TemporaryAmalgamFctManager tempAmalgamFctManager = new TemporaryAmalgamFctManager(concept);
 	
+	// This will change the default Amalgamation Function of the myCBR project to a user specified function
 	try {
 		tempAmalgamFctManager.changeAmalgamFct(amalFunc);
 	} catch (TemporaryAmalgamFctNotChangedException e) {

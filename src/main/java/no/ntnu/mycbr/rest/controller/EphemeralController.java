@@ -23,22 +23,59 @@ public class EphemeralController {
 
     private final Log logger = LogFactory.getLog(getClass());
 
-    @Autowired
-    private EphemeralService ephemeralService;
+    //@Autowired
+    //private EphemeralService ephemeralService;
 
-    @ApiOperation(value = "retrievalOnEphemeralCaseBase", nickname = "retrievalOnEphemeralCaseBase")
-    @RequestMapping(method = RequestMethod.POST, path=DEFAULT_PATH+"retrievalWithContent", produces=APPLICATION_JSON)
+    /**
+     * Perform retrieval on an ephemeral case base.
+     * @param casebase : Case base name of the myCBR project.
+     * @param concept  : Concept name of the myCBR project.
+     * @param amalFunc : Amalgamation function (global similarity function) of the myCBR project.
+     * @param k        : Number of desired retrieved cases per query case.
+     * @param mapOfcaseIDs : Keys are <code>query-set</code> and <code>casebase-set</code>. The <code>query-set</code> contains list of caseIDs to be queried. The <code>casebase-set</code> contains the list of caseIDs used for creation ephemeral case base.
+     * @return
+     */
+    @ApiOperation(value = "getSimilarInstancesFromEphemeralCaseBase", nickname = "getSimilarInstancesFromEphemeralCaseBase")
+    @RequestMapping(method = RequestMethod.POST, path=SLASH_EPHEMERAL_RETRIEVAL, produces=APPLICATION_JSON)
     @ApiResponsesDefault
-    public @ResponseBody LinkedHashMap<String, LinkedHashMap<String, Double>> getSimilarInstancesWithContent(
+    public @ResponseBody Map<String, Map<String, Double>> retrievalFromEphemeralCaseBase(
 	    @RequestParam(value=CASEBASE_STR, defaultValue=DEFAULT_CASEBASE) String casebase,
 	    @RequestParam(value=CONCEPT_NAME_STR, defaultValue=DEFAULT_CONCEPT) String concept,
 	    @RequestParam(value=AMALGAMATION_FUNCTION_STR, defaultValue=DEFAULT_AMALGAMATION_FUNCTION) String amalFunc,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k,
-	    @RequestBody(required = true)  Map<String, Set<String>> ephemeralMap) {
+	    @RequestBody(required = true)  Map<String, Set<String>> mapOfcaseIDs) {
 
-	Set<String> querySet = ephemeralMap.get("query-set");
-	Set<String> cbSet = ephemeralMap.get("case-base");
+	Set<String> querySet = mapOfcaseIDs.get("query-set");
+	Set<String> cbSet = mapOfcaseIDs.get("casebase-set");
 
-	return ephemeralService.ephemeralRetrival(querySet, cbSet);
+	EphemeralService ephemeralService = new EphemeralService(casebase, concept, amalFunc, k);
+	Map<String, Map<String, Double>> retrivalResults = ephemeralService.ephemeralRetrival(querySet, cbSet);
+
+	return retrivalResults;
+    }
+
+    /**
+     * Computes Self Similarity on the cases of an ephemeral case base.
+     * @param casebase : Case base name of the myCBR project.
+     * @param concept  : Concept name of the myCBR project.
+     * @param amalFunc : Amalgamation function (global similarity function) of the myCBR project.
+     * @param k        : Number of desired retrieved cases per query case.
+     * @param caseIDs  : List of caseIDs used for creation ephemeral case base.
+     * @return
+     */
+    @ApiOperation(value = "getEphemeralCaseBaseSelfSimilarityMatrix", nickname = "getEphemeralCaseBaseSelfSimilarityMatrix")
+    @RequestMapping(method = RequestMethod.POST, path=SLASH_EPHEMERAL_COMPUTE_SELF_SIMILARITY, produces=APPLICATION_JSON)
+    @ApiResponsesDefault
+    public @ResponseBody Map<String, Map<String, Double>> computeEphemeralCaseBaseSelfSimilarity(
+	    @RequestParam(value=CASEBASE_STR, defaultValue=DEFAULT_CASEBASE) String casebase,
+	    @RequestParam(value=CONCEPT_NAME_STR, defaultValue=DEFAULT_CONCEPT) String concept,
+	    @RequestParam(value=AMALGAMATION_FUNCTION_STR, defaultValue=DEFAULT_AMALGAMATION_FUNCTION) String amalFunc,
+	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k,
+	    @RequestBody(required = true)  Set<String> caseIDs) {
+
+	EphemeralService ephemeralService = new EphemeralService(casebase, concept, amalFunc, k);
+	Map<String, Map<String, Double>> retrivalResults = ephemeralService.computeSelfSimilarity(caseIDs);
+
+	return retrivalResults;
     }
 }

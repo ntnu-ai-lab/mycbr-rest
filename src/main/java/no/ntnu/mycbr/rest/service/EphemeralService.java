@@ -25,11 +25,20 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
-@Service
+/**
+ * The EphemeralService facilitates retrieval an ephemeral case base including Self-Similarity retrieval.
+ * @author Amar Jaiswal
+ * @since Nov 24, 2019
+ */
+//s@Service
 public class EphemeralService implements RetrievalCustomer{
 
     private final Log logger = LogFactory.getLog(getClass());
+    
+    // The name used for ephemeral case base
+    private static final String EPHEMERAL_CASEBASE_NAME = "ephemeral_casebase";
 
+    // Number of retrieved cases, default is -1 (interpreted as all cases a case base) 
     private int k = -1;
     private Project project;
     private ICaseBase cb;
@@ -37,7 +46,7 @@ public class EphemeralService implements RetrievalCustomer{
     private TemporaryAmalgamFctManager tempAmalgamFctManager;
 
     private List<Pair<Instance,Similarity>> results;
-    private LinkedHashMap<String, LinkedHashMap<String, Double>> simMatrix = new LinkedHashMap<>();
+    private Map<String, Map<String, Double>> simMatrix = new LinkedHashMap<String, Map<String, Double>>();
 
     public EphemeralService(String casebaseName, String conceptName, String amalFunc, int k) {		
 	this.k = k;
@@ -47,6 +56,7 @@ public class EphemeralService implements RetrievalCustomer{
 
 	this.tempAmalgamFctManager = new TemporaryAmalgamFctManager(concept);
 
+	// This will change the default Amalgamation Function of the myCBR project to a user specified function
 	try {
 	    tempAmalgamFctManager.changeAmalgamFct(amalFunc);
 	} catch (TemporaryAmalgamFctNotChangedException e) {
@@ -54,17 +64,46 @@ public class EphemeralService implements RetrievalCustomer{
 	}
     }
 
-    public LinkedHashMap<String, LinkedHashMap<String, Double>> ephemeralRetrival( Set<String> querySet, Set<String> cbSet) {
+    /**
+     * Query on an ephemeral (short lived) case base. The ephemeral case base is a subset of cases from the 
+     * default case base.
+     * @param querySet Set of caseIDs, that will be used as query cases against the ephemeral case base.
+     * @param cbSet Set of caseIDs, that will serve as cases of the ephemeral case base.
+     * @return Map of Maps where key is the caseID of a case, and value is  a map of retrieved similar cases.
+     */
+    public Map<String, Map<String, Double>> ephemeralRetrival( Set<String> querySet, Set<String> cbSet) {
 
-	String cbTempName = "temp_cb";
+	ICaseBase motherCasebase = cb;
+	ICaseBase ephemeralCasebase = createEmptyCasebase(EPHEMERAL_CASEBASE_NAME, cbSet.size());
 
-	ICaseBase fromCB = cb;
-	ICaseBase toCB = createEmptyCasebase(cbTempName, cbSet.size());
-
-	transferCases( cbSet, fromCB, toCB);
+	transferCases( cbSet, motherCasebase, ephemeralCasebase);
 
 	for(String key: querySet) {
-	    simMatrix.putIfAbsent(key, query(concept, toCB, key));
+	    // query returns LinkedHashMaps
+	    simMatrix.putIfAbsent(key, query(concept, ephemeralCasebase, key));
+	}
+
+	return simMatrix;
+    }
+
+    /**
+     * Get the Self-Similarity matrix for an ephemeral case base.
+     * @param cbSet Set of caseIDs, that will serve as cases of the ephemeral case base.
+     * @return Map of Maps where key is the caseID of a case, and value is  a map of retrieved similar cases.
+     */
+    public Map<String, Map<String, Double>> computeSelfSimilarity(Set<String> cbSet){
+
+	ICaseBase motherCasebase = cb;
+	ICaseBase ephemeralCasebase = createEmptyCasebase(EPHEMERAL_CASEBASE_NAME, cbSet.size());
+
+	transferCases( cbSet, motherCasebase, ephemeralCasebase);
+
+	Collection<Instance> instances = getAllInstances(ephemeralCasebase);
+
+	for(Instance instance: instances) {
+	    String key = instance.getName();
+	    // query returns LinkedHashMaps
+	    simMatrix.putIfAbsent(key, query(concept, ephemeralCasebase, key));
 	}
 
 	return simMatrix;
@@ -74,23 +113,14 @@ public class EphemeralService implements RetrievalCustomer{
 	return casebase.getCases(); 
     }
 
-    private void transferCases(Set<String> caseIds, ICaseBase fromCB, ICaseBase toCB) {
+    private void transferCases(Set<String> caseIds, ICaseBase motherCasebase, ICaseBase ephemeralCasebase) {
 
-	Collection<Instance> instances = fromCB.getCases();
+	Collection<Instance> instances = motherCasebase.getCases();
 
 	for(Instance instance : instances) {
 	    if(caseIds.contains(instance.getName())) {
-		toCB.addCase(instance);
+		ephemeralCasebase.addCase(instance);
 	    }
-	}
-    }
-
-    private void transferCases(ICaseBase fromCB, ICaseBase toCB) {
-
-	Collection<Instance> instances = fromCB.getCases();
-
-	for(Instance instance : instances) {
-	    toCB.addCase(instance);
 	}
     }
 

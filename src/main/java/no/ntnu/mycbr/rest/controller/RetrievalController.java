@@ -2,6 +2,7 @@ package no.ntnu.mycbr.rest.controller;
 
 import io.swagger.annotations.ApiOperation;
 import no.ntnu.mycbr.rest.Query;
+import no.ntnu.mycbr.rest.common.ApiResponseAnnotations.ApiResponsesDefault;
 import no.ntnu.mycbr.rest.service.SelfSimilarityRetrieval;
 
 import org.apache.commons.logging.Log;
@@ -194,7 +195,7 @@ public class RetrievalController {
      * @return A matrix of similarity values, where the rows and columns are case IDs. The data structure is map of maps. 
      */
     @ApiOperation(value = GET_CASE_BASE_SELF_SIMILARITY, nickname = GET_CASE_BASE_SELF_SIMILARITY)
-    @RequestMapping(method = RequestMethod.GET, path=SLASH_SELF_SIMILARITY_RETRIEVAL, produces=APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, path=SLASH_COMPUTE_SELF_SIMILARITY, produces=APPLICATION_JSON)
     @ApiResponsesDefault
     public Map<String, Map<String, Double>> getCaseBaseSelfSimilarity(
 	    @RequestParam(value=CASEBASE_STR, defaultValue=DEFAULT_CASEBASE) String casebase,

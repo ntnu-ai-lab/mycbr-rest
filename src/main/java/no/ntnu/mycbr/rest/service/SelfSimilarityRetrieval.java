@@ -30,67 +30,50 @@ public class SelfSimilarityRetrieval implements RetrievalCustomer{
     private final Log logger = LogFactory.getLog(getClass());
 
     private int k = -1;
+    
     private List<Pair<Instance,Similarity>> results;
     private Map<String, Map<String, Double>> selfSimMatrix = new LinkedHashMap<String, Map<String, Double>>();
 
-    public Map<String, Map<String, Double>> getCaseBaseSelfSimilarity(String casebase, 
+    /**
+     * 
+     * /**
+     * Get the Self-Similarity matrix for a case base.
+     * @param casebase Name of the case base.
+     * @param conceptName Name of the concept.
+     * @param amalFunc Name of the amalgamation function (global similarity function).
+     * @param k Number of retrieved cases per retrieval.
+     * @return Map of Maps where key is the caseID of a case, and value is  a map of retrieved similar cases.
+     */
+    public Map<String, Map<String, Double>> performSelfSimilarityRetrieval(String casebase, 
 	    String conceptName, String amalFunc, int k){
 
 	this.k = k;
 
-	String cbTempName = "temp_cb";
-
 	Project project = App.getProject();
 	Concept concept = project.getConceptByID(conceptName);
-	ICaseBase cbFrom = (DefaultCaseBase)project.getCaseBases().get(casebase);
+	ICaseBase cb = (DefaultCaseBase)project.getCaseBases().get(casebase);
 	
 	TemporaryAmalgamFctManager tempAmalgamFctManager = new TemporaryAmalgamFctManager(concept);
 	
-	// This will change the default Amalgamation Function of the myCBR project to a user specified function
+	// This will change the default Amalgamation Function of the myCBR project to a user specified functions
 	try {
 		tempAmalgamFctManager.changeAmalgamFct(amalFunc);
 	} catch (TemporaryAmalgamFctNotChangedException e) {
 		e.printStackTrace();
 	}
 
-	int parentCBSize = cbFrom.getCases().size();
-
-	ICaseBase tempCB = createEmptyCasebase(project, cbTempName, parentCBSize);
-
-	transferCases(cbFrom, tempCB);
-
-	Collection<Instance> instances = getAllInstances(tempCB);
+	Collection<Instance> instances = getAllInstances(cb);
 
 	for(Instance instance: instances) {
 	    String key = instance.getName();
-	    selfSimMatrix.putIfAbsent(key, query(concept, tempCB, key));
+	    selfSimMatrix.putIfAbsent(key, query(concept, cb, key));
 	}
 
 	return selfSimMatrix;
     }
 
-
     private Collection<Instance> getAllInstances(ICaseBase casebase) {
 	return casebase.getCases(); 
-    }
-
-    private void transferCases(ICaseBase cbFrom, ICaseBase cbTo) {
-
-	Collection<Instance> instances = cbFrom.getCases();
-
-	for(Instance instance : instances) {
-	    cbTo.addCase(instance);
-	}
-    }
-
-    private ICaseBase createEmptyCasebase(Project project, String cbName, int caseCount) {
-	ICaseBase cb = null;
-	try {
-	    cb = new DefaultCaseBase(project, cbName, caseCount);
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
-	return cb;
     }
 
     private LinkedHashMap<String, Double> query(Concept concept, ICaseBase casebase, String caseID) {

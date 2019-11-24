@@ -28,7 +28,6 @@ public final class Constants {
 
     public static final String DEFAULT_PATH = "/concepts/{conceptID}/casebases/{casebaseID}/";
 
-    public static final String GET_CASE_BASE_SELF_SIMILARITY = "getCaseBAseSelfSimilarity";
-    public static final String SLASH_GET_CASE_BASE_SELF_SIMILARITY = "/"+GET_CASE_BASE_SELF_SIMILARITY;
-
+    public static final String GET_CASE_BASE_SELF_SIMILARITY = "getCaseBaseSelfSimilarity";
+    public static final String SLASH_SELF_SIMILARITY_RETRIEVAL = "/retrieval/" + "self-simlarity";
 }

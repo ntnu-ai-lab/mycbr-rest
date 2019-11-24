@@ -12,7 +12,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import static no.ntnu.mycbr.rest.utils.RESTCBRUtils.getFullResult;
+import static no.ntnu.mycbr.rest.utils.QueryUtils.getFullResult;
 
 import static no.ntnu.mycbr.rest.common.ApiResponseAnnotations.*;
 import static no.ntnu.mycbr.rest.common.Constants.*;
@@ -194,7 +194,7 @@ public class RetrievalController {
      * @return A matrix of similarity values, where the rows and columns are case IDs. The data structure is map of maps. 
      */
     @ApiOperation(value = GET_CASE_BASE_SELF_SIMILARITY, nickname = GET_CASE_BASE_SELF_SIMILARITY)
-    @RequestMapping(method = RequestMethod.GET, path=SLASH_GET_CASE_BASE_SELF_SIMILARITY, produces=APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, path=SLASH_SELF_SIMILARITY_RETRIEVAL, produces=APPLICATION_JSON)
     @ApiResponsesDefault
     public Map<String, Map<String, Double>> getCaseBaseSelfSimilarity(
 	    @RequestParam(value=CASEBASE_STR, defaultValue=DEFAULT_CASEBASE) String casebase,
@@ -203,7 +203,7 @@ public class RetrievalController {
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES, defaultValue = DEFAULT_NO_OF_CASES) int k) {
 	
 	SelfSimilarityRetrieval selfSimilarityRetrieval = new SelfSimilarityRetrieval();
-	Map<String, Map<String,Double>> retrivalResults = selfSimilarityRetrieval.getCaseBaseSelfSimilarity(casebase, concept, amalFunc, k);
+	Map<String, Map<String,Double>> retrivalResults = selfSimilarityRetrieval.performSelfSimilarityRetrieval(casebase, concept, amalFunc, k);
 	
 	return retrivalResults;
     }

@@ -8,7 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RESTCBRUtils {
+public class QueryUtils {
     public static List<LinkedHashMap<String, String>> getFullResult(Query query, String concept) {
         LinkedHashMap<String, Double> results = query.getSimilarCases();
         List<LinkedHashMap<String, String>> cases = new ArrayList<>();

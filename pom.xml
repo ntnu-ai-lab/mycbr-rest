@@ -18,6 +18,7 @@
     <jackson.version>1.9.12</jackson.version>
     <mvn.compiler.version>3.5.1</mvn.compiler.version>
     <hibernate.version>1.0.1.Final</hibernate.version>
+    <powermock.version>1.5.5</powermock.version>
   </properties>
 
 
@@ -48,13 +49,13 @@
     <dependency>
       <groupId>org.powermock</groupId>
       <artifactId>powermock-api-mockito</artifactId>
-      <version>1.5.5</version>
+      <version>${powermock.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.powermock</groupId>
       <artifactId>powermock-module-junit4</artifactId>
-      <version>1.5.5</version>
+      <version>${powermock.version}</version>
       <exclusions>
         <exclusion>
           <groupId>junit</groupId>

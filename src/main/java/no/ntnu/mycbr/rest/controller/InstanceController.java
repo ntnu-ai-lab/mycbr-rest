@@ -41,21 +41,21 @@ public class InstanceController
 
     //Get one instance
     @ApiOperation(value = "getInstance", nickname = "getInstance")
-    @RequestMapping(method = RequestMethod.GET, value = "/concepts/{conceptID}/casebases/{casebaseID}/instances/{instanceID}", headers="Accept=application/json")
+    @RequestMapping(method = RequestMethod.GET, value = PATH_INSTANCE_NAME, headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesForCase
-    public Case getInstance(@PathVariable(value=CONCEPT_ID_STR) String conceptID,
-	    @PathVariable(value=CASEBASE_ID_STR) String casebaseID,
-	    @PathVariable(value=INSTANCE_ID_STR) String instanceID) {
+    public Case getInstance(@PathVariable(value=CONCEPT_NAME_STR) String conceptID,
+	    @PathVariable(value=CASEBASE_NAME_STR) String casebaseID,
+	    @PathVariable(value=INSTANCE_NAME_STR) String instanceID) {
 	return new Case(instanceID);
     }
 
     //Delete one instance
     @ApiOperation(value = "deleteInstance", nickname = "deleteInstance")
-    @RequestMapping(method = RequestMethod.DELETE, value = "/concepts/{conceptID}/casebases/{casebaseID}/instances/{instanceID}", headers="Accept=application/json")
+    @RequestMapping(method = RequestMethod.DELETE, value = PATH_INSTANCE_NAME, headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
-    public boolean deleteInstance(@PathVariable(value=CONCEPT_ID_STR) String conceptID,
-	    @PathVariable(value=CASEBASE_ID_STR) String casebaseID,
-	    @PathVariable(value=INSTANCE_ID_STR) String instanceID) {
+    public boolean deleteInstance(@PathVariable(value=CONCEPT_NAME_STR) String conceptID,
+	    @PathVariable(value=CASEBASE_NAME_STR) String casebaseID,
+	    @PathVariable(value=INSTANCE_NAME_STR) String instanceID) {
 	Project p = App.getProject();
 	if(!p.getCaseBases().containsKey(casebaseID))
 	    return false;
@@ -68,9 +68,9 @@ public class InstanceController
 
     // Get all instances in case base of a concept
     @ApiOperation(value = "getAllInstances", nickname = "getAllInstances")
-    @RequestMapping(method = RequestMethod.GET, value = "/concepts/{conceptID}/instances", headers="Accept=application/json")
+    @RequestMapping(method = RequestMethod.GET, value = PATH_INSTANCES, headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
-    public Collection<Case> getAllInstances(@PathVariable(value=CONCEPT_ID_STR) String conceptID) {
+    public Collection<Case> getAllInstances(@PathVariable(value=CONCEPT_NAME_STR) String conceptID) {
 	Project p = App.getProject();
 
 	/*Query query = new Query(conceptID);
@@ -94,10 +94,10 @@ public class InstanceController
 
     // Get all instances of a concept
     @ApiOperation(value = "getAllInstancesInCaseBase", nickname = "getAllInstancesInCaseBase")
-    @RequestMapping(method = RequestMethod.GET, value = "/concepts/{conceptID}/casebases/{casebaseID}/instances", headers="Accept=application/json")
+    @RequestMapping(method = RequestMethod.GET, value = PATH_INSTANCES, headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesForCase
-    public List<LinkedHashMap<String, String>> getAllInstancesInCaseBase(@PathVariable(value=CONCEPT_ID_STR) String conceptID,
-	    @PathVariable(value=CASEBASE_ID_STR) String casebaseID) {
+    public List<LinkedHashMap<String, String>> getAllInstancesInCaseBase(@PathVariable(value=CONCEPT_NAME_STR) String conceptID,
+	    @PathVariable(value=CASEBASE_NAME_STR) String casebaseID) {
 	Query query = new Query(casebaseID,conceptID);
 	//TODO: filter to one type of concept
 	List<LinkedHashMap<String, String>> cases = getFullResult(query, conceptID);
@@ -107,10 +107,10 @@ public class InstanceController
 
     //Delete all instances
     @ApiOperation(value="deleteInstances", nickname="deleteInstances")
-    @RequestMapping(method=RequestMethod.DELETE, value = "/concepts/{conceptID}/casebases/{casebaseID}/cases")
+    @RequestMapping(method=RequestMethod.DELETE, value = PATH_INSTANCES)
     @ApiResponsesForValueRange
     public boolean deleteInstances(@PathVariable(value="concept") String conceptID,
-	    @PathVariable(value=CASEBASE_ID_STR) String casebaseID){
+	    @PathVariable(value=CASEBASE_NAME_STR) String casebaseID){
 
 	Project p = App.getProject();
 	if(!p.getCaseBases().containsKey(casebaseID))
@@ -126,9 +126,9 @@ public class InstanceController
 
     //Delete instances according to pattern
     @ApiOperation(value="deleteInstances", nickname="deleteInstancePattern")
-    @RequestMapping(method=RequestMethod.DELETE, value = "/concepts/{conceptID}/casebases/{casebaseID}/instances/delete")
+    @RequestMapping(method=RequestMethod.DELETE, value = PATH_INSTANCES +"/delete")
     @ApiResponsesForValueRange
-    public boolean deleteInstancePattern(@PathVariable(value=CONCEPT_ID_STR) String conceptID,
+    public boolean deleteInstancePattern(@PathVariable(value=CONCEPT_NAME_STR) String conceptID,
 	    @PathVariable(value="caseBase") String caseBase,
 	    @RequestParam(value="pattern",defaultValue="*") String pattern
 	    ){
@@ -164,11 +164,11 @@ public class InstanceController
     }
      */
     @ApiOperation(value = "addInstancesJSON", nickname = "addInstancesJSON")
-    @RequestMapping(method = RequestMethod.POST, value = "/concepts/{conceptID}/casebases/{casebaseID}/instances", headers="Accept=application/json")
+    @RequestMapping(method = RequestMethod.POST, value = PATH_INSTANCES, headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
     public ArrayList<String> addInstancesJSON(
-	    @PathVariable(value=CONCEPT_ID_STR) String conceptID,
-	    @PathVariable(value=CASEBASE_ID_STR) String casebaseID,
+	    @PathVariable(value=CONCEPT_NAME_STR) String conceptID,
+	    @PathVariable(value=CASEBASE_NAME_STR) String casebaseID,
 	    @RequestParam(value="cases", defaultValue="{'cases':[{'Att':'Value'},{'Att':'Value'}]}") String cases
 	    ) {
 	Project p = App.getProject();
@@ -189,12 +189,12 @@ public class InstanceController
 	return instanceService.addInstances(c,casebaseID,inpcases);
     }
     @ApiOperation(value = "addInstanceJSON", nickname = "addInstancesJSON")
-    @RequestMapping(method = RequestMethod.PUT, value = "/concepts/{conceptID}/casebases/{casebaseID}/instances/{caseID}", headers="Accept=application/json")
+    @RequestMapping(method = RequestMethod.PUT, value = PATH_INSTANCE_NAME, headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
     public boolean addInstanceJSON(
-	    @PathVariable(value=CONCEPT_ID_STR) String conceptID,
-	    @PathVariable(value=CASEBASE_ID_STR) String casebaseID,
-	    @PathVariable(value=CASE_ID_STR) String caseID,
+	    @PathVariable(value=CONCEPT_NAME_STR) String conceptID,
+	    @PathVariable(value=CASEBASE_NAME_STR) String casebaseID,
+	    @PathVariable(value=CASE_NAME_STR) String caseID,
 	    @RequestParam(value="casedata", defaultValue="{}") String casedata
 	    ) {
 	Project p = App.getProject();

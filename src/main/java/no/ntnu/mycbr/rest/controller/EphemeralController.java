@@ -36,7 +36,7 @@ public class EphemeralController {
      * @return
      */
     @ApiOperation(value = "getSimilarInstancesFromEphemeralCaseBase", nickname = "getSimilarInstancesFromEphemeralCaseBase")
-    @RequestMapping(method = RequestMethod.POST, path=SLASH_EPHEMERAL_RETRIEVAL, produces=APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.POST, path=PATH_EPHEMERAL_RETRIEVAL, produces=APPLICATION_JSON)
     @ApiResponsesDefault
     public @ResponseBody Map<String, Map<String, Double>> retrievalFromEphemeralCaseBase(
 	    @RequestParam(value=CASEBASE_STR, defaultValue=DEFAULT_CASEBASE) String casebase,
@@ -64,7 +64,7 @@ public class EphemeralController {
      * @return
      */
     @ApiOperation(value = "getEphemeralCaseBaseSelfSimilarityMatrix", nickname = "getEphemeralCaseBaseSelfSimilarityMatrix")
-    @RequestMapping(method = RequestMethod.POST, path=SLASH_EPHEMERAL_COMPUTE_SELF_SIMILARITY, produces=APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.POST, path=PATH_EPHEMERAL_COMPUTE_SELF_SIMILARITY, produces=APPLICATION_JSON)
     @ApiResponsesDefault
     public @ResponseBody Map<String, Map<String, Double>> computeEphemeralCaseBaseSelfSimilarity(
 	    @RequestParam(value=CASEBASE_STR, defaultValue=DEFAULT_CASEBASE) String casebase,

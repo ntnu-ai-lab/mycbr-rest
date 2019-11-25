@@ -41,17 +41,18 @@ public class ConceptController {
 
     //get all amalgationfunctions
     @ApiOperation(value = "getAmalgamationFunctions", nickname = "getAmalgamationFunctions")
-    @RequestMapping(method = RequestMethod.GET, path="/concepts/{concept}/amalgamationFunctions", produces = "application/json")
+    @RequestMapping(method = RequestMethod.GET, path=PATH_AMALGAMATION_FUNCTIONS, produces = APPLICATION_JSON)
     @ApiResponsesForAmalgamationFunctions
     public AmalgamationFunctions getAmalgamationFunctions(@PathVariable(value="concept") String concept) {
 	return new AmalgamationFunctions(concept);
     }
 
+    
     //delete all amalgationfunctions
     @ApiOperation(value = "deleteAmalgamationFunctions", nickname = "deleteAmalgamationFunctions")
-    @RequestMapping(method = RequestMethod.DELETE, path="/concepts/{conceptID}/amalgamationFunctions", produces = "application/json")
+    @RequestMapping(method = RequestMethod.DELETE, path=PATH_AMALGAMATION_FUNCTIONS, produces = APPLICATION_JSON)
     @ApiResponsesDefault
-    public boolean deleteAmalgamationFunctions(@PathVariable(value=CONCEPT_ID_STR) String conceptID) {
+    public boolean deleteAmalgamationFunctions(@PathVariable(value=CONCEPT_NAME_STR) String conceptID) {
 	Concept thisconcept = App.getProject().getAllSubConcepts().get(conceptID);
 	List<AmalgamationFct> list = thisconcept.getAvailableAmalgamFcts();
 	for(AmalgamationFct fct : list){
@@ -65,9 +66,9 @@ public class ConceptController {
     // amalgamationfunctionType needs to be a string matching exactly the name of the enum. https://stackoverflow.com/questions/604424/lookup-java-enum-by-string-value
     // MINIMUM, MAXIMUM, WEIGHTED_SUM, EUCLIDEAN, NEURAL_NETWORK_SOLUTION_DIRECTLY,SIM_DEF;
     @ApiOperation(value = "addAmalgamationFunction", nickname = "addAmalgamationFunction")
-    @RequestMapping(method = RequestMethod.PUT, path="/concepts/{conceptID}/amalgamationFunctions/{amalgamationFunctionID}", produces = "application/json")
+    @RequestMapping(method = RequestMethod.PUT, path=PATH_NEURAL_AMALGAMATION_FUNCTION_NAME, produces = APPLICATION_JSON)
     @ApiResponsesForAmalgamationFunctions
-    public boolean addAmalgamationFunctions(@PathVariable(value=CONCEPT_ID_STR) String conceptID,
+    public boolean addAmalgamationFunctions(@PathVariable(value=CONCEPT_NAME_STR) String conceptID,
 	    @PathVariable(value="amalgamationFunctionID") String amalgamationFunctionID,
 	    @RequestParam(value="amalgamationFunctionType") String amalgamationFunctionType) {
 	logger.info("in add amalgamationfunction");
@@ -99,14 +100,14 @@ public class ConceptController {
     // amalgamationfunctionType needs to be a string matching exactly the name of the enum. https://stackoverflow.com/questions/604424/lookup-java-enum-by-string-value
     // MINIMUM, MAXIMUM, WEIGHTED_SUM, EUCLIDEAN, NEURAL_NETWORK_SOLUTION_DIRECTLY,SIM_DEF;
     /*@ApiOperation(value = "addNeuralAmalgamationFunction", nickname = "addANeuralmalgamationFunction")
-    @RequestMapping(method = RequestMethod.PUT, path="/concepts/{conceptID}/neuralAmalgamationFunctions/{amalgamationFunctionID}", produces = "application/json")
+    @RequestMapping(method = RequestMethod.PUT, path="/concepts/{conceptID}/neuralAmalgamationFunctions/{amalgamationFunctionID}", produces = APPLICATION_JSON)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success", response = AmalgamationFunctions.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")})
-    public ResponseEntity<?> addNeuralAmalgamationFunctions(@PathVariable(value=CONCEPT_ID_STR) String conceptID,
+    public ResponseEntity<?> addNeuralAmalgamationFunctions(@PathVariable(value=CONCEPT_NAME_STR) String conceptID,
                                                             @PathVariable(value="amalgamationFunctionID") String amalgamationFunctionID,
                                                             @RequestParam(value="files") MultipartFile[] uploadfiles) {
         //First collect the files, save them and check them
@@ -148,10 +149,9 @@ public class ConceptController {
     // If not @RestController, uncomment this
     //@ResponseBody
     @ApiOperation(value = "addNeuralAmalgamationFunction", nickname = "addANeuralmalgamationFunction")
-    @RequestMapping(method = RequestMethod.PUT,
-    path="/concepts/{conceptID}/neuralAmalgamationFunctions/{amalgamationFunctionID}", produces = "application/json")
+    @RequestMapping(method = RequestMethod.PUT, path=PATH_NEURAL_AMALGAMATION_FUNCTION_NAME , produces = APPLICATION_JSON)
     @ApiResponsesForResponseEntity
-    public ResponseEntity<?> addNeuralAmalgamationFunctions(@PathVariable(value=CONCEPT_ID_STR) String conceptID,
+    public ResponseEntity<?> addNeuralAmalgamationFunctions(@PathVariable(value=CONCEPT_NAME_STR) String conceptID,
 	    @PathVariable(value="amalgamationFunctionID") String amalgamationFunctionID,
 	    @RequestParam(value="type") String type,
 	    @RequestParam(value="h5file") MultipartFile h5file,
@@ -197,9 +197,9 @@ public class ConceptController {
 
     //delete one amalgationfunction
     @ApiOperation(value = "deleteAmalgamationFunction", nickname = "deleteAmalgamationFunction")
-    @RequestMapping(method = RequestMethod.DELETE, path="/concepts/{conceptID}/amalgamationFunctions/{amalgamationFunction}", produces = "application/json")
+    @RequestMapping(method = RequestMethod.DELETE, path=PATH_AMALGAMATION_FUNCTION_NAME, produces = APPLICATION_JSON)
     @ApiResponsesDefault
-    public boolean deleteAmalgamationFunction(@PathVariable(value=CONCEPT_ID_STR) String conceptID,
+    public boolean deleteAmalgamationFunction(@PathVariable(value=CONCEPT_NAME_STR) String conceptID,
 	    @PathVariable(value="amalgamationFunction") String amalgamationFunction) {
 	Concept thisconcept = App.getProject().getAllSubConcepts().get(conceptID);
 	List<AmalgamationFct> list = thisconcept.getAvailableAmalgamFcts();
@@ -216,7 +216,7 @@ public class ConceptController {
 
     //Get all concepts
     @ApiOperation(value = "getConcepts", nickname = "getConcepts")
-    @RequestMapping(method = RequestMethod.GET, path="/concepts", produces = "application/json")
+    @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPTS, produces = APPLICATION_JSON)
     @ApiResponsesForConceptName
     public ConceptName getConcepts() {
 	return new ConceptName();
@@ -224,7 +224,7 @@ public class ConceptController {
 
     //Delete all concepts
     @ApiOperation(value = "deleteConcepts", nickname = "deleteConcepts")
-    @RequestMapping(method = RequestMethod.DELETE, path="/concepts", produces = "application/json")
+    @RequestMapping(method = RequestMethod.DELETE, path=PATH_CONCEPTS, produces = APPLICATION_JSON)
     @ApiResponsesDefault
     public boolean deleteConcepts() {
 	return conceptService.deleteAllConcepts();
@@ -234,9 +234,9 @@ public class ConceptController {
 
     //Delete one concept
     @ApiOperation(value="deleteConcept", nickname="deleteConcept")
-    @RequestMapping(method=RequestMethod.DELETE, value = "/concepts/{conceptID}")
+    @RequestMapping(method=RequestMethod.DELETE, value = PATH_CONCEPT_NAME)
     @ApiResponsesForValueRange
-    public boolean deleteConcept(@PathVariable(value=CONCEPT_ID_STR) String conceptID){
+    public boolean deleteConcept(@PathVariable(value=CONCEPT_NAME_STR) String conceptID){
 	Project p = App.getProject();
 	logger.info("deleting concept with id:"+conceptID);
 	Concept c = p.getSubConcepts().get(conceptID);
@@ -250,17 +250,17 @@ public class ConceptController {
 
     //add one concept
     @ApiOperation(value="addConcept", nickname="addConcept")
-    @RequestMapping(method=RequestMethod.PUT, value = "/concepts/{conceptID}")
+    @RequestMapping(method=RequestMethod.PUT, value = PATH_CONCEPT_NAME)
     @ApiResponsesForValueRange
-    public boolean addConcept(@PathVariable(value=CONCEPT_ID_STR) String conceptID){
+    public boolean addConcept(@PathVariable(value=CONCEPT_NAME_STR) String conceptID){
 	return null != conceptService.addConcept(conceptID);
     }
 
     //get all  attributes
     @ApiOperation(value = "getAttribute", nickname = "getAttribute")
-    @RequestMapping(method = RequestMethod.GET, value = "/concepts/{conceptID}/attributes/{attributeID}", headers="Accept=application/json")
+    @RequestMapping(method = RequestMethod.GET, value = PATH_ATTRIBUTE_NAME, headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesForApiResponse
-    public HashMap<String, Object> getAttribute(@PathVariable(value=CONCEPT_ID_STR) String conceptID,
+    public HashMap<String, Object> getAttribute(@PathVariable(value=CONCEPT_NAME_STR) String conceptID,
 	    @PathVariable(value="attributeID") String attributeID) {
 	Project p = App.getProject();
 	Concept c = p.getSubConcepts().get(conceptID);
@@ -273,17 +273,17 @@ public class ConceptController {
 
     //get all  attributes
     @ApiOperation(value = "getAttributes", nickname = "getAttributes")
-    @RequestMapping(method = RequestMethod.GET, value = "/concepts/{conceptID}/attributes", headers="Accept=application/json")
+    @RequestMapping(method = RequestMethod.GET, value = PATH_ATTRIBUTES, headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesForApiResponse
-    public Attribute getAttributes(@PathVariable(value=CONCEPT_ID_STR) String conceptID) {
+    public Attribute getAttributes(@PathVariable(value=CONCEPT_NAME_STR) String conceptID) {
 	return new Attribute(conceptID);
     }
 
     //delete all  attributes
     @ApiOperation(value = "deleteAttributes", nickname = "deleteAttributes")
-    @RequestMapping(method = RequestMethod.DELETE, value = "/concepts/{concept}/attributes", headers="Accept=application/json")
+    @RequestMapping(method = RequestMethod.DELETE, value = PATH_ATTRIBUTES, headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
-    public boolean deleteAttributes(@PathVariable(value=CONCEPT_ID_STR) String conceptID) {
+    public boolean deleteAttributes(@PathVariable(value=CONCEPT_NAME_STR) String conceptID) {
 	Project p = App.getProject();
 	Concept c = p.getSubConcepts().get(conceptID);
 	for(String attributeDescName : c.getAllAttributeDescs().keySet()) {
@@ -294,10 +294,10 @@ public class ConceptController {
 
     //add one attribute
     @ApiOperation(value = "addAttribute", nickname = "addAttribute")
-    @RequestMapping(method = RequestMethod.PUT, value = "/concepts/{conceptID}/attributes/{attributeName}", headers="Accept=application/json")
+    @RequestMapping(method = RequestMethod.PUT, value = PATH_ATTRIBUTE_NAME, headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesForValueRange
     public boolean addAttribute(
-	    @PathVariable(value=CONCEPT_ID_STR) String conceptID,
+	    @PathVariable(value=CONCEPT_NAME_STR) String conceptID,
 	    @PathVariable(value="attributeName") String attributeName,
 	    @RequestParam(value="attributeJSON", defaultValue = "{}") String attributeJSON) {
 	Project p = App.getProject();
@@ -348,10 +348,10 @@ public class ConceptController {
 
     //delete one attribute
     @ApiOperation(value = "deleteAttribute", nickname = "deleteAttribute")
-    @RequestMapping(method = RequestMethod.DELETE, value = "/concepts/{conceptID}/attributes/{attributeName}", headers="Accept=application/json")
+    @RequestMapping(method = RequestMethod.DELETE, value = PATH_ATTRIBUTE_NAME, headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
     public boolean deleteAttribute(
-	    @PathVariable(value=CONCEPT_ID_STR) String conceptID,
+	    @PathVariable(value=CONCEPT_NAME_STR) String conceptID,
 	    @PathVariable(value="attributeName") String attributeName,
 	    @RequestParam(value="attributeType", defaultValue = "String") String attributeType) {
 	Project p = App.getProject();
@@ -369,10 +369,10 @@ public class ConceptController {
 
     //Get all similarity function for attribute
     @ApiOperation(value = "getSimilarityFunction", nickname = "getSimilarityFunction")
-    @RequestMapping(method = RequestMethod.GET, value = "/concepts/{conceptID}/attributes/{attributeName}/similarityfunctions", headers="Accept=application/json")
+    @RequestMapping(method = RequestMethod.GET, value = PATH_SIMILARITY_FUNCTIONS, headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
     public HashMap<String, Object> getSimilarityFunction(
-	    @PathVariable(value=CONCEPT_ID_STR) String conceptID,
+	    @PathVariable(value=CONCEPT_NAME_STR) String conceptID,
 	    @PathVariable(value="attributeName") String attributeName) {
 	Project p = App.getProject();
 	Concept concept = p.getConceptByID(conceptID);
@@ -390,10 +390,10 @@ public class ConceptController {
 
     //Delete all similarity function for attribu5te
     @ApiOperation(value = "deleteSimilarityFunction", nickname = "deleteSimilarityFunction")
-    @RequestMapping(method = RequestMethod.DELETE, value = "/concepts/{conceptID}/attributes/{attributeName}/similarityfunction", headers="Accept=application/json")
+    @RequestMapping(method = RequestMethod.DELETE, value = PATH_SIMILARITY_FUNCTIONS, headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
     public boolean deleteSimilarityFunctions(
-	    @PathVariable(value=CONCEPT_ID_STR) String conceptID,
+	    @PathVariable(value=CONCEPT_NAME_STR) String conceptID,
 	    @PathVariable(value="attributeName") String attributeName) {
 	Project p = App.getProject();
 	Concept concept = p.getConceptByID(conceptID);
@@ -406,7 +406,7 @@ public class ConceptController {
 
     //Add one similarity function
     @ApiOperation(value = "addSimilarityFunction", nickname = "addSimilarityFunction")
-    @RequestMapping(method = RequestMethod.PUT, value = "/concepts/{concept}/attributes/{attributeName}/similarityfunctions/{similarityFunctionName}", headers="Accept=application/json")
+    @RequestMapping(method = RequestMethod.PUT, value = PATH_SIMILARITY_FUNCTION_NAME, headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesForValueRange
     public boolean addSimilarityFunction(
 	    @PathVariable(value="concept") String concept,
@@ -445,7 +445,7 @@ public void foo(@PathVariable("id") int id, HttpServletRequest request) {
 
     //??
     @ApiOperation(value = "getValueRange", nickname = "getValueRange")
-    @RequestMapping(method = RequestMethod.GET, value = "/values", headers="Accept=application/json")
+    @RequestMapping(method = RequestMethod.GET, value = PATH_VALUES, headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesForValueRange
     public ValueRange getValueRange(
 	    @RequestParam(value="concept name", defaultValue="Car") String concept,

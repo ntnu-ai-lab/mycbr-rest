@@ -4,15 +4,15 @@ public final class Constants {
 
 
     public static final String CONCEPT_STR = "concept";
-    public static final String CONCEPT_NAME_STR = "conceptName";
+    public static final String CONCEPT_ID_STR = "conceptID";
     
     public static final String CASEBASE_STR = "casebase";
-    public static final String CASEBASE_NAME_STR = "casebaseName";
+    public static final String CASEBASE_ID_STR = "casebaseID";
     
-    public static final String CASE_NAME_STR = "caseName";
-    public static final String CASE_NAMES_STR = "caseNames";
+    public static final String CASE_ID_STR = "caseID";
+    public static final String CASE_IDS_STR = "caseIDs";
     
-    public static final String INSTANCE_NAME_STR = "instanceName";
+    public static final String INSTANCE_ID_STR = "instanceID";
     
     public static final String AMALGAMATION_FUNCTION_STR = "amalgamation function";
 
@@ -31,31 +31,31 @@ public final class Constants {
     public static final String PATH_VALUES = "/values";
 
     public static final String PATH_CONCEPTS = "/concepts";
-    public static final String PATH_CONCEPT_NAME = PATH_CONCEPTS + "/{conceptName}";
+    public static final String PATH_CONCEPT_ID = PATH_CONCEPTS + "/{conceptID}";
     
-    public static final String PATH_CASEBASES = PATH_CONCEPT_NAME + "/casebases";
-    public static final String PATH_CASEBASE_NAME = PATH_CASEBASES + "/{casebaseName}";
-    public static final String PATH_DEFAULT_CONCEPT_CASEBASE = PATH_CASEBASE_NAME + "/";
+    public static final String PATH_CASEBASES = PATH_CONCEPT_ID + "/casebases";
+    public static final String PATH_CASEBASE_ID = PATH_CASEBASES + "/{casebaseID}";
+    public static final String PATH_DEFAULT_CONCEPT_CASEBASE = PATH_CASEBASE_ID + "/";
     
-    public static final String PATH_INSTANCES = PATH_CASEBASE_NAME + "/instances";
-    public static final String PATH_INSTANCE_NAME = PATH_INSTANCES + "/{instanceName}";
+    public static final String PATH_INSTANCES = PATH_CASEBASE_ID + "/instances";
+    public static final String PATH_INSTANCE_ID = PATH_INSTANCES + "/{instanceID}";
     
-    public static final String PATH_AMALGAMATION_FUNCTIONS = PATH_CONCEPT_NAME + "/amalgamationFunctions";
-    public static final String PATH_AMALGAMATION_FUNCTION_NAME = PATH_AMALGAMATION_FUNCTIONS + "/{amalgamationFunctionName}";
+    public static final String PATH_AMALGAMATION_FUNCTIONS = PATH_CONCEPT_ID + "/amalgamationFunctions";
+    public static final String PATH_AMALGAMATION_FUNCTION_ID = PATH_AMALGAMATION_FUNCTIONS + "/{amalgamationFunctionID}";
     
-    public static final String PATH_NEURAL_AMALGAMATION_FUNCTIONS = PATH_CONCEPT_NAME + "/neuralAmalgamationFunctions";
-    public static final String PATH_NEURAL_AMALGAMATION_FUNCTION_NAME = PATH_AMALGAMATION_FUNCTIONS + "/{amalgamationFunctionName}";
+    public static final String PATH_NEURAL_AMALGAMATION_FUNCTIONS = PATH_CONCEPT_ID + "/neuralAmalgamationFunctions";
+    public static final String PATH_NEURAL_AMALGAMATION_FUNCTION_ID = PATH_AMALGAMATION_FUNCTIONS + "/{amalgamationFunctionID}";
     
-    public static final String PATH_ATTRIBUTES = PATH_CONCEPT_NAME + "/attributes";
-    public static final String PATH_ATTRIBUTE_NAME = PATH_ATTRIBUTES + "/{attributeName}";
+    public static final String PATH_ATTRIBUTES = PATH_CONCEPT_ID + "/attributes";
+    public static final String PATH_ATTRIBUTE_ID = PATH_ATTRIBUTES + "/{attributeID}";
     
-    public static final String PATH_SIMILARITY_FUNCTIONS = PATH_ATTRIBUTE_NAME + "/similarityfunctions";
-    public static final String PATH_SIMILARITY_FUNCTION_NAME = PATH_SIMILARITY_FUNCTIONS + "/{similarityFunctionName}";
+    public static final String PATH_SIMILARITY_FUNCTIONS = PATH_ATTRIBUTE_ID + "/similarityfunctions";
+    public static final String PATH_SIMILARITY_FUNCTION_ID = PATH_SIMILARITY_FUNCTIONS + "/{similarityFunctionID}";
 
     public static final String COMPUTE_SELF_SIMLARITY = "computeSelfSimlarity";
     public static final String PATH_COMPUTE_SELF_SIMLARITY = PATH_DEFAULT_CONCEPT_CASEBASE + COMPUTE_SELF_SIMLARITY;
 
-    public static final String PATH_DEFAULT_EPHEMERAL = PATH_CASEBASE_NAME + "/ephemeral/";
+    public static final String PATH_DEFAULT_EPHEMERAL = PATH_CASEBASE_ID + "/ephemeral/";
     public static final String PATH_EPHEMERAL_RETRIEVAL = PATH_DEFAULT_EPHEMERAL + "retrievalByCaseIDs";
     public static final String PATH_EPHEMERAL_COMPUTE_SELF_SIMILARITY = PATH_DEFAULT_EPHEMERAL + COMPUTE_SELF_SIMLARITY;
 

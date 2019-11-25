@@ -40,7 +40,7 @@ public class EphemeralController {
     @ApiResponsesDefault
     public @ResponseBody Map<String, Map<String, Double>> retrievalFromEphemeralCaseBase(
 	    @RequestParam(value=CASEBASE_STR, defaultValue=DEFAULT_CASEBASE) String casebase,
-	    @RequestParam(value=CONCEPT_NAME_STR, defaultValue=DEFAULT_CONCEPT) String concept,
+	    @RequestParam(value=CONCEPT_ID_STR, defaultValue=DEFAULT_CONCEPT) String concept,
 	    @RequestParam(value=AMALGAMATION_FUNCTION_STR, defaultValue=DEFAULT_AMALGAMATION_FUNCTION) String amalFunc,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k,
 	    @RequestBody(required = true)  Map<String, Set<String>> mapOfcaseIDs) {
@@ -68,7 +68,7 @@ public class EphemeralController {
     @ApiResponsesDefault
     public @ResponseBody Map<String, Map<String, Double>> computeEphemeralCaseBaseSelfSimilarity(
 	    @RequestParam(value=CASEBASE_STR, defaultValue=DEFAULT_CASEBASE) String casebase,
-	    @RequestParam(value=CONCEPT_NAME_STR, defaultValue=DEFAULT_CONCEPT) String concept,
+	    @RequestParam(value=CONCEPT_ID_STR, defaultValue=DEFAULT_CONCEPT) String concept,
 	    @RequestParam(value=AMALGAMATION_FUNCTION_STR, defaultValue=DEFAULT_AMALGAMATION_FUNCTION) String amalFunc,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k,
 	    @RequestBody(required = true)  Set<String> caseIDs) {

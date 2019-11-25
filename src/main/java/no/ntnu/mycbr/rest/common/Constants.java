@@ -55,7 +55,7 @@ public final class Constants {
     public static final String COMPUTE_SELF_SIMLARITY = "computeSelfSimlarity";
     public static final String PATH_COMPUTE_SELF_SIMLARITY = PATH_DEFAULT_CONCEPT_CASEBASE + COMPUTE_SELF_SIMLARITY;
 
-    public static final String PATH_DEFAULT_EPHEMERAL = "/ephemeral/";
+    public static final String PATH_DEFAULT_EPHEMERAL = PATH_CASEBASE_NAME + "/ephemeral/";
     public static final String PATH_EPHEMERAL_RETRIEVAL = PATH_DEFAULT_EPHEMERAL + "retrievalByCaseIDs";
     public static final String PATH_EPHEMERAL_COMPUTE_SELF_SIMILARITY = PATH_DEFAULT_EPHEMERAL + COMPUTE_SELF_SIMLARITY;
 

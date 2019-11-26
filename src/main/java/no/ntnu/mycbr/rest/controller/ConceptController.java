@@ -49,7 +49,7 @@ public class ConceptController {
 
     //delete all amalgationfunctions
     @ApiOperation(value = "deleteAmalgamationFunctions", nickname = "deleteAmalgamationFunctions")
-    @RequestMapping(method = RequestMethod.DELETE, path="/concepts/{conceptID}/amalgamationFunctions", produces = "application/json")
+    @RequestMapping(method = RequestMethod.DELETE, path= PATH_CONCEPT_AML_FUNCTIONS, produces = "application/json")
     @ApiResponsesDefault
     public boolean deleteAmalgamationFunctions(@PathVariable(value=CONCEPT_ID_STR) String conceptID) {
 	Concept thisconcept = App.getProject().getAllSubConcepts().get(conceptID);
@@ -65,7 +65,7 @@ public class ConceptController {
     // amalgamationfunctionType needs to be a string matching exactly the name of the enum. https://stackoverflow.com/questions/604424/lookup-java-enum-by-string-value
     // MINIMUM, MAXIMUM, WEIGHTED_SUM, EUCLIDEAN, NEURAL_NETWORK_SOLUTION_DIRECTLY,SIM_DEF;
     @ApiOperation(value = "addAmalgamationFunction", nickname = "addAmalgamationFunction")
-    @RequestMapping(method = RequestMethod.PUT, path="/concepts/{conceptID}/amalgamationFunctions/{amalgamationFunctionID}", produces = "application/json")
+    @RequestMapping(method = RequestMethod.PUT, path=PATH_CONCEPT_AML_FUNCTION_ID, produces = "application/json")
     @ApiResponsesForAmalgamationFunctions
     public boolean addAmalgamationFunctions(@PathVariable(value=CONCEPT_ID_STR) String conceptID,
 	    @PathVariable(value="amalgamationFunctionID") String amalgamationFunctionID,
@@ -107,7 +107,7 @@ public class ConceptController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")})
     public ResponseEntity<?> addNeuralAmalgamationFunctions(@PathVariable(value=CONCEPT_ID_STR) String conceptID,
-                                                            @PathVariable(value="amalgamationFunctionID") String amalgamationFunctionID,
+                                                            @PathVariable(value=PATH_AMALGAMATION_FUNCTION_ID) String amalgamationFunctionID,
                                                             @RequestParam(value="files") MultipartFile[] uploadfiles) {
         //First collect the files, save them and check them
         logger.info("in add neuralamalgamationfunction");
@@ -152,7 +152,7 @@ public class ConceptController {
     path="/concepts/{conceptID}/neuralAmalgamationFunctions/{amalgamationFunctionID}", produces = "application/json")
     @ApiResponsesForResponseEntity
     public ResponseEntity<?> addNeuralAmalgamationFunctions(@PathVariable(value=CONCEPT_ID_STR) String conceptID,
-	    @PathVariable(value="amalgamationFunctionID") String amalgamationFunctionID,
+	    @PathVariable(value=PATH_CONCEPT_AML_FUNCTION_ID) String amalgamationFunctionID,
 	    @RequestParam(value="type") String type,
 	    @RequestParam(value="h5file") MultipartFile h5file,
 	    @RequestParam(value="jsonfile") MultipartFile jsonfile

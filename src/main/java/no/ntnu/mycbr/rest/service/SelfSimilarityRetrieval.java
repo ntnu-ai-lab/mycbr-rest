@@ -44,20 +44,20 @@ public class SelfSimilarityRetrieval implements RetrievalCustomer{
      * @param k Number of retrieved cases per retrieval.
      * @return Map of Maps where key is the caseID of a case, and value is  a map of retrieved similar cases.
      */
-    public Map<String, Map<String, Double>> performSelfSimilarityRetrieval(String casebase, 
-	    String conceptName, String amalFunc, int k){
+    public Map<String, Map<String, Double>> performSelfSimilarityRetrieval( String conceptName, 
+	    String casebaseName, String amalFuncName, int k){
 
 	this.k = k;
 
 	Project project = App.getProject();
 	Concept concept = project.getConceptByID(conceptName);
-	ICaseBase cb = (DefaultCaseBase)project.getCaseBases().get(casebase);
+	ICaseBase cb = (DefaultCaseBase)project.getCaseBases().get(casebaseName);
 	
 	TemporaryAmalgamFctManager tempAmalgamFctManager = new TemporaryAmalgamFctManager(concept);
 	
 	// This will change the default Amalgamation Function of the myCBR project to a user specified functions
 	try {
-		tempAmalgamFctManager.changeAmalgamFct(amalFunc);
+		tempAmalgamFctManager.changeAmalgamFct(amalFuncName);
 	} catch (TemporaryAmalgamFctNotChangedException e) {
 		e.printStackTrace();
 	}

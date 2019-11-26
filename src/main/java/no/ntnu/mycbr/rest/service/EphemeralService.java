@@ -1,5 +1,8 @@
 package no.ntnu.mycbr.rest.service;
 
+import static no.ntnu.mycbr.rest.utils.QueryUtils.getFullResult;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -13,17 +16,19 @@ import no.ntnu.mycbr.core.casebase.Attribute;
 import no.ntnu.mycbr.core.casebase.Instance;
 import no.ntnu.mycbr.core.model.AttributeDesc;
 import no.ntnu.mycbr.core.model.Concept;
+import no.ntnu.mycbr.core.model.SymbolDesc;
 import no.ntnu.mycbr.core.retrieval.Retrieval;
 import no.ntnu.mycbr.core.retrieval.Retrieval.RetrievalCustomer;
 import no.ntnu.mycbr.core.similarity.Similarity;
 import no.ntnu.mycbr.util.Pair;
 import no.ntnu.mycbr.rest.App;
+import no.ntnu.mycbr.rest.Case;
+import no.ntnu.mycbr.rest.Query;
 import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctManager;
 import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctNotChangedException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.stereotype.Service;
 
 /**
  * The EphemeralService facilitates retrieval an ephemeral case base including Self-Similarity retrieval.
@@ -46,9 +51,10 @@ public class EphemeralService implements RetrievalCustomer{
     private TemporaryAmalgamFctManager tempAmalgamFctManager;
 
     private List<Pair<Instance,Similarity>> results;
+    private LinkedHashMap<String, Double> resultList = new LinkedHashMap<>();
     private Map<String, Map<String, Double>> simMatrix = new LinkedHashMap<String, Map<String, Double>>();
 
-    public EphemeralService(String casebaseName, String conceptName, String amalFunc, int k) {		
+    public EphemeralService(String conceptName, String casebaseName, String amalFunc, int k) {		
 	this.k = k;
 	this.project = App.getProject();
 	this.cb = (DefaultCaseBase)project.getCaseBases().get(casebaseName);
@@ -65,7 +71,72 @@ public class EphemeralService implements RetrievalCustomer{
     }
 
     /**
-     * Query on an ephemeral (short lived) case base. The ephemeral case base is a subset of cases from the 
+     * Query with single caseID on an ephemeral (short lived) case base. The ephemeral case base is a subset of cases from the 
+     * default case base.
+     * @param query_id : caseID, that will be used as query case against the ephemeral case base.
+     * @param cbSet : Set of caseIDs, that will serve as cases of the ephemeral case base.
+     * @return List of Maps where key is the caseID of a case, and value is  a map of retrieved similar cases.
+     */
+    public List<LinkedHashMap<String, String>> ephemeralRetrivalForSingleQuery( String query_id, Set<String> cbSet) {
+
+	ICaseBase motherCasebase = cb;
+	ICaseBase ephemeralCasebase = createEmptyCasebase(EPHEMERAL_CASEBASE_NAME, cbSet.size());
+
+	transferCases( cbSet, motherCasebase, ephemeralCasebase);
+
+	LinkedHashMap<String,Double> results = query(concept, ephemeralCasebase, query_id);
+	
+	List<LinkedHashMap<String, String>> cases = new ArrayList<>();
+
+        for (Map.Entry<String, Double> entry : results.entrySet()) {
+            String entryCaseID = entry.getKey();
+            double similarity = entry.getValue();
+            Case caze = new Case(concept.getName(), entryCaseID, similarity);
+            cases.add(caze.getCase());
+        }
+
+        return cases;
+    } 
+    
+   /* public List<Pair<Instance, Similarity>> query(ICaseBase casebase, String query_id) {
+
+        try {
+
+            Retrieval r = new Retrieval(this.concept, ephemeralCasebase, this);
+            r.setK(k);
+            if(k>0){
+                r.setRetrievalMethod(Retrieval.RetrievalMethod.RETRIEVE_K_SORTED);
+            }
+            //r.setRetrievalEngine(new NeuralRetrieval(project,r));
+
+                Instance query = r.getQueryInstance();
+
+                Instance caze = this.concept.getInstance(query_id);
+
+                for (Map.Entry<AttributeDesc, Attribute> e : caze.getAttributes()
+                        .entrySet()) {
+                    query.addAttribute(e.getKey(), e.getValue());
+                }
+
+                r.start();
+                List<Pair<Instance, Similarity>> results = this.results;
+
+                for (Pair<Instance, Similarity> result : results) {
+                    this.resultList.put(result.getFirst().getName(), result.getSecond().getValue());
+                }
+
+                query.reset();
+            }
+
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        
+        return resultList;
+    }*/
+    
+    /**
+     * Query with multiple caseIDs son an ephemeral (short lived) case base. The ephemeral case base is a subset of cases from the 
      * default case base.
      * @param querySet Set of caseIDs, that will be used as query cases against the ephemeral case base.
      * @param cbSet Set of caseIDs, that will serve as cases of the ephemeral case base.

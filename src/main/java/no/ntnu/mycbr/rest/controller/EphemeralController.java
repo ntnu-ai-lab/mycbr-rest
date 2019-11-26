@@ -5,7 +5,6 @@ import no.ntnu.mycbr.rest.service.EphemeralService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
@@ -27,28 +26,56 @@ public class EphemeralController {
     //private EphemeralService ephemeralService;
 
     /**
-     * Perform retrieval on an ephemeral case base.
-     * @param casebase : Case base name of the myCBR project.
-     * @param concept  : Concept name of the myCBR project.
-     * @param amalFunc : Amalgamation function (global similarity function) of the myCBR project.
-     * @param k        : Number of desired retrieved cases per query case.
-     * @param mapOfcaseIDs : Keys are <code>query-set</code> and <code>casebase-set</code>. The <code>query-set</code> contains list of caseIDs to be queried. The <code>casebase-set</code> contains the list of caseIDs used for creation ephemeral case base.
+     * Perform retrieval on an ephemeral case base with a single query (caseID).
+     * @param conceptID   : Concept name of the myCBR project.
+     * @param casebaseID  : Case base name of the myCBR project.
+     * @param amalgamationFunctionID : Amalgamation function (global similarity function) of the myCBR project.
+     * @param queryCaseID : The caseID that serves as a query
+     * @param k           : Number of desired retrieved cases per query case.
+     * @param ephemeralCaseIDs : The ephemeralCaseIDs is a list of caseIDs used for creating an ephemeral case base.
+     * @return
+     */
+   @ApiOperation(value = "getSimilarInstancesFromEphemeralCaseBaseWithContent", nickname = "getSimilarInstancesFromEphemeralCaseBaseWithContent")
+    @RequestMapping(method = RequestMethod.POST, path=PATH_EPHEMERAL_RETRIEVAL_WITH_CONTENT, produces=APPLICATION_JSON)
+    @ApiResponsesDefault
+    public @ResponseBody List<LinkedHashMap<String, String>> retrievalFromEphemeralCaseBase(
+	    @PathVariable(value=CONCEPT_ID_STR) String conceptID,
+	    @PathVariable(value=CASEBASE_ID_STR) String casebaseID, 
+	    @PathVariable(value=AMALGAMATION_FUNCTION_ID_STR) String amalgamationFunctionID,
+	    @RequestParam(value=CASE_ID_STR, defaultValue="patient0") String queryCaseID,
+	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k,
+	    @RequestBody(required = true)  Set<String> ephemeralCaseIDs) {
+
+	EphemeralService ephemeralService = new EphemeralService(conceptID, casebaseID, amalgamationFunctionID, k);
+	List<LinkedHashMap<String, String>> retrivalResults = ephemeralService
+		.ephemeralRetrivalForSingleQuery(queryCaseID, ephemeralCaseIDs);
+
+	return retrivalResults;
+    }
+    
+    /**
+     * Perform retrieval with multiple queries (caseIDs) on an ephemeral case base.
+     * @param conceptID  : Concept name of the myCBR project.
+     * @param casebaseID : Case base name of the myCBR project.
+     * @param amalgamationFunctionID : Amalgamation function (global similarity function) of the myCBR project.
+     * @param k          : Number of desired retrieved cases per query case.
+     * @param mapOfcaseIDs : Keys are <code>query-set</code> and <code>casebase-set</code>. The <code>query-set</code> contains list of caseIDs to be queried. The <code>casebase-set</code> contains the list of caseIDs used for creating an ephemeral case base.
      * @return
      */
     @ApiOperation(value = "getSimilarInstancesFromEphemeralCaseBase", nickname = "getSimilarInstancesFromEphemeralCaseBase")
     @RequestMapping(method = RequestMethod.POST, path=PATH_EPHEMERAL_RETRIEVAL, produces=APPLICATION_JSON)
     @ApiResponsesDefault
     public @ResponseBody Map<String, Map<String, Double>> retrievalFromEphemeralCaseBase(
-	    @RequestParam(value=CASEBASE_STR, defaultValue=DEFAULT_CASEBASE) String casebase,
-	    @RequestParam(value=CONCEPT_ID_STR, defaultValue=DEFAULT_CONCEPT) String concept,
-	    @RequestParam(value=AMALGAMATION_FUNCTION_STR, defaultValue=DEFAULT_AMALGAMATION_FUNCTION) String amalFunc,
+	    @PathVariable(value=CONCEPT_ID_STR) String conceptID,
+	    @PathVariable(value=CASEBASE_ID_STR) String casebaseID, 
+	    @PathVariable(value=AMALGAMATION_FUNCTION_ID_STR) String amalgamationFunctionID,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k,
 	    @RequestBody(required = true)  Map<String, Set<String>> mapOfcaseIDs) {
 
 	Set<String> querySet = mapOfcaseIDs.get("query-set");
 	Set<String> cbSet = mapOfcaseIDs.get("casebase-set");
 
-	EphemeralService ephemeralService = new EphemeralService(casebase, concept, amalFunc, k);
+	EphemeralService ephemeralService = new EphemeralService(conceptID, casebaseID, amalgamationFunctionID, k);
 	Map<String, Map<String, Double>> retrivalResults = ephemeralService.ephemeralRetrival(querySet, cbSet);
 
 	return retrivalResults;
@@ -56,24 +83,24 @@ public class EphemeralController {
 
     /**
      * Computes Self Similarity on the cases of an ephemeral case base.
-     * @param casebase : Case base name of the myCBR project.
-     * @param concept  : Concept name of the myCBR project.
-     * @param amalFunc : Amalgamation function (global similarity function) of the myCBR project.
-     * @param k        : Number of desired retrieved cases per query case.
-     * @param caseIDs  : List of caseIDs used for creation ephemeral case base.
+     * @param conceptID  : Concept name of the myCBR project.
+     * @param casebaseID : Case base name of the myCBR project.
+     * @param amalgamationFunctionID : Amalgamation function (global similarity function) of the myCBR project.
+     * @param k          : Number of desired retrieved cases per query case.
+     * @param caseIDs    : List of caseIDs used for creation ephemeral case base.
      * @return
      */
     @ApiOperation(value = "getEphemeralCaseBaseSelfSimilarityMatrix", nickname = "getEphemeralCaseBaseSelfSimilarityMatrix")
-    @RequestMapping(method = RequestMethod.POST, path=PATH_EPHEMERAL_COMPUTE_SELF_SIMILARITY, produces=APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.POST, path=PATH_EPHEMERAL_SELF_SIMILARITY, produces=APPLICATION_JSON)
     @ApiResponsesDefault
     public @ResponseBody Map<String, Map<String, Double>> computeEphemeralCaseBaseSelfSimilarity(
-	    @RequestParam(value=CASEBASE_STR, defaultValue=DEFAULT_CASEBASE) String casebase,
-	    @RequestParam(value=CONCEPT_ID_STR, defaultValue=DEFAULT_CONCEPT) String concept,
-	    @RequestParam(value=AMALGAMATION_FUNCTION_STR, defaultValue=DEFAULT_AMALGAMATION_FUNCTION) String amalFunc,
+	    @PathVariable(value=CONCEPT_ID_STR) String conceptID,
+	    @PathVariable(value=CASEBASE_ID_STR) String casebaseID, 
+	    @PathVariable(value=AMALGAMATION_FUNCTION_ID_STR) String amalgamationFunctionID,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k,
 	    @RequestBody(required = true)  Set<String> caseIDs) {
 
-	EphemeralService ephemeralService = new EphemeralService(casebase, concept, amalFunc, k);
+	EphemeralService ephemeralService = new EphemeralService(conceptID, casebaseID, amalgamationFunctionID, k);
 	Map<String, Map<String, Double>> retrivalResults = ephemeralService.computeSelfSimilarity(caseIDs);
 
 	return retrivalResults;

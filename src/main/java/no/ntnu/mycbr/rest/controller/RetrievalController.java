@@ -195,17 +195,17 @@ public class RetrievalController {
      * @return A matrix of similarity values, where the rows and columns are case IDs. The data structure is map of maps. 
      */
     @ApiOperation(value = "getCaseBaseSelfSimilarity", nickname = "getCaseBaseSelfSimilarity")
-    @RequestMapping(method = RequestMethod.GET, path=PATH_SELF_SIMLARITY, produces=APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPT_CB_SELF_SIMLARITY, produces=APPLICATION_JSON)
     @ApiResponsesDefault
     public Map<String, Map<String, Double>> getCaseBaseSelfSimilarity(
 	    @PathVariable(value=CONCEPT_ID_STR) String conceptID,
-	    @PathVariable(value=CASEBASE_STR) String casebaseID,	    
-	    @PathVariable(value=AMALGAMATION_FUNCTION_ID_STR) String amalgamationFunctionID,
+	    @PathVariable(value=CASEBASE_ID_STR) String casebaseID,	    
+	    @RequestParam(value=AMALGAMATION_FUNCTION_ID_STR, defaultValue=DEFAULT_AMALGAMATION_FUNCTION) String amlFunctionName,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES, defaultValue = DEFAULT_NO_OF_CASES) int k) {
 	
 	SelfSimilarityRetrieval selfSimilarityRetrieval = new SelfSimilarityRetrieval();
 	Map<String, Map<String,Double>> retrivalResults = selfSimilarityRetrieval
-		.performSelfSimilarityRetrieval(conceptID, casebaseID, amalgamationFunctionID, k);
+		.performSelfSimilarityRetrieval(conceptID, casebaseID, amlFunctionName, k);
 	
 	return retrivalResults;
     }

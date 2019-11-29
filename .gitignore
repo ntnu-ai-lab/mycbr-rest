@@ -23,7 +23,6 @@ hs_err_pid*
 *.myCBR
 *.myCB
 
-
 # IDE specific files
 *.classpath
 *.project
@@ -31,3 +30,7 @@ hs_err_pid*
 # MAC / IOS specific files
 **.DS_Store
 **/.DS_Store
+
+# Ignoring .settings/ folder
+.settings/*
+

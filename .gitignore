@@ -22,3 +22,9 @@ hs_err_pid*
 *.myExp
 *.myCBR
 *.myCB
+
+
+# IDE specific files
+*.classpath
+*.project
+

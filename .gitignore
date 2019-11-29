@@ -28,3 +28,6 @@ hs_err_pid*
 *.classpath
 *.project
 
+# MAC / IOS specific files
+**.DS_Store
+**/.DS_Store

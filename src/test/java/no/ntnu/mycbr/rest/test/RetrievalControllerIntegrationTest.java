@@ -1,3 +1,4 @@
+/* 
 package no.ntnu.mycbr.rest.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,6 +37,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/* 
 @RunWith(SpringRunner.class)
 //@WebMvcTest(ConceptController.class)
 @SpringBootTest(classes = App.class)
@@ -71,7 +73,7 @@ public class RetrievalControllerIntegrationTest {
     private ObjectMapper mapper = new ObjectMapper();
 
 
-    @Test
+/*    @Test
     public void testSimpleRetrieve()
             throws Exception {
 
@@ -92,6 +94,7 @@ public class RetrievalControllerIntegrationTest {
         logger.debug("results..");
     }
 
+    
     @Before
     public void before() {
         MockitoAnnotations.initMocks(this);
@@ -144,3 +147,5 @@ public class RetrievalControllerIntegrationTest {
         return this.mapper.writeValueAsString(o).getBytes();
     }
 }
+
+*/

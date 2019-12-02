@@ -2,7 +2,7 @@ package no.ntnu.mycbr.rest.common;
 
 /**
  * This class defines constants for RequestMapping path, RequestMapping headers, PathVariable, RequestParam, and default values.
- *  <br>
+ * <br>
  * <br> <b>Abbreviations Used: </b>
  * <ul>
  * <li> ID: Identifier
@@ -11,7 +11,7 @@ package no.ntnu.mycbr.rest.common;
  * <li> AMAL: Amalgamation
  * </ul>
  * @author Amar Jaiswal
- *
+ * @since Dec 2, 2019
  */
 public final class ApiPathConstants {
 

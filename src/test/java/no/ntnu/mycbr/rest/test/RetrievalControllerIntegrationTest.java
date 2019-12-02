@@ -147,5 +147,4 @@ public class RetrievalControllerIntegrationTest {
         return this.mapper.writeValueAsString(o).getBytes();
     }
 }
-
 */

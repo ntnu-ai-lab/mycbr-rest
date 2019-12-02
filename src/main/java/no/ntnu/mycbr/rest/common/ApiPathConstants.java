@@ -1,6 +1,6 @@
 package no.ntnu.mycbr.rest.common;
 
-public final class Constants {
+public final class ApiPathConstants {
 
 
     public static final String CONCEPT_STR = "concept";

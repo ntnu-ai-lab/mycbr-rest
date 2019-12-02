@@ -13,7 +13,7 @@ import no.ntnu.mycbr.rest.App;
 import no.ntnu.mycbr.rest.CaseBases;
 
 import static no.ntnu.mycbr.rest.common.ApiResponseAnnotations.*;
-import static no.ntnu.mycbr.rest.common.Constants.*;
+import static no.ntnu.mycbr.rest.common.ApiPathConstants.*;
 
 @RestController
 public class CaseBaseController {

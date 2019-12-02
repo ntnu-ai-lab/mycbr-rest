@@ -16,7 +16,7 @@ import org.json.simple.parser.ParseException;
 import static no.ntnu.mycbr.rest.utils.QueryUtils.getFullResult;
 
 import static no.ntnu.mycbr.rest.common.ApiResponseAnnotations.*;
-import static no.ntnu.mycbr.rest.common.Constants.*;
+import static no.ntnu.mycbr.rest.common.ApiPathConstants.*;
 
 @RestController
 public class RetrievalController {

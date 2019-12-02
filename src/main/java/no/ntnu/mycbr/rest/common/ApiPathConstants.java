@@ -2,7 +2,7 @@ package no.ntnu.mycbr.rest.common;
 
 /**
  * This class defines constants for RequestMapping path, RequestMapping headers, PathVariable, RequestParam, and default values.
- *  <br>
+ * <br>
  * <br> <b>Abbreviations Used: </b>
  * <ul>
  * <li> ID: Identifier

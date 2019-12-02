@@ -16,7 +16,7 @@ import no.ntnu.mycbr.rest.App;
 import no.ntnu.mycbr.rest.Case;
 import no.ntnu.mycbr.rest.Query;
 import no.ntnu.mycbr.rest.ValueRange;
-import no.ntnu.mycbr.rest.service.InstanceService;
+import no.ntnu.mycbr.rest.service.CaseService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.simple.JSONArray;
@@ -33,10 +33,10 @@ import static no.ntnu.mycbr.rest.common.ApiPathConstants.*;
 import static no.ntnu.mycbr.rest.common.ApiOperationConstants.*;
 
 @RestController
-public class InstanceController
+public class CaseController
 {
     @Autowired
-    private InstanceService instanceService;
+    private CaseService instanceService;
 
     private final Log logger = LogFactory.getLog(getClass());
 

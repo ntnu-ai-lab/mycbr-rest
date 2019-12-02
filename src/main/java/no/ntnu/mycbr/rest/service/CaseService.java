@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class InstanceService {
+public class CaseService {
     Project p = App.getProject();
     private final Log logger = LogFactory.getLog(getClass());
 

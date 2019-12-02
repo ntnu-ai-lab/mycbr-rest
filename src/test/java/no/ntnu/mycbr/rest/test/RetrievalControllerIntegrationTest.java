@@ -8,7 +8,7 @@ import no.ntnu.mycbr.rest.App;
 import no.ntnu.mycbr.rest.controller.ConceptController;
 import no.ntnu.mycbr.rest.service.CaseBaseService;
 import no.ntnu.mycbr.rest.service.ConceptService;
-import no.ntnu.mycbr.rest.service.InstanceService;
+import no.ntnu.mycbr.rest.service.CaseService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hamcrest.Matchers;
@@ -52,7 +52,7 @@ public class RetrievalControllerIntegrationTest {
     private ConceptService conceptService;
 
     @Autowired
-    private InstanceService instanceService;
+    private CaseService instanceService;
 
     @Autowired
     private CaseBaseService caseBaseService;

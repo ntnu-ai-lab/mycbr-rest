@@ -49,7 +49,7 @@ public class ApiOperationConstants {
     DELETE_ALL_AMALGAMATION_FUNCTIONS 	= "deleteAllAmalgamationFunctions";
     
     
-    // API operations for InstanceController
+    // API operations for CaseController
     public static final String
     ADD_MULTIPLE_CASES_USING_JSON = "addMultipleCasesUsingJSON",
     ADD_CASE_USING_JSON = "addCaseUsingJSON",

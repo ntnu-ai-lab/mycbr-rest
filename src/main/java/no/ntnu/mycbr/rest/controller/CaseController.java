@@ -2,6 +2,7 @@ package no.ntnu.mycbr.rest.controller;
 
 import java.util.*;
 
+import no.ntnu.mycbr.core.DefaultCaseBase;
 import no.ntnu.mycbr.core.ICaseBase;
 import no.ntnu.mycbr.core.Project;
 import no.ntnu.mycbr.core.casebase.Instance;
@@ -48,7 +49,17 @@ public class CaseController
     public Case getInstance(@PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID,
 	    @PathVariable(value=CASE_ID) String caseID) {
-	return new Case(caseID);
+
+	Project p = App.getProject();
+	
+	if (!p.getCaseBases().containsKey(casebaseID))
+	    return null;
+
+	Instance instance = p.getInstance(caseID);
+	
+	Case queriedCase = new Case(instance.getName(),conceptID); 
+	
+	return queriedCase;
     }
 
     //Delete one instance

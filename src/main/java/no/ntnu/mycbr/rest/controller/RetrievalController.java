@@ -24,8 +24,12 @@ public class RetrievalController {
 
     private final Log logger = LogFactory.getLog(getClass());
 
+    /**
+     * Redundant code
+     * @deprecated use {@link #getSimilarInstancesWithContent(String, String, String, int, HashMap)} instead.  
+     */
     @Deprecated
-    @ApiOperation(value = GET_SIMILAR_CASES, nickname = GET_SIMILAR_CASES)
+    @ApiOperation(value = "use: "+GET_SIMILAR_CASES_BY_MULTIPLE_ATTRIBUTES, nickname = "use: "+GET_SIMILAR_CASES_BY_MULTIPLE_ATTRIBUTES)
     @RequestMapping(method = RequestMethod.POST, path=PATH_CONCEPT_CASEBASE_ID+"/retrieval", produces=APPLICATION_JSON)
     @ApiResponsesForQuery
     public Query getSimilarInstances(
@@ -73,8 +77,12 @@ public class RetrievalController {
 	return Query.retrieve(casebaseIDs, conceptID, null, caseIDs, k);
     }
 
+    /**
+     * Redundant code
+     * @deprecated use {@see no.ntnu.mycbr.rest.controller.EphemeralController#retrievalFromEphemeralCaseBaseWithContent(String, String, String, String, int, Set)} instead. 
+     */
     @Deprecated
-    @ApiOperation(value = "getSimilarInstancesByIDWithinIDs", nickname = "getSimilarInstancesByIDWithinIDs")
+    @ApiOperation(value = "use: "+ GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE_WITH_CONTENT, nickname = "use: "+ GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE_WITH_CONTENT)
     @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPT_CASEBASE_ID+"/retrievalByIDInIDs", produces=APPLICATION_JSON)
     @ApiResponsesForQuery
     public HashMap<String, HashMap<String,Double>> getSimilarInstancesByIDWithinIDs(
@@ -101,8 +109,12 @@ public class RetrievalController {
 	return Query.retrieve(casebaseID, conceptID, null, caseIDs, queryBaseIDs, k);
     }
 
+    /**
+     * Redundant code
+     * @deprecated use {@see no.ntnu.mycbr.rest.controller.EphemeralController#retrievalFromEphemeralCaseBase(String, String, String, int, Map)} instead.  
+     */
     @Deprecated
-    @ApiOperation(value = "getSimilarInstancesByIDsWithinIDs", nickname = "getSimilarInstancesByIDWithinIDs")
+    @ApiOperation(value = "use: "+ GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE, nickname = "use: "+ GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE)
     @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPT_CASEBASE_ID+"/retrievalByIDsInIDs", produces=APPLICATION_JSON)
     @ApiResponsesForQuery
     public HashMap<String, HashMap<String,Double>> getSimilarInstancesByIDsWithinIDs(

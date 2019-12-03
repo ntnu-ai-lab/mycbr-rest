@@ -44,9 +44,12 @@ public class ConceptController {
 
     //get all amalgationfunctions
     @ApiOperation(value = GET_ALL_AMALGAMATION_FUNCTIONS, nickname = GET_ALL_AMALGAMATION_FUNCTIONS)
-    @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPTS + "/{concept}/amalgamationFunctions", produces = APPLICATION_JSON)
+    //@RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPTS + "/{concept}/amalgamationFunctions", produces = APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPT_AMAL_FUNCTIONS, produces = APPLICATION_JSON)
     @ApiResponsesForAmalgamationFunctions
-    public AmalgamationFunctions getAmalgamationFunctions(@PathVariable(value=CONCEPT) String concept) {
+    public AmalgamationFunctions getAmalgamationFunctions(
+	    @PathVariable(value=CONCEPT) String concept) {
+	
 	return new AmalgamationFunctions(concept);
     }
 
@@ -54,14 +57,15 @@ public class ConceptController {
     @ApiOperation(value = DELETE_ALL_AMALGAMATION_FUNCTIONS, nickname = DELETE_ALL_AMALGAMATION_FUNCTIONS)
     @RequestMapping(method = RequestMethod.DELETE, path= PATH_CONCEPT_AMAL_FUNCTIONS, produces = APPLICATION_JSON)
     @ApiResponsesDefault
-    public boolean deleteAmalgamationFunctions(@PathVariable(value=CONCEPT_ID) String conceptID) {
+    public boolean deleteAmalgamationFunctions(
+	    @PathVariable(value=CONCEPT_ID) String conceptID) {
+	
 	Concept thisconcept = App.getProject().getAllSubConcepts().get(conceptID);
 	List<AmalgamationFct> list = thisconcept.getAvailableAmalgamFcts();
 	for(AmalgamationFct fct : list){
 	    thisconcept.deleteAmalgamFct(fct);
 	}
 	return true;
-
     }
 
     //add one amalgationfunction
@@ -70,9 +74,11 @@ public class ConceptController {
     @ApiOperation(value = ADD_AMALGAMATION_FUNCTION, nickname = ADD_AMALGAMATION_FUNCTION)
     @RequestMapping(method = RequestMethod.PUT, path=PATH_CONCEPT_AMAL_FUNCTION_ID, produces = APPLICATION_JSON)
     @ApiResponsesForAmalgamationFunctions
-    public boolean addAmalgamationFunctions(@PathVariable(value=CONCEPT_ID) String conceptID,
+    public boolean addAmalgamationFunctions(
+	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=AMAL_FUNCTION_ID) String amalgamationFunctionID,
 	    @RequestParam(value=AMAL_FUNCTION_TYPE) String amalgamationFunctionType) {
+	
 	logger.info("in add amalgamationfunction");
 	Concept concept = App.getProject().getSubConcepts().get(conceptID);
 	AmalgamationConfig config = AmalgamationConfig.valueOf(amalgamationFunctionType);
@@ -155,13 +161,12 @@ public class ConceptController {
     	path=PATH_CONCEPT_ID + "/neuralAmalgamationFunctions/{amalgamationFunctionID}", 
     	produces = APPLICATION_JSON)
     @ApiResponsesForResponseEntity
-    public ResponseEntity<?> addNeuralAmalgamationFunctions(@PathVariable(value=CONCEPT_ID) String conceptID,
-	    @PathVariable(value=PATH_CONCEPT_AMAL_FUNCTION_ID) String amalgamationFunctionID,
+    public ResponseEntity<?> addNeuralAmalgamationFunctions(
+	    @PathVariable(value=CONCEPT_ID) String conceptID,
+	    @PathVariable(value=AMAL_FUNCTION_ID) String amalgamationFunctionID,
 	    @RequestParam(value="type") String type,
 	    @RequestParam(value="h5file") MultipartFile h5file,
-	    @RequestParam(value="jsonfile") MultipartFile jsonfile
-	    ) {
-
+	    @RequestParam(value="jsonfile") MultipartFile jsonfile) {
 
 	logger.info("adding new Amalgamation Function");
 	if (h5file.isEmpty() || jsonfile.isEmpty()) {
@@ -201,12 +206,15 @@ public class ConceptController {
 
     //delete one amalgationfunction
     @ApiOperation(value = DELETE_AMALGAMATION_FUNCTION, nickname = DELETE_AMALGAMATION_FUNCTION)
-    @RequestMapping(method = RequestMethod.DELETE, 
-    	path=PATH_CONCEPT_AMAL_FUNCTIONS+"/{amalgamationFunction}", 
-    	produces = APPLICATION_JSON)
+    //@RequestMapping(method = RequestMethod.DELETE, 
+    //	path=PATH_CONCEPT_AMAL_FUNCTIONS+"/{amalgamationFunction}", 
+    //	produces = APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.DELETE, path=PATH_CONCEPT_AMAL_FUNCTION_ID, produces = APPLICATION_JSON)
     @ApiResponsesDefault
-    public boolean deleteAmalgamationFunction(@PathVariable(value=CONCEPT_ID) String conceptID,
+    public boolean deleteAmalgamationFunction(
+	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=AMAL_FUNCTION) String amalgamationFunction) {
+	
 	Concept thisconcept = App.getProject().getAllSubConcepts().get(conceptID);
 	List<AmalgamationFct> list = thisconcept.getAvailableAmalgamFcts();
 	for(AmalgamationFct fct : list){
@@ -224,6 +232,7 @@ public class ConceptController {
     @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPTS, produces = APPLICATION_JSON)
     @ApiResponsesForConceptName
     public ConceptName getConcepts() {
+	
 	return new ConceptName();
     }
 
@@ -232,6 +241,7 @@ public class ConceptController {
     @RequestMapping(method = RequestMethod.DELETE, path=PATH_CONCEPTS, produces = APPLICATION_JSON)
     @ApiResponsesDefault
     public boolean deleteConcepts() {
+	
 	return conceptService.deleteAllConcepts();
     }
 
@@ -241,7 +251,9 @@ public class ConceptController {
     @ApiOperation(value= DELETE_CONCEPT_BY_ID, nickname= DELETE_CONCEPT_BY_ID)
     @RequestMapping(method=RequestMethod.DELETE, value = PATH_CONCEPT_ID)
     @ApiResponsesForValueRange
-    public boolean deleteConcept(@PathVariable(value=CONCEPT_ID) String conceptID){
+    public boolean deleteConcept(
+	    @PathVariable(value=CONCEPT_ID) String conceptID){
+	
 	Project p = App.getProject();
 	logger.info("deleting concept with id:"+conceptID);
 	Concept c = p.getSubConcepts().get(conceptID);
@@ -257,7 +269,9 @@ public class ConceptController {
     @ApiOperation(value=ADD_CONCEPT_ID, nickname=ADD_CONCEPT_ID)
     @RequestMapping(method=RequestMethod.PUT, value = PATH_CONCEPT_ID)
     @ApiResponsesForValueRange
-    public boolean addConcept(@PathVariable(value=CONCEPT_ID) String conceptID){
+    public boolean addConcept(
+	    @PathVariable(value=CONCEPT_ID) String conceptID){
+	
 	return null != conceptService.addConcept(conceptID);
     }
 
@@ -265,8 +279,10 @@ public class ConceptController {
     @ApiOperation(value = GET_ATTRIBUTE_BY_ID, nickname = GET_ATTRIBUTE_BY_ID)
     @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_ATTR_ID, headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesForApiResponse
-    public HashMap<String, Object> getAttribute(@PathVariable(value=CONCEPT_ID) String conceptID,
+    public HashMap<String, Object> getAttribute(
+	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=ATTR_ID) String attributeID) {
+	
 	Project p = App.getProject();
 	Concept c = p.getSubConcepts().get(conceptID);
 	HashMap<String, AttributeDesc> allAttributeDescs = c.getAllAttributeDescs();
@@ -280,7 +296,9 @@ public class ConceptController {
     @ApiOperation(value = GET_ALL_ATTRIBUTES, nickname = GET_ALL_ATTRIBUTES)
     @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_ATTRS, headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesForApiResponse
-    public Attribute getAttributes(@PathVariable(value=CONCEPT_ID) String conceptID) {
+    public Attribute getAttributes(
+	    @PathVariable(value=CONCEPT_ID) String conceptID) {
+	
 	return new Attribute(conceptID);
     }
 
@@ -288,7 +306,9 @@ public class ConceptController {
     @ApiOperation(value = DELETE_ALL_ATTRIBUTES, nickname = DELETE_ALL_ATTRIBUTES)
     @RequestMapping(method = RequestMethod.DELETE, value = PATH_CONCEPT_ATTRS, headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
-    public boolean deleteAttributes(@PathVariable(value=CONCEPT_ID) String conceptID) {
+    public boolean deleteAttributes(
+	    @PathVariable(value=CONCEPT_ID) String conceptID) {
+	
 	Project p = App.getProject();
 	Concept c = p.getSubConcepts().get(conceptID);
 	for(String attributeDescName : c.getAllAttributeDescs().keySet()) {
@@ -296,15 +316,18 @@ public class ConceptController {
 	}
 	return true;
     }
+    
 
     //add one attribute
     @ApiOperation(value = ADD_ATTRIBUTE_BY_ID, nickname = ADD_ATTRIBUTE_BY_ID)
-    @RequestMapping(method = RequestMethod.PUT, value = PATH_CONCEPT_ATTRS + "/{attributeName}", headers=ACCEPT_APPLICATION_JSON)
+    //@RequestMapping(method = RequestMethod.PUT, value = PATH_CONCEPT_ATTRS + "/{attributeName}", headers=ACCEPT_APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.PUT, value = PATH_CONCEPT_ATTR_ID, headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesForValueRange
     public boolean addAttribute(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
-	    @PathVariable(value="attributeName") String attributeName,
+	    @PathVariable(value=ATTR_ID) String attributeID,
 	    @RequestParam(value="attributeJSON", defaultValue = "{}") String attributeJSON) {
+	
 	Project p = App.getProject();
 	Concept c = p.getSubConcepts().get(conceptID);
 	JSONParser parser = new JSONParser();
@@ -319,13 +342,13 @@ public class ConceptController {
 	try {
 	    if (type.contains(STRING)) {
 		//This attribute registers with the concept through callback!
-		conceptService.addStringAttribute(c,attributeName,solution.contentEquals("True"));
+		conceptService.addStringAttribute(c,attributeID,solution.contentEquals("True"));
 	    } else if(type.contains("Double")){
 		if(json.containsKey("min") && json.containsKey("max")) {
 		    double min = (Double)json.get("min");
 		    double max = (Double)json.get("max");
 		    //This attribute registers with the concept through callback!
-		    AttributeDesc attributeDesc = conceptService.addDoubleAttribute(c, attributeName, min, max,solution.contentEquals("True"));
+		    AttributeDesc attributeDesc = conceptService.addDoubleAttribute(c, attributeID, min, max,solution.contentEquals("True"));
 		}else
 		    return false;
 
@@ -337,7 +360,7 @@ public class ConceptController {
 		    for(Object o : arr){
 			allowedValues.add((String)o);
 		    }
-		    SymbolDesc attributeDesc = new SymbolDesc(c, attributeName, allowedValues);
+		    SymbolDesc attributeDesc = new SymbolDesc(c, attributeID, allowedValues);
 		    if(solution.contentEquals("True"))
 			attributeDesc.setIsSolution(true);
 		}else
@@ -353,18 +376,20 @@ public class ConceptController {
 
     //delete one attribute
     @ApiOperation(value = DELETE_ATTRIBUTE_BY_ID, nickname = DELETE_ATTRIBUTE_BY_ID)
-    @RequestMapping(method = RequestMethod.DELETE, value =  PATH_CONCEPT_ATTRS + "/{attributeName}", 
-    	headers=ACCEPT_APPLICATION_JSON)
+    //@RequestMapping(method = RequestMethod.DELETE, value =  PATH_CONCEPT_ATTRS + "/{attributeName}", 
+    //	headers=ACCEPT_APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.DELETE, value =  PATH_CONCEPT_ATTR_ID, headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
     public boolean deleteAttribute(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
-	    @PathVariable(value="attributeName") String attributeName,
+	    @PathVariable(value=ATTR_ID) String attributeID,
 	    @RequestParam(value=ATTR_TYPE, defaultValue = STRING) String attributeType) {
+	
 	Project p = App.getProject();
 	Concept c = p.getSubConcepts().get(conceptID);
 
 	try {
-	    c.removeAttributeDesc(attributeName);
+	    c.removeAttributeDesc(attributeID);
 	}catch (Exception e){
 	    logger.error("got an exception: ",e);
 	    return false;
@@ -374,20 +399,21 @@ public class ConceptController {
     }
 
     //Get all similarity function for attribute
-    @ApiOperation(value = GET_ATTRIBUTE_SIMILARITY_FUNCTION, nickname = GET_ATTRIBUTE_SIMILARITY_FUNCTION)
-    @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_ATTRS + "/{attributeName}/similarityfunctions", 
+    @ApiOperation(value = GET_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS, nickname = GET_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS)
+    @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_ATTR_SIM_FUNCTIONS, 
     	headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
     public HashMap<String, Object> getSimilarityFunction(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
-	    @PathVariable(value="attributeName") String attributeName) {
+	    @PathVariable(value=ATTR_ID) String attributeID) {
+	
 	Project p = App.getProject();
 	Concept concept = p.getConceptByID(conceptID);
 	/*Collection<AttributeDesc> attributeDescs = concept.getAllAttributeDescs().values();
         for(AttributeDesc attributeDesc : attributeDescs){
             concept.getActiveAmalgamFct().setActiveFct(attributeDesc,null);
         }*/
-	AttributeDesc attributeDesc = concept.getAttributeDesc(attributeName);
+	AttributeDesc attributeDesc = concept.getAttributeDesc(attributeID);
 	Object o = concept.getActiveAmalgamFct().getActiveFct(attributeDesc);
 	if(o instanceof  SimFct){
 	    return  ((SimFct)o).getRepresentation();
@@ -402,11 +428,12 @@ public class ConceptController {
     @ApiResponsesDefault
     public boolean deleteSimilarityFunctions(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
-	    @PathVariable(value="attributeName") String attributeName) {
+	    @PathVariable(value=ATTR_ID) String attributeID) {
+	
 	Project p = App.getProject();
 	Concept concept = p.getConceptByID(conceptID);
 	Collection<AttributeDesc> attributeDescs = concept.getAllAttributeDescs().values();
-	AttributeDesc attributeDesc = concept.getAttributeDesc(attributeName);
+	AttributeDesc attributeDesc = concept.getAttributeDesc(attributeID);
 	concept.getActiveAmalgamFct().setActiveFct(attributeDesc,null);
 
 	return true;
@@ -419,17 +446,18 @@ public class ConceptController {
     @ApiResponsesForValueRange
     public boolean addSimilarityFunction(
 	    @PathVariable(value=CONCEPT) String concept,
-	    @PathVariable(value="attributeName") String attributeName,
-	    @PathVariable(value="similarityFunctionName") String similarityFunctionName,
-	    @RequestParam(value="caseBase", defaultValue="db") String caseBase,
+	    @PathVariable(value=ATTR_ID) String attributeId,
+	    @PathVariable(value=SIM_FUNCTION_ID) String similarityFunctionID,
+	    @RequestParam(value=CASEBASE_ID, defaultValue="db") String casebaseID,
 	    @RequestParam(value="parameter", defaultValue="1.0") Double parameter) {
+	
 	Project p = App.getProject();
-	if(!p.getCaseBases().containsKey(caseBase)){
+	if(!p.getCaseBases().containsKey(casebaseID)){
 	    return false;
 	}
 	//p.createTopConcept("heh");
 	Concept c = (Concept)p.getSubConcepts().get(concept);
-	return conceptService.addDoubleSimilarityFunction(c,attributeName,similarityFunctionName,parameter);
+	return conceptService.addDoubleSimilarityFunction( c, attributeId, similarityFunctionID, parameter);
 
     }
 

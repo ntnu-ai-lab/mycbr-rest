@@ -148,7 +148,7 @@ public class CaseController
 
     //Delete instances according to pattern
     @ApiOperation(value=DELETE_ALL_CASES_IN_CASEBASE_USING_PATTERN, nickname=DELETE_ALL_CASES_IN_CASEBASE_USING_PATTERN)
-    @RequestMapping(method=RequestMethod.DELETE, value = PATH_CONCEPT_CASEBASE_CASES + "/deleteCasesByPattern")
+    @RequestMapping(method=RequestMethod.DELETE, value = PATH_CONCEPT_CASEBASE_CASES + "/casesByPattern")
     @ApiResponsesForValueRange
     public boolean deleteInstancePattern(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,

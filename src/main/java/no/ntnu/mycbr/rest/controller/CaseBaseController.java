@@ -25,6 +25,7 @@ public class CaseBaseController {
     @RequestMapping(method = RequestMethod.GET, path=PATH_CASEBASES, produces = APPLICATION_JSON)
     @ApiResponsesForCaseBases
     public CaseBases getCaseBases() {
+	
 	return new CaseBases();
     }
 
@@ -33,11 +34,13 @@ public class CaseBaseController {
     @ApiResponsesDefault
     public boolean createCaseBase(
 	    @PathVariable(value=CASEBASE_ID) String casebase){
+	
 	Project p = App.getProject();
 	try {
 	    p.createDefaultCB(casebase);
 	} catch (Exception e) {
 	    logger.error("got an error creating the casebase", e);
+	    return false;
 	}
 	return true;
     }
@@ -47,6 +50,7 @@ public class CaseBaseController {
     @ApiResponsesDefault
     public boolean deleteCaseBase(
 	    @PathVariable(value=CASEBASE_ID) String casebase){
+	
 	Project p = App.getProject();
 	try {
 	    p.deleteCaseBase(casebase);

@@ -34,6 +34,7 @@ public class RetrievalController {
 	    @RequestParam(value=AMAL_FUNCTION, defaultValue=DEFAULT_AMAL_FUNCTION) String amalFunc,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k,
 	    @RequestBody(required = true) HashMap<String, Object> queryContent) {
+	
 	return new Query(casebase, concept, amalFunc, queryContent, k);
     }
 
@@ -45,6 +46,7 @@ public class RetrievalController {
 	    @PathVariable(value=CASEBASE_ID) String casebaseID,
 	    @RequestParam(value=CASE_ID) String caseID,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k) {
+	
 	return new Query(casebaseID, conceptID, null, caseID, k);
     }
 
@@ -56,6 +58,7 @@ public class RetrievalController {
 	    @PathVariable(value=CASEBASE_ID) String casebaseIDs,
 	    @RequestParam(value=CASE_IDS) String caseIDsJson,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k) {
+	
 	ArrayList<String> caseIDs = new ArrayList<>();
 	JSONParser parser = new JSONParser();
 	JSONArray inpcases = null;
@@ -80,6 +83,7 @@ public class RetrievalController {
 	    @RequestParam(value=CASE_ID, defaultValue = "queryCaseID1") String caseID,
 	    @RequestParam(value="filterCaseIDs", defaultValue = "[caseID1, caseID2, caseID3]") String filterCaseIDs,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k) {
+	
 	JSONParser parser = new JSONParser();
 	ArrayList<String> caseIDs = new ArrayList<>();
 	caseIDs.add(caseID);
@@ -107,6 +111,7 @@ public class RetrievalController {
 	    @RequestParam(value=CASE_IDS, defaultValue = "[queryCase1, queryCase2]") String caseIDs,
 	    @RequestParam(value="filterCaseIDs", defaultValue = "[caseID1, caseID2, caseID3]") String filterCaseIDs,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k) {
+	
 	ArrayList<String> caseIDList = new ArrayList<>();
 	JSONParser parser = new JSONParser();
 	JSONArray inpcases = null;
@@ -141,6 +146,7 @@ public class RetrievalController {
 	    @RequestParam(value="Symbol attribute name", defaultValue="Manufacturer") String attribute,
 	    @RequestParam(value=VALUE, defaultValue="vw") String value,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k) {
+	
 	return new Query(casebase, concept, amalFunc, attribute, value, k);
     }
 

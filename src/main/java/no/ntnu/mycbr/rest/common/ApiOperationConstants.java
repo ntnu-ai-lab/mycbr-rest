@@ -38,7 +38,7 @@ public class ApiOperationConstants {
     UPDATE_ATTRIBUTE_VALUE_RANGE = "updateAttributeValueRange", // To be implemented.
 	    
     ADD_ATTRIBUTE_SIMILARITY_FUNCTION 	 = "addAttributeSimilarityFunction",
-    GET_ATTRIBUTE_SIMILARITY_FUNCTION 	 = "getAttributeSimilarityFunction",
+    GET_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS 	 = "getAllAttributeSimilarityFunctions",
     UPDATE_ATTRIBUTE_SIMILARITY_FUNCTION = "updateAttributeSimilarityFunction", // To be implemented.
     DELETE_ATTRIBUTE_SIMILARITY_FUNCTION = "deleteAttributeSimilarityFunction",
     

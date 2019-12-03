@@ -40,7 +40,7 @@ public class EphemeralController {
    @ApiOperation(value = GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE_WITH_CONTENT, nickname = GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE_WITH_CONTENT)
     @RequestMapping(method = RequestMethod.POST, path=PATH_EPHEMERAL_RETRIEVAL_WITH_CONTENT, produces=APPLICATION_JSON)
     @ApiResponsesDefault
-    public @ResponseBody List<LinkedHashMap<String, String>> retrievalFromEphemeralCaseBase(
+    public @ResponseBody List<LinkedHashMap<String, String>> retrievalFromEphemeralCaseBaseWithContent(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID, 
 	    @PathVariable(value=AMAL_FUNCTION_ID) String amalgamationFunctionID,

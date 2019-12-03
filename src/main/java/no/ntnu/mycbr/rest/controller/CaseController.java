@@ -46,7 +46,8 @@ public class CaseController
     @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_CASEBASE_CASE_ID, 
     headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesForCase
-    public Case getInstance(@PathVariable(value=CONCEPT_ID) String conceptID,
+    public Case getInstance(
+	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID,
 	    @PathVariable(value=CASE_ID) String caseID) {
 
@@ -67,7 +68,8 @@ public class CaseController
     @RequestMapping(method = RequestMethod.DELETE, value = PATH_CONCEPT_CASEBASE_CASE_ID, 
     headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
-    public boolean deleteInstance(@PathVariable(value=CONCEPT_ID) String conceptID,
+    public boolean deleteInstance(
+	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID,
 	    @PathVariable(value=CASE_ID) String caseID) {
 	Project p = App.getProject();
@@ -84,7 +86,9 @@ public class CaseController
     @ApiOperation(value = GET_ALL_CASES, nickname = GET_ALL_CASES)
     @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_CASES, headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
-    public Collection<Case> getAllInstances(@PathVariable(value=CONCEPT_ID) String conceptID) {
+    public Collection<Case> getAllInstances(
+	    @PathVariable(value=CONCEPT_ID) String conceptID) {
+	
 	Project p = App.getProject();
 
 	/*Query query = new Query(conceptID);
@@ -111,8 +115,10 @@ public class CaseController
     @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_CASEBASE_CASES, 
     headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesForCase
-    public List<LinkedHashMap<String, String>> getAllInstancesInCaseBase(@PathVariable(value=CONCEPT_ID) String conceptID,
+    public List<LinkedHashMap<String, String>> getAllInstancesInCaseBase(
+	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID) {
+	
 	Query query = new Query(casebaseID,conceptID);
 	//TODO: filter to one type of concept
 	List<LinkedHashMap<String, String>> cases = getFullResult(query, conceptID);
@@ -124,8 +130,9 @@ public class CaseController
     @ApiOperation(value=DELETE_ALL_CASES, nickname=DELETE_ALL_CASES)
     @RequestMapping(method=RequestMethod.DELETE, value = PATH_CONCEPT_CASEBASE_CASES)
     @ApiResponsesForValueRange
-    public boolean deleteInstances(@PathVariable(value=CONCEPT) String conceptID,
-	    @PathVariable(value=CASEBASE_ID) String casebaseID){
+    public boolean deleteInstances(
+	    @PathVariable(value=CONCEPT) String conceptID,
+	    @PathVariable(value=CASEBASE_ID) String casebaseID) {
 
 	Project p = App.getProject();
 	if(!p.getCaseBases().containsKey(casebaseID))
@@ -143,10 +150,10 @@ public class CaseController
     @ApiOperation(value=DELETE_ALL_CASES_IN_CASEBASE_USING_PATTERN, nickname=DELETE_ALL_CASES_IN_CASEBASE_USING_PATTERN)
     @RequestMapping(method=RequestMethod.DELETE, value = PATH_CONCEPT_CASEBASE_CASES + "/deleteCasesByPattern")
     @ApiResponsesForValueRange
-    public boolean deleteInstancePattern(@PathVariable(value=CONCEPT_ID) String conceptID,
+    public boolean deleteInstancePattern(
+	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String caseBase,
-	    @RequestParam(value="pattern",defaultValue="*") String pattern
-	    ){
+	    @RequestParam(value="pattern",defaultValue="*") String pattern) {
 
 	Project p = App.getProject();
 	if(!p.getCaseBases().containsKey(caseBase))
@@ -185,8 +192,8 @@ public class CaseController
     public ArrayList<String> addInstancesJSON(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID,
-	    @RequestParam(value=CASES, defaultValue="{'cases':[{'Att':'Value'},{'Att':'Value'}]}") String cases
-	    ) {
+	    @RequestParam(value=CASES, defaultValue="{'cases':[{'Att':'Value'},{'Att':'Value'}]}") String cases) {
+	
 	Project p = App.getProject();
 	if(!p.getCaseBases().containsKey(casebaseID)){
 	    return new ArrayList<>();
@@ -213,8 +220,8 @@ public class CaseController
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID,
 	    @PathVariable(value=CASE_ID) String caseID,
-	    @RequestParam(value="casedata", defaultValue="{}") String casedata
-	    ) {
+	    @RequestParam(value="casedata", defaultValue="{}") String casedata) {
+	
 	Project p = App.getProject();
 	if(!p.getCaseBases().containsKey(casebaseID)){
 	    return false;

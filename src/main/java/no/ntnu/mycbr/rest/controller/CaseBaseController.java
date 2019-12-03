@@ -31,7 +31,8 @@ public class CaseBaseController {
     @ApiOperation(value=ADD_CASEBASE_ID, nickname=ADD_CASEBASE_ID)
     @RequestMapping(method=RequestMethod.PUT, path=PATH_CASEBASE_ID)
     @ApiResponsesDefault
-    public boolean createCaseBase(@PathVariable(value=CASEBASE_ID) String casebase){
+    public boolean createCaseBase(
+	    @PathVariable(value=CASEBASE_ID) String casebase){
 	Project p = App.getProject();
 	try {
 	    p.createDefaultCB(casebase);
@@ -44,7 +45,8 @@ public class CaseBaseController {
     @ApiOperation(value=DELETE_CASEBASE_ID, nickname=DELETE_CASEBASE_ID)
     @RequestMapping(method=RequestMethod.DELETE, path= PATH_CASEBASE_ID)
     @ApiResponsesDefault
-    public boolean deleteCaseBase(@PathVariable(value=CASEBASE_ID) String casebase){
+    public boolean deleteCaseBase(
+	    @PathVariable(value=CASEBASE_ID) String casebase){
 	Project p = App.getProject();
 	try {
 	    p.deleteCaseBase(casebase);

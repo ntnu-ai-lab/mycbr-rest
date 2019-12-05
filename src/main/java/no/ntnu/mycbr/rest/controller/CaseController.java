@@ -46,7 +46,7 @@ public class CaseController
     @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_CASEBASE_CASE_ID, 
     headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesForCase
-    public Case getInstance(
+    public Map<String, String> getInstance(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID,
 	    @PathVariable(value=CASE_ID) String caseID) {
@@ -60,7 +60,7 @@ public class CaseController
 	
 	Case queriedCase = new Case(instance.getName(),conceptID); 
 	
-	return queriedCase;
+	return queriedCase.getCase();
     }
 
     //Delete one instance
@@ -86,7 +86,7 @@ public class CaseController
     @ApiOperation(value = GET_ALL_CASES, nickname = GET_ALL_CASES)
     @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_CASES, headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
-    public Collection<Case> getAllInstances(
+    public List<Map<String, String>> getAllInstances(
 	    @PathVariable(value=CONCEPT_ID) String conceptID) {
 	
 	Project p = App.getProject();
@@ -102,10 +102,10 @@ public class CaseController
             instances.addAll(iCaseBase.getCases());
         }*/
 	Collection<Instance> instances = p.getAllInstances();
-	Collection<Case> ret = new LinkedList<>();
+	List<Map<String, String>> ret = new LinkedList<>();
 	for(Instance instance : instances){
 	    if(instance.getConcept().getName().contentEquals(conceptID))
-		ret.add(new Case(instance.getName(),conceptID));
+		ret.add(new Case(instance.getName(),conceptID).getCase());
 	}
 	return ret;
     }

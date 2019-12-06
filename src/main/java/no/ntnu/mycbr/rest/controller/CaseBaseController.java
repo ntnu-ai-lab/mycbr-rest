@@ -13,6 +13,9 @@ import no.ntnu.mycbr.rest.App;
 import no.ntnu.mycbr.rest.CaseBases;
 
 import static no.ntnu.mycbr.rest.common.ApiResponseAnnotations.*;
+
+import java.util.List;
+
 import static no.ntnu.mycbr.rest.common.ApiPathConstants.*;
 import static no.ntnu.mycbr.rest.common.ApiOperationConstants.*;
 
@@ -24,9 +27,9 @@ public class CaseBaseController {
     @ApiOperation(value = GET_CASEBASE_IDS, nickname = GET_CASEBASE_IDS)
     @RequestMapping(method = RequestMethod.GET, path=PATH_CASEBASES, produces = APPLICATION_JSON)
     @ApiResponsesForCaseBases
-    public CaseBases getCaseBases() {
+    public List<String> getCaseBases() {
 	
-	return new CaseBases();
+	return new CaseBases().getCaseBases();
     }
 
     @ApiOperation(value=ADD_CASEBASE_ID, nickname=ADD_CASEBASE_ID)

@@ -48,9 +48,9 @@ public class ConceptController {
     @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPT_AMAL_FUNCTIONS, produces = APPLICATION_JSON)
     @ApiResponsesForAmalgamationFunctions
     public AmalgamationFunctions getAmalgamationFunctions(
-	    @PathVariable(value=CONCEPT) String concept) {
+	    @PathVariable(value=CONCEPT_ID) String conceptID) {
 	
-	return new AmalgamationFunctions(concept);
+	return new AmalgamationFunctions(conceptID);
     }
 
     //delete all amalgationfunctions
@@ -479,8 +479,8 @@ public void foo(@PathVariable("id") int id, HttpServletRequest request) {
     @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_ATTR_VALUE_RANGE, headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesForValueRange
     public ValueRange getValueRange(
-	    @RequestParam(value=CONCEPT_ID, defaultValue=DEFAULT_CONCEPT) String conceptID,
-	    @RequestParam(value=ATTR_ID, defaultValue=DEFAULT_ATTR_ID) String attributeID) {
+	    @PathVariable(value=CONCEPT_ID) String conceptID,
+	    @PathVariable(value=ATTR_ID) String attributeID) {
 
 	return new ValueRange(conceptID, attributeID);
     }

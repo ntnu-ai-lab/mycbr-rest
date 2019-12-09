@@ -13,6 +13,7 @@ import java.util.Set;
  */
 public class ValueRange {
 
+    private static final String ATTRIBUTE_TYPE = "attribute_type"; 
     private HashMap<String, Object> attributes = new HashMap<String, Object>();
 
     public ValueRange(String concept, String attributeName) {
@@ -30,6 +31,8 @@ public class ValueRange {
             range.add(aFloatAtt.getMin());
             range.add(aFloatAtt.getMax());
             attributes.put(attdesc.getName(),range);
+            attributes.put(ATTRIBUTE_TYPE, AttributeDescName);
+            
         }
         else if (AttributeDescName.equalsIgnoreCase("IntegerDesc")){
             IntegerDesc aIntegerAtt = (IntegerDesc) attdesc;
@@ -37,20 +40,25 @@ public class ValueRange {
             range.add(aIntegerAtt.getMin());
             range.add(aIntegerAtt.getMax());
             attributes.put(attdesc.getName(),range);
+            attributes.put(ATTRIBUTE_TYPE, AttributeDescName);
         }
+        
         else if (AttributeDescName.equalsIgnoreCase("DoubleDesc")){
             DoubleDesc aIntegerAtt = (DoubleDesc) attdesc;
             Set<Double> range = new HashSet<>();
             range.add(aIntegerAtt.getMin());
             range.add(aIntegerAtt.getMax());
             attributes.put(attdesc.getName(),range);
+            attributes.put(ATTRIBUTE_TYPE, AttributeDescName);
         }
         else if (AttributeDescName.equalsIgnoreCase("SymbolDesc")){
             SymbolDesc aSymbolAtt = (SymbolDesc) attdesc;
             attributes.put(attdesc.getName(),aSymbolAtt.getAllowedValues());
+            attributes.put(ATTRIBUTE_TYPE, AttributeDescName);
         }
         else {
             attributes.put(attdesc.getName(),"n/a");
+            attributes.put(ATTRIBUTE_TYPE, AttributeDescName);
         }
     }
 

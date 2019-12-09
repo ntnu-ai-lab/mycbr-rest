@@ -88,7 +88,7 @@ public final class ApiPathConstants {
     PATH_AMAL_FUNCTIONS = PATH + AMAL_FUNCTIONS,
     PATH_CASES 		= PATH + CASES,
     PATH_ATTRIBUTES 	= PATH + ATTRS,
-    PATH_VALUE_RANGE    = PATH + VALUE + "RANGE",
+    PATH_VALUE_RANGE    = PATH + VALUE + "Range",
     PATH_SIM_FUNCTIONS  = PATH + SIM_FUNCTIONS;
    
     // Path pattern: /___s/{___ID}  

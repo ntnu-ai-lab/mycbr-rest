@@ -44,6 +44,7 @@ public class ApiOperationConstants {
     
     ADD_AMALGAMATION_FUNCTION		= "addAmalgamationFunction",
     ADD_NEURAL_AMALGAMATION_FUNCTION 	= "addNeuralAmalgamationFunction",
+    GET_AMALGAMATION_FUNCTION_BY_ID 	= "getAmalgamationFunctionByID", // To be implemented
     GET_ALL_AMALGAMATION_FUNCTIONS 	= "getAllAmalgamationFunctions",
     DELETE_AMALGAMATION_FUNCTION 	= "deleteAmalgamationFunction",
     DELETE_ALL_AMALGAMATION_FUNCTIONS 	= "deleteAllAmalgamationFunctions";

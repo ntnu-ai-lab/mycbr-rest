@@ -66,17 +66,12 @@ public final class ApiPathConstants {
     SIM_FUNCTION_ID	= SIM_FUNCTION 	+ ID;
     
     
- // myCBR-rest API: IDs vocabulary
-    public static final String 
-    CASE_IDS 			= CONCEPT + "IDs";
-    
-    
     // myCBR-rest API: type vocabulary specific names
     public static final String 
     TYPE 		= "Type",
     AMAL_FUNCTION_TYPE 	= AMAL_FUNCTION + TYPE,
     ATTR_TYPE 	       	= ATTR + TYPE;
-
+    
     
     // Path variables
     
@@ -90,7 +85,7 @@ public final class ApiPathConstants {
     PATH_ATTRIBUTES 	= PATH + ATTRS,
     PATH_VALUE_RANGE    = PATH + VALUE + "Range",
     PATH_SIM_FUNCTIONS  = PATH + SIM_FUNCTIONS;
-   
+    
     // Path pattern: /___s/{___ID}  
     public static final String 
     PATH_CONCEPT_ID	  = PATH_CONCEPTS       + "/{" + CONCEPT_ID 	 + "}",
@@ -115,7 +110,7 @@ public final class ApiPathConstants {
     PATH_CONCEPT_AMAL_FUNCTION_ID = PATH_CONCEPT_ID + PATH_AMAL_FUNCTION_ID,
     PATH_CONCEPT_CASE_ID     	  = PATH_CONCEPT_ID + PATH_CASE_ID,
     PATH_CONCEPT_ATTR_ID	  = PATH_CONCEPT_ID + PATH_ATTR_ID;
-	    
+    
     
     //Path pattern: /concepts/{conceptID}/casebases/{casebaseID}/___s
     public static final String 
@@ -129,7 +124,7 @@ public final class ApiPathConstants {
     
     //Path pattern: /concepts/{conceptID}/attributes/{attributeID}/___
     public static final String PATH_CONCEPT_ATTR_VALUE_RANGE = PATH_CONCEPT_ATTR_ID + PATH_VALUE_RANGE;
-
+    
     //Path pattern: /concepts/{conceptID}/attributes/{attributeID}/___s
     public static final String PATH_CONCEPT_ATTR_SIM_FUNCTIONS = PATH_CONCEPT_ATTR_ID + PATH_SIM_FUNCTIONS;
     
@@ -151,7 +146,7 @@ public final class ApiPathConstants {
     PATH_RETRIEVAL_BY_CASE_ID_WITH_CONTENT 	= PATH + RETRIEVAL_BY_CASE_ID_WITH_CONTENT;
     
     public static final String PATH_CONCEPT_CASEBASE_SELF_SIMLARITY = PATH_CONCEPT_CASEBASE_ID + PATH_SELF_SIMLARITY;
-
+    
     public static final String PATH_DEFAULT_EPHEMERAL = PATH_EPHEMERAL + PATH_CONCEPT_CASEBASE_AMAL_FUNCTION_ID;
     public static final String PATH_EPHEMERAL_RETRIEVAL = PATH_DEFAULT_EPHEMERAL + PATH_RETRIEVAL;
     public static final String PATH_EPHEMERAL_RETRIEVAL_WITH_CONTENT = PATH_DEFAULT_EPHEMERAL + PATH_RETRIEVAL_BY_CASE_ID_WITH_CONTENT;

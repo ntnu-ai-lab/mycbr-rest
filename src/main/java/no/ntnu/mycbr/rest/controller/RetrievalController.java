@@ -43,38 +43,29 @@ public class RetrievalController {
     }
 
     @ApiOperation(value = GET_SIMILAR_CASES_BY_CASE_ID, nickname = GET_SIMILAR_CASES_BY_CASE_ID)
-    @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPT_CASEBASE_ID+"/retrievalByCaseID", produces=APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPT_CASEBASE_AMAL_FUNCTION_ID+"/retrievalByCaseID", produces=APPLICATION_JSON)
     @ApiResponsesForQuery
     public Query getSimilarCasesByID(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID,
+	    @PathVariable(value=AMAL_FUNCTION_ID) String amalgamationFunctionID,
 	    @RequestParam(value=CASE_ID) String caseID,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k) {
 	
-	return new Query(casebaseID, conceptID, null, caseID, k);
+	return new Query(casebaseID, conceptID, amalgamationFunctionID, caseID, k);
     }
 
     @ApiOperation(value = GET_SIMILAR_CASES_BY_MULTIPLE_CASE_IDS, nickname = GET_SIMILAR_CASES_BY_MULTIPLE_CASE_IDS)
-    @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPT_CASEBASE_ID+"/retrievalByMultipleCaseIDs", produces=APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.POST, path=PATH_CONCEPT_CASEBASE_AMAL_FUNCTION_ID+"/retrievalByMultipleCaseIDs", produces=APPLICATION_JSON)
     @ApiResponsesForQuery
     public HashMap<String, HashMap<String,Double>> getSimilarCasesByIDs(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseIDs,
-	    @RequestParam(value=CASE_IDS) String caseIDsJson,
-	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k) {
+	    @PathVariable(value=AMAL_FUNCTION_ID) String amalgamationFunctionID,
+	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k,
+	    @RequestBody(required = true)  Set<String> caseIDs) {
 	
-	ArrayList<String> caseIDs = new ArrayList<>();
-	JSONParser parser = new JSONParser();
-	JSONArray inpcases = null;
-	try {
-	    inpcases = (JSONArray) parser.parse(caseIDsJson);
-	} catch (ParseException e) {
-	    e.printStackTrace();
-	}
-	Iterator<String>  it = inpcases.iterator();
-	while(it.hasNext())
-	    caseIDs.add(it.next());
-	return Query.retrieve(casebaseIDs, conceptID, null, caseIDs, k);
+	return Query.retrieve(casebaseIDs, conceptID, amalgamationFunctionID, caseIDs, k);
     }
 
     /**
@@ -88,13 +79,11 @@ public class RetrievalController {
     public HashMap<String, HashMap<String,Double>> getSimilarInstancesByIDWithinIDs(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID,
-	    @RequestParam(value=CASE_ID, defaultValue = "queryCaseID1") String caseID,
+	    @RequestParam(required = true)  Set<String> caseIDs,
 	    @RequestParam(value="filterCaseIDs", defaultValue = "[caseID1, caseID2, caseID3]") String filterCaseIDs,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k) {
 	
 	JSONParser parser = new JSONParser();
-	ArrayList<String> caseIDs = new ArrayList<>();
-	caseIDs.add(caseID);
 	ArrayList<String> queryBaseIDs = new ArrayList<>();
 	JSONArray queryBase = null;
 	try {
@@ -120,18 +109,14 @@ public class RetrievalController {
     public HashMap<String, HashMap<String,Double>> getSimilarInstancesByIDsWithinIDs(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID,
-	    @RequestParam(value=CASE_IDS, defaultValue = "[queryCase1, queryCase2]") String caseIDs,
+	    @RequestParam(required = true)  Set<String> caseIDs,
 	    @RequestParam(value="filterCaseIDs", defaultValue = "[caseID1, caseID2, caseID3]") String filterCaseIDs,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k) {
 	
 	ArrayList<String> caseIDList = new ArrayList<>();
 	JSONParser parser = new JSONParser();
 	JSONArray inpcases = null;
-	try {
-	    inpcases = (JSONArray) parser.parse(caseIDs);
-	} catch (ParseException e) {
-	    e.printStackTrace();
-	}
+	
 	Iterator<String>  it = inpcases.iterator();
 	while(it.hasNext())
 	    caseIDList.add(it.next());
@@ -145,49 +130,49 @@ public class RetrievalController {
 	it = queryBase.iterator();
 	while(it.hasNext())
 	    queryBaseIDs.add(it.next());
-	return Query.retrieve(casebaseID, conceptID, null, caseIDList, queryBaseIDs, k);
+	return Query.retrieve(casebaseID, conceptID, null, caseIDs, queryBaseIDs, k);
     }
 
     @ApiOperation(value = GET_SIMILAR_CASES_BY_ATTRIBUTE, nickname = GET_SIMILAR_CASES_BY_ATTRIBUTE)
-    @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPT_CASEBASE_ID+"/retrievalByAttribute", produces=APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPT_CASEBASE_AMAL_FUNCTION_ID+"/retrievalByAttribute", produces=APPLICATION_JSON)
     @ApiResponsesForQuery
     public Query getSimilarInstancesByAttribute(
-	    @RequestParam(value=CASEBASE, defaultValue=DEFAULT_CASEBASE) String casebase,
-	    @RequestParam(value=CONCEPT_ID, defaultValue=DEFAULT_CONCEPT) String concept,
-	    @RequestParam(value=AMAL_FUNCTION, defaultValue=DEFAULT_AMAL_FUNCTION) String amalFunc,
+	    @PathVariable(value=CONCEPT_ID) String conceptID,
+	    @PathVariable(value=CASEBASE_ID) String casebaseID,
+	    @PathVariable(value=AMAL_FUNCTION_ID) String amalgamationFunctionID,
 	    @RequestParam(value="Symbol attribute name", defaultValue="Manufacturer") String attribute,
 	    @RequestParam(value=VALUE, defaultValue="vw") String value,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k) {
 	
-	return new Query(casebase, concept, amalFunc, attribute, value, k);
+	return new Query(casebaseID, conceptID, amalgamationFunctionID, attribute, value, k);
     }
 
     @ApiOperation(value = GET_SIMILAR_CASES_BY_MULTIPLE_ATTRIBUTES, nickname = GET_SIMILAR_CASES_BY_MULTIPLE_ATTRIBUTES)
-    @RequestMapping(method = RequestMethod.POST, path=PATH_CONCEPT_CASEBASE_ID+"/retrievalByMultipleAttributes", produces=APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.POST, path=PATH_CONCEPT_CASEBASE_AMAL_FUNCTION_ID+"/retrievalByMultipleAttributes", produces=APPLICATION_JSON)
     @ApiResponsesDefault
     public @ResponseBody List<LinkedHashMap<String, String>> getSimilarInstancesWithContent(
-	    @RequestParam(value=CASEBASE, defaultValue=DEFAULT_CASEBASE) String casebase,
-	    @RequestParam(value=CONCEPT_ID, defaultValue=DEFAULT_CONCEPT) String concept,
-	    @RequestParam(value=AMAL_FUNCTION, defaultValue=DEFAULT_AMAL_FUNCTION) String amalFunc,
+	    @PathVariable(value=CONCEPT_ID) String conceptID,
+	    @PathVariable(value=CASEBASE_ID) String casebaseID,
+	    @PathVariable(value=AMAL_FUNCTION_ID) String amalgamationFunctionID,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k,
-	    @RequestBody(required = true)  HashMap<String, Object> queryContent) {
+	    @RequestBody(required = true)  HashMap<String, Object> attributeNameValueMap) {
 
-	Query query = new Query(casebase, concept, amalFunc, queryContent, k);
-	List<LinkedHashMap<String, String>> cases = getFullResult(query, concept);
+	Query query = new Query(casebaseID, conceptID, amalgamationFunctionID, attributeNameValueMap, k);
+	List<LinkedHashMap<String, String>> cases = getFullResult(query, conceptID);
 	return cases;
     }
 
     @ApiOperation(value = GET_SIMILAR_CASES_BY_CASE_ID_WITH_CONTENT, nickname = GET_SIMILAR_CASES_BY_CASE_ID_WITH_CONTENT)
-    @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPT_CASEBASE_ID+"/retrievalByCaseIDWithContent", produces=APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPT_CASEBASE_AMAL_FUNCTION_ID+"/retrievalByCaseIDWithContent", produces=APPLICATION_JSON)
     @ApiResponsesDefault
     public @ResponseBody List<LinkedHashMap<String, String>> getSimilarInstancesByIDWithContent(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID,
-	    @RequestParam(value=AMAL_FUNCTION, defaultValue=DEFAULT_AMAL_FUNCTION) String amalFunc,
+	    @PathVariable(value=AMAL_FUNCTION_ID) String amalgamationFunctionID,
 	    @RequestParam(value=CASE_ID, defaultValue="144_vw") String caseID,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k) {
 
-	Query query = new Query(casebaseID, conceptID, amalFunc, caseID, k);
+	Query query = new Query(casebaseID, conceptID, amalgamationFunctionID, caseID, k);
 	List<LinkedHashMap<String, String>> cases = getFullResult(query, conceptID);
 	return cases;
     }
@@ -198,12 +183,12 @@ public class RetrievalController {
     public @ResponseBody List<LinkedHashMap<String, String>> getSimilarInstancesByAttributeWithContent(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID,
-	    @RequestParam(value=AMAL_FUNCTION, defaultValue=DEFAULT_AMAL_FUNCTION) String amalFunc,
+	    @RequestParam(value=AMAL_FUNCTION_ID, defaultValue=DEFAULT_AMAL_FUNCTION) String amalgamationFunctionID,
 	    @RequestParam(value="Symbol attribute name", defaultValue="Manufacturer") String attribute,
 	    @RequestParam(value=VALUE, defaultValue="vw") String value,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k) {
 
-	Query query = new Query(casebaseID, conceptID, amalFunc, attribute, value, k);
+	Query query = new Query(casebaseID, conceptID, amalgamationFunctionID, attribute, value, k);
 	List<LinkedHashMap<String, String>> cases = getFullResult(query, conceptID);
 	return cases;
     }
@@ -222,7 +207,7 @@ public class RetrievalController {
     public Map<String, Map<String, Double>> getCaseBaseSelfSimilarity(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID,	    
-	    @RequestParam(value=AMAL_FUNCTION_ID, defaultValue=DEFAULT_AMAL_FUNCTION) String amalgamationFunctionID,
+	    @RequestParam(required = false, value=AMAL_FUNCTION_ID) String amalgamationFunctionID,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES, defaultValue = DEFAULT_NO_OF_CASES) int k) {
 	
 	SelfSimilarityRetrieval selfSimilarityRetrieval = new SelfSimilarityRetrieval();

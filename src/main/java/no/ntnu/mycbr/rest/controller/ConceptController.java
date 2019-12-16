@@ -15,7 +15,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -47,12 +47,13 @@ public class ConceptController {
     //@RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPTS + "/{concept}/amalgamationFunctions", produces = APPLICATION_JSON)
     @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPT_AMAL_FUNCTIONS, produces = APPLICATION_JSON)
     @ApiResponsesForAmalgamationFunctions
-    public AmalgamationFunctions getAmalgamationFunctions(
+    public List<String> getAmalgamationFunctions(
 	    @PathVariable(value=CONCEPT_ID) String conceptID) {
 	
-	return new AmalgamationFunctions(conceptID);
+	AmalgamationFunctions amal = new AmalgamationFunctions(conceptID);
+	return amal.getAmalgamationFunctionIDs();
     }
-
+    
     //delete all amalgationfunctions
     @ApiOperation(value = DELETE_ALL_AMALGAMATION_FUNCTIONS, nickname = DELETE_ALL_AMALGAMATION_FUNCTIONS)
     @RequestMapping(method = RequestMethod.DELETE, path= PATH_CONCEPT_AMAL_FUNCTIONS, produces = APPLICATION_JSON)

@@ -34,9 +34,7 @@ public class SelfSimilarityRetrieval implements RetrievalCustomer{
     private List<Pair<Instance,Similarity>> results;
     private Map<String, Map<String, Double>> selfSimMatrix = new LinkedHashMap<String, Map<String, Double>>();
 
-    /**
-     * 
-     * /**
+     /**
      * Get the Self-Similarity matrix for a case base.
      * @param casebase Name of the case base.
      * @param conceptName Name of the concept.
@@ -55,13 +53,15 @@ public class SelfSimilarityRetrieval implements RetrievalCustomer{
 	
 	TemporaryAmalgamFctManager tempAmalgamFctManager = new TemporaryAmalgamFctManager(concept);
 	
-	// This will change the default Amalgamation Function of the myCBR project to a user specified functions
-	try {
-		tempAmalgamFctManager.changeAmalgamFct(amalFuncName);
-	} catch (TemporaryAmalgamFctNotChangedException e) {
-		e.printStackTrace();
+	if (amalFuncName != null && !amalFuncName.isEmpty()){
+           // This will change the default Amalgamation Function of the myCBR project to a user specified functions
+           try {
+        	tempAmalgamFctManager.changeAmalgamFct(amalFuncName);
+           } catch (TemporaryAmalgamFctNotChangedException e) {
+        	e.printStackTrace();
+           }
 	}
-
+	
 	Collection<Instance> instances = getAllInstances(cb);
 
 	for(Instance instance: instances) {

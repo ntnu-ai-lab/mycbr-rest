@@ -59,7 +59,6 @@ public class EphemeralService implements RetrievalCustomer{
 	this.project = App.getProject();
 	this.cb = (DefaultCaseBase)project.getCaseBases().get(casebaseName);
 	this.concept = project.getConceptByID(conceptName);
-
 	this.tempAmalgamFctManager = new TemporaryAmalgamFctManager(concept);
 
 	// This will change the default Amalgamation Function of the myCBR project to a user specified function

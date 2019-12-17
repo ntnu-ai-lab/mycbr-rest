@@ -171,7 +171,7 @@ public class EphemeralControllerTest implements RetrievalCustomer{
      */
     public void retrievalFromEphemeralCaseBaseTestMultiThread() throws Exception {
 	
-	int threadCount = 10;
+	int threadCount = 1;
 	
 	final MockHttpServletRequestBuilder servlet = post(URL_PATH)
 		.content(TEST_API_POST_BODY_100_CASES)

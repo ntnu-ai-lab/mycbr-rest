@@ -23,6 +23,7 @@ hs_err_pid*
 *.myCBR
 *.myCB
 /src/test/resources/*.config
+/src/main/resources/*.config
 
 # IDE specific files
 *.classpath

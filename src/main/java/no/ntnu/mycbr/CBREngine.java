@@ -99,7 +99,7 @@ public class CBREngine {
 	 * done at the beginning of this class.
 	 * @return ConceptName instance containing model, sims and cases (if available)
 	 */
-	public Project createemptyCBRProject(){
+	public Project creatEemptyCBRProject(){
 
 		Project project = null;
 		try {

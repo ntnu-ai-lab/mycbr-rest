@@ -198,6 +198,42 @@ public class EphemeralControllerTest implements RetrievalCustomer {
 	// so that the control waits for completion of all the threads
 	for (Thread thread : threads)
 	    thread.join();
+=======
+	
+	int threadCount = 1;
+	
+	final MockHttpServletRequestBuilder servlet = post(URL_PATH)
+		.content(TEST_API_POST_BODY_100_CASES)
+                .contentType(MediaType.APPLICATION_JSON);
+	
+            Runnable runnable = () -> {
+        	    try {
+        	       ResultActions res = mockMvc.perform(servlet);   	
+        	       res.andExpect(status().isOk());
+        	       // System.out.println(res.andReturn().getResponse().getContentAsString());
+
+        	    } catch (InterruptedException e) {
+        	        e.printStackTrace();
+        	    } catch (Exception e) {
+        		e.printStackTrace();
+        	    }
+        	};
+        	
+        List<Thread> threads = new LinkedList<>();
+        
+        // executing the retrieval REST API calls in separate threads for concurrency testing
+        for (int i=0; i < threadCount; i++) {
+            Thread thread = new Thread(runnable);
+            threads.add(thread);
+            thread.start();
+        } 
+        
+        // so that the control waits for completion of all the threads
+        for ( Thread thread : threads)
+            thread.join();
+        
+        System.out.println("End of the retrievalFromEphemeralCaseBaseTestMultiThread() !\n\n");
+>>>>>>> 55f369c33f8f1a16d6bfbc744741018409c53c63
     }
 
     @Override

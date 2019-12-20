@@ -1,7 +1,5 @@
 package no.ntnu.mycbr.rest.service;
 
-import static no.ntnu.mycbr.rest.utils.QueryUtils.getFullResult;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -16,19 +14,14 @@ import no.ntnu.mycbr.core.casebase.Attribute;
 import no.ntnu.mycbr.core.casebase.Instance;
 import no.ntnu.mycbr.core.model.AttributeDesc;
 import no.ntnu.mycbr.core.model.Concept;
-import no.ntnu.mycbr.core.model.SymbolDesc;
 import no.ntnu.mycbr.core.retrieval.Retrieval;
 import no.ntnu.mycbr.core.retrieval.Retrieval.RetrievalCustomer;
 import no.ntnu.mycbr.core.similarity.Similarity;
 import no.ntnu.mycbr.util.Pair;
 import no.ntnu.mycbr.rest.App;
 import no.ntnu.mycbr.rest.Case;
-import no.ntnu.mycbr.rest.Query;
 import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctManager;
 import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctNotChangedException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * The EphemeralService facilitates retrieval an ephemeral case base including Self-Similarity retrieval.
@@ -37,8 +30,6 @@ import org.apache.commons.logging.LogFactory;
  */
 //s@Service
 public class EphemeralService implements RetrievalCustomer{
-
-    private final Log logger = LogFactory.getLog(getClass());
     
     // The name used for ephemeral case base
     private static final String EPHEMERAL_CASEBASE_NAME = "ephemeral_casebase";
@@ -59,6 +50,7 @@ public class EphemeralService implements RetrievalCustomer{
 	this.project = App.getProject();
 	this.cb = (DefaultCaseBase)project.getCaseBases().get(casebaseName);
 	this.concept = project.getConceptByID(conceptName);
+	
 	this.tempAmalgamFctManager = new TemporaryAmalgamFctManager(concept);
 
 	// This will change the default Amalgamation Function of the myCBR project to a user specified function

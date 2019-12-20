@@ -22,6 +22,9 @@ import static no.ntnu.mycbr.rest.common.ApiOperationConstants.*;
 @RestController
 public class RetrievalController {
 
+    private static final String VW = "vw";
+    private static final String CAR0 = "car0";
+    private static final String MANUFACTURER = "manufacturer";
     private final Log logger = LogFactory.getLog(getClass());
 
     /**
@@ -140,8 +143,8 @@ public class RetrievalController {
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID,
 	    @PathVariable(value=AMAL_FUNCTION_ID) String amalgamationFunctionID,
-	    @RequestParam(value="Symbol attribute name", defaultValue="Manufacturer") String attribute,
-	    @RequestParam(value=VALUE, defaultValue="vw") String value,
+	    @RequestParam(value="Symbol attribute name", defaultValue=MANUFACTURER) String attribute,
+	    @RequestParam(value=VALUE, defaultValue=VW) String value,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k) {
 	
 	return new Query(casebaseID, conceptID, amalgamationFunctionID, attribute, value, k);
@@ -169,7 +172,7 @@ public class RetrievalController {
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID,
 	    @PathVariable(value=AMAL_FUNCTION_ID) String amalgamationFunctionID,
-	    @RequestParam(value=CASE_ID, defaultValue="144_vw") String caseID,
+	    @RequestParam(value=CASE_ID, defaultValue=CAR0) String caseID,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k) {
 
 	Query query = new Query(casebaseID, conceptID, amalgamationFunctionID, caseID, k);
@@ -184,8 +187,8 @@ public class RetrievalController {
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID,
 	    @RequestParam(value=AMAL_FUNCTION_ID, defaultValue=DEFAULT_AMAL_FUNCTION) String amalgamationFunctionID,
-	    @RequestParam(value="Symbol attribute name", defaultValue="Manufacturer") String attribute,
-	    @RequestParam(value=VALUE, defaultValue="vw") String value,
+	    @RequestParam(value="Symbol attribute name", defaultValue=MANUFACTURER) String attribute,
+	    @RequestParam(value=VALUE, defaultValue=VW) String value,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k) {
 
 	Query query = new Query(casebaseID, conceptID, amalgamationFunctionID, attribute, value, k);

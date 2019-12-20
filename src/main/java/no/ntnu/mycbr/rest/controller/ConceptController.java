@@ -1,11 +1,9 @@
 package no.ntnu.mycbr.rest.controller;
 
-import no.ntnu.mycbr.core.ICaseBase;
 import no.ntnu.mycbr.core.Project;
 import no.ntnu.mycbr.core.model.*;
 import no.ntnu.mycbr.core.similarity.*;
 import no.ntnu.mycbr.core.similarity.config.AmalgamationConfig;
-import no.ntnu.mycbr.core.similarity.config.NumberConfig;
 import no.ntnu.mycbr.rest.*;
 import no.ntnu.mycbr.rest.service.ConceptService;
 import org.json.simple.JSONArray;
@@ -27,7 +25,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static no.ntnu.mycbr.rest.common.ApiResponseAnnotations.*;
 import static no.ntnu.mycbr.rest.common.ApiPathConstants.*;
@@ -36,13 +33,14 @@ import static no.ntnu.mycbr.rest.common.ApiOperationConstants.*;
 @RestController
 public class ConceptController {
 
+    private static final String MAIN_CASEBASE = "main_casebase";
     private static final String STRING = "String";
     private final Log logger = LogFactory.getLog(getClass());
     private String file_path =  System.getProperty("java.io.tmpdir");
     @Autowired
     private ConceptService conceptService;
 
-    //get all amalgationfunctions
+    //get all amalgamation functions
     @ApiOperation(value = GET_ALL_AMALGAMATION_FUNCTIONS, nickname = GET_ALL_AMALGAMATION_FUNCTIONS)
     //@RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPTS + "/{concept}/amalgamationFunctions", produces = APPLICATION_JSON)
     @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPT_AMAL_FUNCTIONS, produces = APPLICATION_JSON)
@@ -54,7 +52,7 @@ public class ConceptController {
 	return amal.getAmalgamationFunctionIDs();
     }
     
-    //delete all amalgationfunctions
+    //delete all amalgamation functions
     @ApiOperation(value = DELETE_ALL_AMALGAMATION_FUNCTIONS, nickname = DELETE_ALL_AMALGAMATION_FUNCTIONS)
     @RequestMapping(method = RequestMethod.DELETE, path= PATH_CONCEPT_AMAL_FUNCTIONS, produces = APPLICATION_JSON)
     @ApiResponsesDefault
@@ -449,7 +447,7 @@ public class ConceptController {
 	    @PathVariable(value=CONCEPT) String concept,
 	    @PathVariable(value=ATTR_ID) String attributeId,
 	    @PathVariable(value=SIM_FUNCTION_ID) String similarityFunctionID,
-	    @RequestParam(value=CASEBASE_ID, defaultValue="db") String casebaseID,
+	    @RequestParam(value=CASEBASE_ID, defaultValue=MAIN_CASEBASE) String casebaseID,
 	    @RequestParam(value="parameter", defaultValue="1.0") Double parameter) {
 	
 	Project p = App.getProject();

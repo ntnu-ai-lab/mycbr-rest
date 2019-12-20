@@ -21,7 +21,7 @@ import static no.ntnu.mycbr.rest.common.ApiOperationConstants.*;
 @RestController
 public class EphemeralController {
 
-    private static final String DEFAULT_CASE_ID = "Car0";
+    private static final String DEFAULT_CASE_ID = "car0";
     private final Log logger = LogFactory.getLog(getClass());
 
     //@Autowired

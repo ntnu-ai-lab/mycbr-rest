@@ -131,7 +131,6 @@
 				<version>2.21.0</version>
 				<configuration>
 					<systemPropertyVariables>
-						<MYCBR.PROJECT.FILE>src/test/resources/car_mycbr_project.prj</MYCBR.PROJECT.FILE>
 						<buildDirectory>${project.build.directory}</buildDirectory>
 					</systemPropertyVariables>
 				</configuration>

@@ -29,6 +29,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.io.File;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -57,7 +58,12 @@ NB: You can't have the project file opened in another program and run the test a
 @SpringBootTest(classes = App.class)
 @AutoConfigureMockMvc
 public class RetrievalControllerIntegrationTest implements Retrieval.RetrievalCustomer {
-    
+
+    private final static String PATH_SEPARATOR = File.separator;
+    private final static String TEST_RESOURCES_PATH = PATH_SEPARATOR + "src" + PATH_SEPARATOR + "test" + PATH_SEPARATOR
+            + "resources" + PATH_SEPARATOR;
+    private final static String MYCBR_PROJECT_FILE_PATH = TEST_RESOURCES_PATH + "cars_for_testing.prj";
+
     private static final String CASE_ID_CAR_0 = "['car #0']";
     private static final String CASE_ID_CAR_1 = "['car #1']";
     private static final String CASE_ID_CAR_2 = "['car #2']";
@@ -79,6 +85,29 @@ public class RetrievalControllerIntegrationTest implements Retrieval.RetrievalCu
     @Autowired
     private InstanceService instanceService;
 
+    @BeforeClass
+    public static void setUp() {
+        System.setProperty("MYCBR.PROJECT.FILE", System.getProperty("user.dir") + MYCBR_PROJECT_FILE_PATH);
+    }
+
+    @Before
+    public void before() throws Exception {
+        try {
+            // todo change uri to file located under "resource folder"
+            MockitoAnnotations.initMocks(this);
+            logger.info(conceptService);
+            this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).dispatchOptions(true).build();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @After
+    public void after() throws Exception {
+    }
+
+
     // Test similarity value and the order of the result with method "getSimilarInstances". Should be in descending order.
     @Test
     public void getSimilarInstancesTest() throws Exception {
@@ -91,12 +120,12 @@ public class RetrievalControllerIntegrationTest implements Retrieval.RetrievalCu
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk());
 
-        res.andExpect((jsonPath(JSON_PATH + CASE_ID_CAR_0).value(0.73)));
+        res.andExpect((jsonPath(JSON_PATH + CASE_ID_CAR_0).value(0.7300000000000001)));
         res.andExpect((jsonPath(JSON_PATH + CASE_ID_CAR_1).value(0.55)));
-        res.andExpect((jsonPath(JSON_PATH + CASE_ID_CAR_2).value(0.975)));
+        res.andExpect((jsonPath(JSON_PATH + CASE_ID_CAR_2).value(0.9750000000000001)));
 
         // Check that the ordering is descending
-        res.andExpect(content().string("{\"similarCases\":{\"car #2\":0.975,\"car #0\":0.73,\"car #1\":0.55}}"));
+        res.andExpect(content().string("{\"similarCases\":{\"car #2\":0.9750000000000001,\"car #0\":0.7300000000000001,\"car #1\":0.55}}"));
     }
 
     // Test similarity value and the order of the result with method "getSimilarInstancesByAttribute" with symbol attribute. Should be in descending order.
@@ -225,7 +254,7 @@ public class RetrievalControllerIntegrationTest implements Retrieval.RetrievalCu
 
 
 
-    @BeforeClass
+ /*   @BeforeClass
     public static void setUp() {
         System.setProperty("MYCBR.PROJECT.FILE", System.getProperty("user.dir") + "\\src\\test\\resources\\cars_for_testing.prj");
     }
@@ -245,6 +274,8 @@ public class RetrievalControllerIntegrationTest implements Retrieval.RetrievalCu
     @After
     public void after() throws Exception {
     }
+
+  */
 
     @Override
     public void addResults(Retrieval retrieval, List<Pair<Instance, Similarity>> list) {

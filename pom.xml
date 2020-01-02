@@ -151,7 +151,8 @@
             </execution>
           </executions>
         </plugin>
-        <plugin>
+
+      <!--  <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.20</version>
@@ -159,6 +160,18 @@
             <useSystemClassLoader>false</useSystemClassLoader>
           </configuration>
         </plugin>
+      -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.21.0</version>
+          <configuration>
+            <systemPropertyVariables>
+              <buildDirectory>${project.build.directory}</buildDirectory>
+            </systemPropertyVariables>
+          </configuration>
+        </plugin>
+
       </plugins>
    </build>
 

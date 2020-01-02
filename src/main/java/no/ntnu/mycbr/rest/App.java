@@ -57,7 +57,7 @@ public class App {
 	    
 	} else {
 	    logger.warn("\n ******************* Creating an empty project ??? ********************\n");
-	    project = engine.creatEemptyCBRProject();
+	    project = engine.createEmptyCBRProject();
 	}
 
     }

@@ -13,7 +13,9 @@ import java.util.Set;
  */
 public class ValueRange {
 
+    // Provide the attribute type information, to attribute queried for its value range.
     private static final String ATTRIBUTE_TYPE = "attribute_type"; 
+    
     private HashMap<String, Object> attributes = new HashMap<String, Object>();
 
     public ValueRange(String concept, String attributeName) {

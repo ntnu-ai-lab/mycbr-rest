@@ -53,7 +53,7 @@ public class App {
 		project = engine.createProjectFromPRJ(userDefinedProjectFile);
 	    else
 		logger.error("\n The myCBR project file : " + userDefinedProjectFile
-			+ " Does not exitst ???? \n");
+			+ " Does not exist ???? \n");
 	    
 	} else {
 	    logger.warn("\n ******************* Creating an empty project ??? ********************\n");

@@ -1,4 +1,4 @@
-package no.ntnu.mycbr.rest;
+package no.ntnu.mycbr.rest.controller.helper;
 
 import no.ntnu.mycbr.core.DefaultCaseBase;
 import no.ntnu.mycbr.core.ICaseBase;
@@ -12,6 +12,7 @@ import no.ntnu.mycbr.core.retrieval.Retrieval;
 import no.ntnu.mycbr.core.retrieval.Retrieval.RetrievalCustomer;
 import no.ntnu.mycbr.core.retrieval.RetrievalResult;
 import no.ntnu.mycbr.core.similarity.Similarity;
+import no.ntnu.mycbr.rest.App;
 import no.ntnu.mycbr.rest.utils.ConcurrentCustomer;
 import no.ntnu.mycbr.util.Pair;
 import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctNotChangedException;

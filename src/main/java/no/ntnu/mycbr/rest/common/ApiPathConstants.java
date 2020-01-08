@@ -83,8 +83,10 @@ public final class ApiPathConstants {
     PATH_AMAL_FUNCTIONS = PATH + AMAL_FUNCTIONS,
     PATH_CASES 		= PATH + CASES,
     PATH_ATTRIBUTES 	= PATH + ATTRS,
+    PATH_ATTR_DESC  	= PATH + ATTR + "Description",
     PATH_VALUE_RANGE    = PATH + VALUE + "Range",
     PATH_SIM_FUNCTIONS  = PATH + SIM_FUNCTIONS;
+    
     
     // Path pattern: /___s/{___ID}  
     public static final String 
@@ -122,8 +124,11 @@ public final class ApiPathConstants {
     PATH_CONCEPT_CASEBASE_AMAL_FUNCTION_ID = PATH_CONCEPT_CASEBASE_ID + PATH_AMAL_FUNCTION_ID,
     PATH_CONCEPT_CASEBASE_CASE_ID          = PATH_CONCEPT_CASEBASE_ID + PATH_CASE_ID;
     
-    //Path pattern: /concepts/{conceptID}/attributes/{attributeID}/___
+    //Path pattern: /concepts/{conceptID}/attributes/{attributeID}/valueRange
     public static final String PATH_CONCEPT_ATTR_VALUE_RANGE = PATH_CONCEPT_ATTR_ID + PATH_VALUE_RANGE;
+    
+    //Path pattern: /concepts/{conceptID}/attributes/{attributeID}/attributeDescription
+    public static final String PATH_CONCEPT_ATTR_DESC = PATH_CONCEPT_ATTR_ID + PATH_ATTR_DESC;
     
     //Path pattern: /concepts/{conceptID}/attributes/{attributeID}/___s
     public static final String PATH_CONCEPT_ATTR_SIM_FUNCTIONS = PATH_CONCEPT_ATTR_ID + PATH_SIM_FUNCTIONS;

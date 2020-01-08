@@ -35,12 +35,13 @@ public class ApiOperationConstants {
     DELETE_ALL_ATTRIBUTES  = "deleteAllAttributes",
     
     GET_ATTRIBUTE_VALUE_RANGE 	 = "getAttributeValueRange",
+    GET_ATTRIBUTE_DESCTIPTION 	 = "getAttributeDescription",
     UPDATE_ATTRIBUTE_VALUE_RANGE = "updateAttributeValueRange", // To be implemented.
 	    
-    ADD_ATTRIBUTE_SIMILARITY_FUNCTION 	 = "addAttributeSimilarityFunction",
-    GET_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS 	 = "getAllAttributeSimilarityFunctions",
-    UPDATE_ATTRIBUTE_SIMILARITY_FUNCTION = "updateAttributeSimilarityFunction", // To be implemented.
-    DELETE_ATTRIBUTE_SIMILARITY_FUNCTION = "deleteAttributeSimilarityFunction",
+    ADD_ATTRIBUTE_SIMILARITY_FUNCTION 	 	= "addAttributeSimilarityFunction",
+    GET_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS 	= "getAllAttributeSimilarityFunctions",
+    UPDATE_ATTRIBUTE_SIMILARITY_FUNCTION 	= "updateAttributeSimilarityFunction", // To be implemented.
+    DELETE_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS 	= "deleteAllAttributeSimilarityFunctions",
     
     ADD_AMALGAMATION_FUNCTION		= "addAmalgamationFunction",
     ADD_NEURAL_AMALGAMATION_FUNCTION 	= "addNeuralAmalgamationFunction",

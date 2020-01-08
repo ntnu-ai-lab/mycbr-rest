@@ -1,4 +1,4 @@
-package no.ntnu.mycbr.rest.service;
+package no.ntnu.mycbr.rest.controller.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,12 +19,12 @@ import no.ntnu.mycbr.core.retrieval.Retrieval.RetrievalCustomer;
 import no.ntnu.mycbr.core.similarity.Similarity;
 import no.ntnu.mycbr.util.Pair;
 import no.ntnu.mycbr.rest.App;
-import no.ntnu.mycbr.rest.Case;
+import no.ntnu.mycbr.rest.controller.helper.Case;
 import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctManager;
 import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctNotChangedException;
 
 /**
- * The EphemeralService facilitates retrieval an ephemeral case base including Self-Similarity retrieval.
+ * The EphemeralService facilitates retrieval on an ephemeral case base including Self-Similarity retrieval.
  * @author Amar Jaiswal
  * @since Nov 24, 2019
  */

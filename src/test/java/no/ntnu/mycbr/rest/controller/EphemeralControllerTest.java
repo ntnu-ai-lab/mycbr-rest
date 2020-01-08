@@ -5,10 +5,9 @@ import no.ntnu.mycbr.core.retrieval.Retrieval;
 import no.ntnu.mycbr.core.retrieval.Retrieval.RetrievalCustomer;
 import no.ntnu.mycbr.core.similarity.Similarity;
 import no.ntnu.mycbr.rest.App;
-import no.ntnu.mycbr.rest.service.CaseBaseService;
-import no.ntnu.mycbr.rest.service.CaseService;
-import no.ntnu.mycbr.rest.service.ConceptService;
-
+import no.ntnu.mycbr.rest.controller.service.CaseBaseService;
+import no.ntnu.mycbr.rest.controller.service.CaseService;
+import no.ntnu.mycbr.rest.controller.service.ConceptService;
 import no.ntnu.mycbr.util.Pair;
 
 import org.apache.commons.logging.Log;
@@ -165,7 +164,7 @@ public class EphemeralControllerTest implements RetrievalCustomer {
     @Test
     public void retrievalFromEphemeralCaseBaseTestMultiThread() throws Exception {
 
-	int threadCount = 50;
+	int threadCount = 10;
 
 	final MockHttpServletRequestBuilder servlet = post(URL_PATH)
 		.content(TEST_API_POST_BODY_100_CASES)

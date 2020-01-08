@@ -1,4 +1,4 @@
-package no.ntnu.mycbr.rest.service;
+package no.ntnu.mycbr.rest.controller.service;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;

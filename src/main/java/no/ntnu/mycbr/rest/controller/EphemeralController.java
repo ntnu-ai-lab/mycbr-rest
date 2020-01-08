@@ -1,7 +1,7 @@
 package no.ntnu.mycbr.rest.controller;
 
 import io.swagger.annotations.ApiOperation;
-import no.ntnu.mycbr.rest.service.EphemeralService;
+import no.ntnu.mycbr.rest.controller.service.EphemeralService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

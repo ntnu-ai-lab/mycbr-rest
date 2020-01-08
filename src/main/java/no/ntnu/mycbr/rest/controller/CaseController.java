@@ -2,22 +2,17 @@ package no.ntnu.mycbr.rest.controller;
 
 import java.util.*;
 
-import no.ntnu.mycbr.core.DefaultCaseBase;
 import no.ntnu.mycbr.core.ICaseBase;
 import no.ntnu.mycbr.core.Project;
 import no.ntnu.mycbr.core.casebase.Instance;
-import no.ntnu.mycbr.core.model.AttributeDesc;
 import no.ntnu.mycbr.core.model.Concept;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import no.ntnu.mycbr.core.similarity.AmalgamationFct;
-import no.ntnu.mycbr.core.similarity.config.AmalgamationConfig;
 import no.ntnu.mycbr.rest.App;
-import no.ntnu.mycbr.rest.Case;
-import no.ntnu.mycbr.rest.Query;
-import no.ntnu.mycbr.rest.ValueRange;
-import no.ntnu.mycbr.rest.service.CaseService;
+import no.ntnu.mycbr.rest.common.ApiResponseAnnotations.ApiResponsesDefault;
+import no.ntnu.mycbr.rest.controller.helper.Case;
+import no.ntnu.mycbr.rest.controller.helper.Query;
+import no.ntnu.mycbr.rest.controller.service.CaseService;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.simple.JSONArray;
@@ -45,7 +40,7 @@ public class CaseController
     @ApiOperation(value = GET_CASE_BY_CASE_ID, nickname = GET_CASE_BY_CASE_ID)
     @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_CASEBASE_CASE_ID, 
     headers=ACCEPT_APPLICATION_JSON)
-    @ApiResponsesForCase
+    @ApiResponsesDefault
     public Map<String, String> getInstance(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID,
@@ -114,7 +109,7 @@ public class CaseController
     @ApiOperation(value = GET_ALL_CASES_FROM_CASEBASE, nickname = GET_ALL_CASES_FROM_CASEBASE)
     @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_CASEBASE_CASES, 
     headers=ACCEPT_APPLICATION_JSON)
-    @ApiResponsesForCase
+    @ApiResponsesDefault
     public List<LinkedHashMap<String, String>> getAllInstancesInCaseBase(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID) {
@@ -129,7 +124,7 @@ public class CaseController
     //Delete all instances
     @ApiOperation(value=DELETE_ALL_CASES, nickname=DELETE_ALL_CASES)
     @RequestMapping(method=RequestMethod.DELETE, value = PATH_CONCEPT_CASEBASE_CASES)
-    @ApiResponsesForValueRange
+    @ApiResponsesDefault
     public boolean deleteInstances(
 	    @PathVariable(value=CONCEPT) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID) {
@@ -149,7 +144,7 @@ public class CaseController
     //Delete instances according to pattern
     @ApiOperation(value=DELETE_ALL_CASES_IN_CASEBASE_USING_PATTERN, nickname=DELETE_ALL_CASES_IN_CASEBASE_USING_PATTERN)
     @RequestMapping(method=RequestMethod.DELETE, value = PATH_CONCEPT_CASEBASE_CASES + "/casesByPattern")
-    @ApiResponsesForValueRange
+    @ApiResponsesDefault
     public boolean deleteInstancePattern(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String caseBase,

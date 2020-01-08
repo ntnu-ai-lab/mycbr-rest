@@ -1,4 +1,4 @@
-package no.ntnu.mycbr.rest;
+package no.ntnu.mycbr.rest.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

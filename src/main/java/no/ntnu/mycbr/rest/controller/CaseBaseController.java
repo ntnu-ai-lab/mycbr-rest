@@ -8,13 +8,15 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
+import no.ntnu.mycbr.core.ICaseBase;
 import no.ntnu.mycbr.core.Project;
 import no.ntnu.mycbr.rest.App;
-import no.ntnu.mycbr.rest.CaseBases;
 
 import static no.ntnu.mycbr.rest.common.ApiResponseAnnotations.*;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import static no.ntnu.mycbr.rest.common.ApiPathConstants.*;
 import static no.ntnu.mycbr.rest.common.ApiOperationConstants.*;
@@ -26,10 +28,18 @@ public class CaseBaseController {
 
     @ApiOperation(value = GET_CASEBASE_IDS, nickname = GET_CASEBASE_IDS)
     @RequestMapping(method = RequestMethod.GET, path=PATH_CASEBASES, produces = APPLICATION_JSON)
-    @ApiResponsesForCaseBases
+    @ApiResponsesDefault
     public List<String> getCaseBases() {
 	
-	return new CaseBases().getCaseBases();
+	List<String> casebaseNames = new LinkedList<>();
+	
+	Project project = App.getProject();
+
+        for (Map.Entry<String, ICaseBase> cb : project.getCaseBases().entrySet()) {
+            casebaseNames.add(cb.getKey());
+        }
+        
+	return casebaseNames;
     }
 
     @ApiOperation(value=ADD_CASEBASE_ID, nickname=ADD_CASEBASE_ID)

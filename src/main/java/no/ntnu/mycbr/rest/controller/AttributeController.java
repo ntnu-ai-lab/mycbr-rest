@@ -62,7 +62,9 @@ public class AttributeController {
     public Map<String, String> getAllAttributes(
 	    @PathVariable(value=CONCEPT_ID) String conceptID) {
 	
-	return new AttributeService(conceptID).getAllAttributes(); //new Attribute(conceptID);
+	AttributeService service = new AttributeService(conceptID);
+	
+	return service.getAllAttributes();
     }
     
     //add one attribute
@@ -74,9 +76,7 @@ public class AttributeController {
 	    @PathVariable(value=ATTR_ID) String attributeID,
 	    @RequestParam(value="attributeJSON", defaultValue = "{}") String attributeJSON) {
 	
-	AttributeService service = new AttributeService();
-	
-	return service.addAttribute(conceptID, attributeID, attributeJSON);
+	return new AttributeService().addAttribute(conceptID, attributeID, attributeJSON);
     }
     
     //delete one attribute
@@ -97,9 +97,7 @@ public class AttributeController {
     public boolean deleteAllAttributes(
 	    @PathVariable(value=CONCEPT_ID) String conceptID) {
 	
-	AttributeService service = new AttributeService();
-	
-	return service.deleteAllAttribute(conceptID);
+	return new AttributeService().deleteAllAttribute(conceptID);
     }
     
     //Get all similarity function for attribute
@@ -141,10 +139,6 @@ public class AttributeController {
 	    @PathVariable(value=SIM_FUNCTION_ID) String similarityFunctionID,
 	    @RequestParam(value="parameter", defaultValue="1.0") Double parameter) {
 	
-	AttributeService service = new AttributeService();
-	
-	return service.addDoubleSimilarityFunction( conceptID, attributeID, similarityFunctionID, parameter);
+	return new AttributeService().addDoubleSimilarityFunction( conceptID, attributeID, similarityFunctionID, parameter);
     }
-    
-
 }

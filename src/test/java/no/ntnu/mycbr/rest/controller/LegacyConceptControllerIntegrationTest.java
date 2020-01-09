@@ -1,4 +1,4 @@
-package no.ntnu.mycbr.rest.test;
+package no.ntnu.mycbr.rest.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import no.ntnu.mycbr.rest.App;
@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 //@WebMvcTest(ConceptController.class)
 @SpringBootTest(classes = App.class)
 @AutoConfigureMockMvc
-public class ConceptControllerIntegrationTest {
+public class LegacyConceptControllerIntegrationTest {
 
     private final Log logger = LogFactory.getLog(getClass());
 

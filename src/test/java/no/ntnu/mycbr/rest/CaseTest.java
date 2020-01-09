@@ -1,3 +1,5 @@
+package no.ntnu.mycbr.rest;
+
 import no.ntnu.mycbr.rest.Case;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

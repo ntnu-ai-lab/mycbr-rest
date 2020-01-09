@@ -1,4 +1,4 @@
-package no.ntnu.mycbr.rest.test;
+package no.ntnu.mycbr.rest.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import no.ntnu.mycbr.core.model.AttributeDesc;
@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 //@WebMvcTest(ConceptController.class)
 @SpringBootTest(classes = App.class)
 @AutoConfigureMockMvc
-public class RetrievalControllerIntegrationTest {
+public class LegacyRetrievalControllerIntegrationTest {
 
     public static final String DOUBLEATT_1 = "doubleatt1";
     public static final String DOUBLEATT_2 = "doubleatt2";
@@ -83,8 +83,8 @@ public class RetrievalControllerIntegrationTest {
         System.out.println(casesArray);
 
         // do retrieval test for getting a matrix of sims back.. should run in parallell..
-        MockHttpServletRequestBuilder call = get("/concepts/"+RetrievalControllerIntegrationTest.conceptID
-                +"/casebases/"+RetrievalControllerIntegrationTest.testcasebaseid+"/retrievalByIDsInIDs")
+        MockHttpServletRequestBuilder call = get("/concepts/"+LegacyRetrievalControllerIntegrationTest.conceptID
+                +"/casebases/"+LegacyRetrievalControllerIntegrationTest.testcasebaseid+"/retrievalByIDsInIDs")
                 .param("caseIDs",casesArray)
                 .param("filterCaseIDs",casesArray);
         ResultActions res = mockMvc.perform(call
@@ -99,13 +99,13 @@ public class RetrievalControllerIntegrationTest {
         MockitoAnnotations.initMocks(this);
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).dispatchOptions(true).build();
         conceptService.deleteAllConcepts();
-        Concept c = conceptService.addConcept(RetrievalControllerIntegrationTest.conceptID);
+        Concept c = conceptService.addConcept(LegacyRetrievalControllerIntegrationTest.conceptID);
         try {
             conceptService.addDoubleAttribute(c, DOUBLEATT_1, 0, 1, false);
             conceptService.addDoubleAttribute(c, DOUBLEATT_2, 0, 1, false);
             conceptService.addDoubleAttribute(c, DOUBLEATT_3, 0, 1, false);
 
-            caseBaseService.addCaseBase(RetrievalControllerIntegrationTest.testcasebaseid);
+            caseBaseService.addCaseBase(LegacyRetrievalControllerIntegrationTest.testcasebaseid);
 
             // create a set for new instance data
             Set<Map<AttributeDesc,String>> instances = new HashSet<>();
@@ -131,7 +131,7 @@ public class RetrievalControllerIntegrationTest {
                 put(c.getAttributeDesc(DOUBLEATT_3), "0.1");
             }});
 
-            caseIDs = instanceService.addInstances(c,RetrievalControllerIntegrationTest.testcasebaseid,instances);
+            caseIDs = instanceService.addInstances(c,LegacyRetrievalControllerIntegrationTest.testcasebaseid,instances);
             conceptService.addDoubleSimilarityFunction(c, DOUBLEATT_1,DOUBLEATT_1+"sim",0.5);
             conceptService.addDoubleSimilarityFunction(c, DOUBLEATT_2,DOUBLEATT_2+"sim",0.5);
             conceptService.addDoubleSimilarityFunction(c, DOUBLEATT_3,DOUBLEATT_3+"sim",0.5);

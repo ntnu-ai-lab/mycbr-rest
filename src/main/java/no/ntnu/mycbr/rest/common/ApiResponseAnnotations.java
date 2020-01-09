@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 /**
+ * This class provides the REST API response annotations, which binds multiple response codes together.
  * @author Amar Jaiswal
  * @since Nov 20, 2019
  *
@@ -21,6 +22,10 @@ public final class ApiResponseAnnotations {
 
     // All ApiResponses annotations definitions----------------------------------------------------------------------------------------------------------   
 
+    /**
+     * The ApiResponseDefault is a default REST API response annotation.
+     * 
+     */
     @ApiResponses(value = {
 	    @ApiResponse(code = 200, message = SUCCESS),
 	    @ApiResponse(code = 401, message = UNAUTHORIZED),

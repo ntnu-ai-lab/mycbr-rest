@@ -16,6 +16,7 @@ public class TestSetupInstanceController {
     public static final String ATT_DOUBLE_3 = "attDouble3";
     public static final String AMALGAMATION_FUNC_1 = "amalgamationFunc1";
     private static final String SIMILARITY = "sim";
+    private static final String EUCLIDEAN = "EUCLIDEAN";
     private final Log logger = LogFactory.getLog(getClass());
 
 
@@ -35,7 +36,7 @@ public class TestSetupInstanceController {
             conceptService.addDoubleSimilarityFunction(c, ATT_DOUBLE_1, ATT_DOUBLE_1 +SIMILARITY,0.5);
             conceptService.addDoubleSimilarityFunction(c, ATT_DOUBLE_2, ATT_DOUBLE_2 +SIMILARITY,0.5);
             conceptService.addDoubleSimilarityFunction(c, ATT_DOUBLE_3, ATT_DOUBLE_3 +SIMILARITY,0.5);
-            conceptService.addAmalgamationFunction(c,AMALGAMATION_FUNC_1, "EUCLIDEAN");
+            conceptService.addAmalgamationFunction(c,AMALGAMATION_FUNC_1, EUCLIDEAN);
 
         } catch (Exception e) {
             logger.error("got exception during setup of retrieval tests",e);

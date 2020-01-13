@@ -1,11 +1,11 @@
 package no.ntnu.mycbr.rest.controller;
 
-import no.ntnu.mycbr.rest.RetrievalAnalytics;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import no.ntnu.mycbr.rest.common.ApiResponseAnnotations.ApiResponsesDefault;
 import no.ntnu.mycbr.rest.controller.helper.Query;
+import no.ntnu.mycbr.rest.controller.service.AnalyticsService;
 import no.ntnu.mycbr.rest.controller.service.SelfSimilarityRetrieval;
 
 import org.apache.commons.logging.Log;
@@ -20,9 +20,8 @@ import org.json.simple.parser.ParseException;
 import static no.ntnu.mycbr.rest.utils.QueryUtils.getFullResult;
 
 import static no.ntnu.mycbr.rest.common.ApiPathConstants.*;
+import static no.ntnu.mycbr.rest.controller.service.AnalyticsService.*;
 import static no.ntnu.mycbr.rest.common.ApiOperationConstants.*;
-
-import static no.ntnu.mycbr.rest.RetrievalAnalytics.*;
 import static no.ntnu.mycbr.rest.utils.QueryUtils.getFullResult;
 
 
@@ -228,49 +227,5 @@ public class RetrievalController {
 		.performSelfSimilarityRetrieval(conceptID, casebaseID, amalgamationFunctionID, k);
 	
 	return retrivalResults;
-    }
-    
-    @ApiOperation(value = "compares 2 instances including weights (weighted sum)", nickname = "DetailedCaseComparison")
-    @RequestMapping(method = RequestMethod.GET, path="/concepts/{conceptID}/casebases/{casebaseID}/DetailedCaseComparison", produces = "application/json")
-    @ApiResponsesDefault
-    public @ResponseBody List<LinkedHashMap<String, Double>> DetailedCaseComparison(
-            @PathVariable(value="conceptID") String conceptID,
-            @PathVariable(value="casebaseID") String casebaseID,
-            @RequestParam(value="amalgamation function", defaultValue="eq_wt_all") String amalFunc,
-            @RequestParam(value="case_A_ID", defaultValue="patient402") String caseAID,
-            @RequestParam(value="case_B_ID", defaultValue="patient272") String caseBID) {
-
-        RetrievalAnalytics ra = new RetrievalAnalytics(casebaseID, conceptID, amalFunc);
-        List<LinkedHashMap<String, Double>> result = getCaseComparison(conceptID, caseAID, caseBID);
-        return result;
-    }
-
-
-    @ApiOperation(value = "compares 2 instances and returns the local sim for each attribute", nickname = "LocalSimComparison")
-    @RequestMapping(method = RequestMethod.GET, path="/concepts/{conceptID}/casebases/{casebaseID}/LocalSimComparison", produces = "application/json")
-    @ApiResponsesDefault
-    public @ResponseBody List<LinkedHashMap<String, Double>> LocalSimComparison(
-            @PathVariable(value="conceptID") String conceptID,
-            @PathVariable(value="casebaseID") String casebaseID,
-            @RequestParam(value="amalgamation function", defaultValue="eq_wt_all") String amalFunc,
-            @RequestParam(value="case_A_ID", defaultValue="patient402") String caseAID,
-            @RequestParam(value="case_B_ID", defaultValue="patient272") String caseBID) {
-
-        RetrievalAnalytics ra = new RetrievalAnalytics(casebaseID, conceptID, amalFunc);
-        List<LinkedHashMap<String, Double>> result = getLocalSimComparison(conceptID, caseAID, caseBID);
-        return result;
-    }
-
-    @ApiOperation(value = "Returns the weights for each attribute specified in the global similarity measure", nickname = "GlobalWeights")
-    @RequestMapping(method = RequestMethod.GET, path="/concepts/{conceptID}/casebases/{casebaseID}/GlobalWeights", produces = "application/json")
-    @ApiResponsesDefault
-    public @ResponseBody List<LinkedHashMap<String, Double>> GlobalWeights(
-            @PathVariable(value="conceptID") String conceptID,
-            @PathVariable(value="casebaseID") String casebaseID,
-            @RequestParam(value="amalgamation function", defaultValue="eq_wt_all") String amalFunc) {
-
-        RetrievalAnalytics ra = new RetrievalAnalytics(casebaseID, conceptID, amalFunc);
-        List<LinkedHashMap<String, Double>> result = getGlobalWeights(conceptID);
-        return result;
     }
 }

@@ -1,49 +1,54 @@
-package no.ntnu.mycbr.rest;
+package no.ntnu.mycbr.rest.controller.service;
 
-import no.ntnu.mycbr.core.DefaultCaseBase;
-import no.ntnu.mycbr.core.ICaseBase;
 import no.ntnu.mycbr.core.Project;
 import no.ntnu.mycbr.core.casebase.Attribute;
 import no.ntnu.mycbr.core.casebase.Instance;
-import no.ntnu.mycbr.core.casebase.MultipleAttribute;
 import no.ntnu.mycbr.core.model.*;
-import no.ntnu.mycbr.core.retrieval.NeuralRetrieval;
-import no.ntnu.mycbr.core.retrieval.Retrieval;
-import no.ntnu.mycbr.core.retrieval.Retrieval.RetrievalCustomer;
-import no.ntnu.mycbr.core.retrieval.RetrievalResult;
-import no.ntnu.mycbr.core.similarity.AmalgamationFct;
 import no.ntnu.mycbr.core.similarity.ISimFct;
 import no.ntnu.mycbr.core.similarity.Similarity;
-import no.ntnu.mycbr.rest.utils.ConcurrentCustomer;
+
+import no.ntnu.mycbr.rest.App;
 import no.ntnu.mycbr.rest.utils.ListUtil;
 import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctManager;
 import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctNotChangedException;
-import no.ntnu.mycbr.util.Pair;
 
 import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 /**
  * Created by kerstin on 05/08/16.
+ * Updated on Jan 13, 2020
  */
-public class RetrievalAnalytics {
 
-    private static List<LinkedHashMap<String, Double>> resultList = new ArrayList<>();
+public class AnalyticsService {
+
+    private Project project;
     private Concept concept;
+    //private ICaseBase cb;
+    private TemporaryAmalgamFctManager tempAmalgamFctManager;
+    
+    private List<Map<String, Double>> resultList = new ArrayList<Map<String, Double>>();
 
-    public RetrievalAnalytics(String casebase, String concept, String amalFuncName) {
-        Project project = App.getProject();
+    public AnalyticsService(String conceptID, String amalFuncName) {
+        this.project = App.getProject();
+        this.concept = project.getConceptByID(conceptID);
+        //this.cb = (DefaultCaseBase)project.getCaseBases().get(casebaseID);
+        
+       
+         this.tempAmalgamFctManager = new TemporaryAmalgamFctManager(concept);
 
+	// This will change the default Amalgamation Function of the myCBR project to a user specified function
+	try {
+	    tempAmalgamFctManager.changeAmalgamFct(amalFuncName);
+	} catch (TemporaryAmalgamFctNotChangedException e) {
+	    e.printStackTrace();
+	}
+	
     }
 
-    public static List<LinkedHashMap<String, Double>> getCaseComparison(String conceptName, String caseAID, String caseBID) {
-        Project project = App.getProject();
-        Concept concept = project.getConceptByID(conceptName) ;
-        Instance cazeA = concept.getInstance(caseAID);
-        Instance cazeB = concept.getInstance(caseBID);
+    public List<Map<String, Double>> getCaseComparison(String caseID1, String caseID2) {
+
+        Instance case1 = concept.getInstance(caseID1);
+        Instance case2 = concept.getInstance(caseID2);
 
         List<AttributeDesc> sortedAttrDesc = ListUtil.sortAttributeDescs(concept.getAllAttributeDescs().values());
 
@@ -51,16 +56,15 @@ public class RetrievalAnalytics {
         for (int i = 0; i < concept.getAllAttributeDescs().values().size(); i++) {
             String attrName = sortedAttrDesc.get(i).getName();
 
-            Attribute caseA_Att = cazeA.getAttForDesc(sortedAttrDesc.get(i));
-            Attribute caseB_Att = cazeB.getAttForDesc(sortedAttrDesc.get(i));
+            Attribute case1Att = case1.getAttForDesc(sortedAttrDesc.get(i));
+            Attribute case2Att = case2.getAttForDesc(sortedAttrDesc.get(i));
 
-            AttributeDesc desc = concept.getAttributeDesc(attrName);
-            Number weight = concept.getActiveAmalgamFct().getWeight(desc);
+            AttributeDesc attrDesc = concept.getAttributeDesc(attrName);
+            Number weight = concept.getActiveAmalgamFct().getWeight(attrDesc);
 
-            AmalgamationFct activeAmalFct = concept.getActiveAmalgamFct();
             try {
-                ISimFct simfct = (ISimFct) concept.getAvailableAmalgamFcts().get(0).getActiveFct(desc);
-                Similarity sim = simfct.calculateSimilarity(caseA_Att, caseB_Att);
+                ISimFct simfct = (ISimFct) concept.getActiveAmalgamFct().getActiveFct(attrDesc);
+                Similarity sim = simfct.calculateSimilarity(case1Att, case2Att);
                 LinkedHashMap<String, Double> res = new LinkedHashMap<>();
                 res.put(attrName, weight.doubleValue() * sim.getValue());
                 resultList.add(res);
@@ -73,11 +77,9 @@ public class RetrievalAnalytics {
     }
 
 
-    public static List<LinkedHashMap<String, Double>> getLocalSimComparison(String conceptName, String caseAID, String caseBID) {
-        Project project = App.getProject();
-        Concept concept = project.getConceptByID(conceptName) ;
-        Instance cazeA = concept.getInstance(caseAID);
-        Instance cazeB = concept.getInstance(caseBID);
+    public List<Map<String, Double>> getLocalSimComparison(String caseID1, String caseID2) {
+	Instance case1 = concept.getInstance(caseID1);
+        Instance case2 = concept.getInstance(caseID2);
 
         List<AttributeDesc> sortedAttrDesc = ListUtil.sortAttributeDescs(concept.getAllAttributeDescs().values());
 
@@ -85,15 +87,14 @@ public class RetrievalAnalytics {
         for (int i = 0; i < concept.getAllAttributeDescs().values().size(); i++) {
             String attrName = sortedAttrDesc.get(i).getName();
 
-            Attribute caseA_Att = cazeA.getAttForDesc(sortedAttrDesc.get(i));
-            Attribute caseB_Att = cazeB.getAttForDesc(sortedAttrDesc.get(i));
+            Attribute case1Att = case1.getAttForDesc(sortedAttrDesc.get(i));
+            Attribute case2Att = case2.getAttForDesc(sortedAttrDesc.get(i));
 
-            AttributeDesc desc = concept.getAttributeDesc(attrName);
+            AttributeDesc attrDesc = concept.getAttributeDesc(attrName);
 
-            AmalgamationFct activeAmalFct = concept.getActiveAmalgamFct();
             try {
-                ISimFct simfct = (ISimFct) concept.getAvailableAmalgamFcts().get(0).getActiveFct(desc);
-                Similarity sim = simfct.calculateSimilarity(caseA_Att, caseB_Att);
+                ISimFct simfct = (ISimFct) concept.getActiveAmalgamFct().getActiveFct(attrDesc);
+                Similarity sim = simfct.calculateSimilarity(case1Att, case2Att);
                 LinkedHashMap<String, Double> res = new LinkedHashMap<>();
                 res.put(attrName, sim.getValue());
                 resultList.add(res);
@@ -105,9 +106,7 @@ public class RetrievalAnalytics {
         return resultList;
     }
 
-    public static List<LinkedHashMap<String, Double>> getGlobalWeights(String conceptName) {
-        Project project = App.getProject();
-        Concept concept = project.getConceptByID(conceptName) ;
+    public List<Map<String, Double>> getGlobalWeights() {
 
         List<AttributeDesc> sortedAttrDesc = ListUtil.sortAttributeDescs(concept.getAllAttributeDescs().values());
 
@@ -119,10 +118,8 @@ public class RetrievalAnalytics {
             LinkedHashMap<String, Double> res = new LinkedHashMap<>();
                 res.put(attrName, weight.doubleValue());
                 resultList.add(res);
-
         }
-
+        
         return resultList;
     }
-
 }

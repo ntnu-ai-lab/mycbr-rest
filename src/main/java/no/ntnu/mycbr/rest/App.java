@@ -1,7 +1,7 @@
 package no.ntnu.mycbr.rest;
 
 import no.ntnu.mycbr.core.Project;
-import no.ntnu.mycbr.CBREngine;
+import no.ntnu.mycbr.rest.cbr.CBREngine;
 
 import java.io.File;
 

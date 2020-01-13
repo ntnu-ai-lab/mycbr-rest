@@ -2,9 +2,9 @@ package no.ntnu.mycbr.rest.controller.helper;
 
 import no.ntnu.mycbr.core.Project;
 import no.ntnu.mycbr.core.casebase.Instance;
-import no.ntnu.mycbr.CBREngine;
 import no.ntnu.mycbr.core.model.Concept;
 import no.ntnu.mycbr.rest.App;
+import no.ntnu.mycbr.rest.cbr.CBREngine;
 
 import java.util.LinkedHashMap;
 

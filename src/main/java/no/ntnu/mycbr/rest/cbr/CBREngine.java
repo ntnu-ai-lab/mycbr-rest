@@ -1,4 +1,4 @@
-package no.ntnu.mycbr;
+package no.ntnu.mycbr.rest.cbr;
 
 import no.ntnu.mycbr.core.Project;
 import org.apache.commons.logging.Log;

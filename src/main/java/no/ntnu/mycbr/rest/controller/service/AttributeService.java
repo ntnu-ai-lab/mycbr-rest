@@ -33,6 +33,8 @@ import no.ntnu.mycbr.rest.App;
  */
 public class AttributeService {
 
+    private static final String RANGE = "range";
+
     private final Log logger = LogFactory.getLog(getClass());
 
     private static final String STRING = "String";
@@ -66,53 +68,6 @@ public class AttributeService {
 	doubleFct.setFunctionTypeL(NumberConfig.POLYNOMIAL_WITH);
 	doubleFct.setFunctionParameterL(parameter);
 	return true;
-    }
-
-    public Map<String,Object> getAttributeDiscription() {
-
-	Map<String, Object> map = attributeDesc.getRepresentation();
-
-	if ( !map.containsKey("range")) {
-
-	    String attributeDescName = attributeDesc.getClass().getSimpleName();
-
-	    switch (attributeDescName) {
-	    case "DoubleDesc":
-		DoubleDesc doubleAttr = (DoubleDesc) attributeDesc;
-		Set<Double> doubleRange = new LinkedHashSet<Double>();
-		doubleRange.add(doubleAttr.getMin());
-		doubleRange.add(doubleAttr.getMax());
-		map.putIfAbsent("range", doubleRange);
-		break;
-
-	    case "FloatDesc":
-		FloatDesc floatAttr = (FloatDesc) attributeDesc;
-		Set<Float> floatRange = new LinkedHashSet<Float>();
-		floatRange.add(floatAttr.getMin());
-		floatRange.add(floatAttr.getMax());
-		map.putIfAbsent("range", floatRange);
-		break;
-
-	    case "IntegerDesc":
-		IntegerDesc integerAttr = (IntegerDesc) attributeDesc;
-		Set<Integer> integerRange = new LinkedHashSet<Integer>();
-		integerRange.add(integerAttr.getMin());
-		integerRange.add(integerAttr.getMax());
-		map.putIfAbsent("range", integerRange);
-		break;
-
-	    case "SymbolDesc":
-		SymbolDesc symbolDesc = (SymbolDesc) attributeDesc;
-		map.putIfAbsent("range", symbolDesc.getAllowedValues());
-		break;
-
-	    default:
-		map.putIfAbsent("range", "n/a");
-		break;
-	    } 
-	}
-
-	return map;
     }
 
     public boolean deleteAllSimilarityFunctions() {
@@ -215,12 +170,16 @@ public class AttributeService {
 
     public Map<String, Object> getAttributeByID(String conceptID, String attributeID) {
 	Concept subConcept = project.getSubConcepts().get(conceptID);
+	attributeDesc = subConcept.getAttributeDesc(attributeID);
+	
 	HashMap<String, AttributeDesc> allAttributeDescs = subConcept.getAllAttributeDescs();
 
 	if(!allAttributeDescs.containsKey(attributeID))
 	    return null;
 
 	Map<String, Object> map = allAttributeDescs.get(attributeID).getRepresentation();
+	
+	addRangeIfAbsent(map);
 	
 	return map;
     }
@@ -237,5 +196,59 @@ public class AttributeService {
 	}
 
 	return map;
+    }
+    
+    /*
+     public Map<String,Object> getAttributeDiscription() {
+
+	Map<String, Object> map = attributeDesc.getRepresentation();
+
+	addRangeIfAbsent(map);
+
+	return map;
+    } 
+    */
+    
+    private void addRangeIfAbsent(Map<String, Object> map) {
+	if ( !map.containsKey(RANGE)) {
+
+	    String attributeDescName = attributeDesc.getClass().getSimpleName();
+
+	    switch (attributeDescName) {
+	    case "DoubleDesc":
+		DoubleDesc doubleAttr = (DoubleDesc) attributeDesc;
+		Set<Double> doubleRange = new LinkedHashSet<Double>();
+		doubleRange.add(doubleAttr.getMin());
+		doubleRange.add(doubleAttr.getMax());
+		map.putIfAbsent(RANGE, doubleRange);
+		break;
+
+	    case "FloatDesc":
+		FloatDesc floatAttr = (FloatDesc) attributeDesc;
+		Set<Float> floatRange = new LinkedHashSet<Float>();
+		floatRange.add(floatAttr.getMin());
+		floatRange.add(floatAttr.getMax());
+		map.putIfAbsent(RANGE, floatRange);
+		break;
+
+	    case "IntegerDesc":
+		IntegerDesc integerAttr = (IntegerDesc) attributeDesc;
+		Set<Integer> integerRange = new LinkedHashSet<Integer>();
+		integerRange.add(integerAttr.getMin());
+		integerRange.add(integerAttr.getMax());
+		map.putIfAbsent(RANGE, integerRange);
+		break;
+
+	    case "SymbolDesc":
+		SymbolDesc symbolDesc = (SymbolDesc) attributeDesc;
+		map.putIfAbsent(RANGE, symbolDesc.getAllowedValues());
+		break;
+
+	    default:
+		logger.error("No matching AttributeDescription found for : "+attributeDescName);
+		map.putIfAbsent(RANGE, "n/a");
+		break;
+	    } 
+	}
     }
 }

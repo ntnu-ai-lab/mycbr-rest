@@ -42,7 +42,7 @@ public class AttributeController {
 	return new AttributeService().getAttributeByID(conceptID, attributeID);
     }
     
-    // get attribute description (details)
+   /* // get attribute description (details)
     @ApiOperation(value = GET_ATTRIBUTE_DESCTIPTION, nickname = GET_ATTRIBUTE_DESCTIPTION)
     @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_ATTR_DESC, headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
@@ -53,7 +53,7 @@ public class AttributeController {
 	AttributeService service = new AttributeService(conceptID, attributeID);
 	
 	return service.getAttributeDiscription();
-    }
+    } */
 
     //get All attributes
     @ApiOperation(value = GET_ALL_ATTRIBUTES, nickname = GET_ALL_ATTRIBUTES)

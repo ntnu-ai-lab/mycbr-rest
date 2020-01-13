@@ -39,7 +39,10 @@ public final class ApiPathConstants {
     CASE 		= "case",
     INSTANCE		= "instance",
     VALUE 		= "value",
-    SIM_FUNCTION   	= "similarityFunction";
+    SIM_FUNCTION   	= "similarityFunction",
+    
+    EPHEMERAL = "ephemeral",
+    ANALYTICS = "analytics";
     
     // myCBR-rest API: core vocabulary - multiple
     public static final String 
@@ -85,7 +88,10 @@ public final class ApiPathConstants {
     PATH_ATTRIBUTES 	= PATH + ATTRS,
     PATH_ATTR_DESC  	= PATH + ATTR + "Description",
     PATH_VALUE_RANGE    = PATH + VALUE + "Range",
-    PATH_SIM_FUNCTIONS  = PATH + SIM_FUNCTIONS;
+    PATH_SIM_FUNCTIONS  = PATH + SIM_FUNCTIONS,
+    
+    PATH_EPHEMERAL  = PATH + EPHEMERAL,
+    PATH_ANALYTICS  = PATH + ANALYTICS;
     
     
     // Path pattern: /___s/{___ID}  
@@ -137,16 +143,20 @@ public final class ApiPathConstants {
     public static final String PATH_CONCEPT_ATTR_SIM_FUNCTION_ID = PATH_CONCEPT_ATTR_ID + PATH_SIM_FUNCTION_ID;
     
     
+    //Path pattern: /ephemeral/concepts/{conceptID}/amalgamationFunctions/{amalgamationFunctionID}s
+    public static final String PATH_EPHEMERAL_CONCEPT_AMAL_FUNCTION_ID = PATH_EPHEMERAL + PATH_CONCEPT_AMAL_FUNCTION_ID;
+    
+    //Path pattern: /analytics/concepts/{conceptID}/amalgamationFunctions/{amalgamationFunctionID}
+    public static final String PATH_ANALYTICS_CONCEPT_AMAL_FUNCTION_ID = PATH_ANALYTICS + PATH_CONCEPT_AMAL_FUNCTION_ID;
+    
     public static final String 
     COMPUTE_SELF_SIMLARITY = "computeSelfSimlarity",
-    EPHEMERAL = "ephemeral",
     RETRIEVAL_BY_CASE_IDS = "retrievalByCaseIDs",
     RETRIEVAL_BY_CASE_ID_WITH_CONTENT = "retrievalByCaseIDWithContent";
     
     // Path pattern: /___
     public static final String 
     PATH_SELF_SIMLARITY 		= PATH + COMPUTE_SELF_SIMLARITY,
-    PATH_EPHEMERAL 			= PATH + EPHEMERAL,
     PATH_RETRIEVAL 			= PATH + RETRIEVAL_BY_CASE_IDS,
     PATH_RETRIEVAL_BY_CASE_ID_WITH_CONTENT 	= PATH + RETRIEVAL_BY_CASE_ID_WITH_CONTENT;
     

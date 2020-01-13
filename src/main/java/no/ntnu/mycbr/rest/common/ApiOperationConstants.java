@@ -18,6 +18,25 @@ package no.ntnu.mycbr.rest.common;
  */
 public class ApiOperationConstants {
     
+    // API operations for AttributeController
+    public static final String 
+    ADD_ATTRIBUTE_BY_ID    = "addAttributeByID",
+    GET_ATTRIBUTE_BY_ID    = "getAttributeByID",
+    GET_ALL_ATTRIBUTES 	   = "getAllAttributes",
+    UPDATE_ATTRIBUTE_ID    = "updateAttributeID",	// To be implemented.
+    DELETE_ATTRIBUTE_BY_ID = "deleteAttributeByID",
+    DELETE_ALL_ATTRIBUTES  = "deleteAllAttributes",
+
+    GET_ATTRIBUTE_VALUE_RANGE 	 = "getAttributeValueRange",
+    GET_ATTRIBUTE_DESCTIPTION 	 = "getAttributeDescription",
+    UPDATE_ATTRIBUTE_VALUE_RANGE = "updateAttributeValueRange", // To be implemented.
+
+    ADD_ATTRIBUTE_SIMILARITY_FUNCTION 	 	= "addAttributeSimilarityFunction",
+    GET_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS 	= "getAllAttributeSimilarityFunctions",
+    UPDATE_ATTRIBUTE_SIMILARITY_FUNCTION 	= "updateAttributeSimilarityFunction", // To be implemented.
+    DELETE_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS 	= "deleteAllAttributeSimilarityFunctions";
+    
+    
     // API operations for ConceptController
     public static final String 
     ADD_CONCEPT_ID 	 = "addConceptID",
@@ -26,22 +45,6 @@ public class ApiOperationConstants {
     UPDATE_CONCEPT_ID 	 = "updateConceptID",	// To be implemented.
     DELETE_CONCEPT_BY_ID = "deleteConceptByID",
     DELETE_ALL_CONCEPTS  = "deleteAllConcepts",
-    
-    ADD_ATTRIBUTE_BY_ID    = "addAttributeByID",
-    GET_ATTRIBUTE_BY_ID    = "getAttributeByID",
-    GET_ALL_ATTRIBUTES 	   = "getAllAttributes",
-    UPDATE_ATTRIBUTE_ID    = "updateAttributeID",	// To be implemented.
-    DELETE_ATTRIBUTE_BY_ID = "deleteAttributeByID",
-    DELETE_ALL_ATTRIBUTES  = "deleteAllAttributes",
-    
-    GET_ATTRIBUTE_VALUE_RANGE 	 = "getAttributeValueRange",
-    GET_ATTRIBUTE_DESCTIPTION 	 = "getAttributeDescription",
-    UPDATE_ATTRIBUTE_VALUE_RANGE = "updateAttributeValueRange", // To be implemented.
-	    
-    ADD_ATTRIBUTE_SIMILARITY_FUNCTION 	 	= "addAttributeSimilarityFunction",
-    GET_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS 	= "getAllAttributeSimilarityFunctions",
-    UPDATE_ATTRIBUTE_SIMILARITY_FUNCTION 	= "updateAttributeSimilarityFunction", // To be implemented.
-    DELETE_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS 	= "deleteAllAttributeSimilarityFunctions",
     
     ADD_AMALGAMATION_FUNCTION		= "addAmalgamationFunction",
     ADD_NEURAL_AMALGAMATION_FUNCTION 	= "addNeuralAmalgamationFunction",
@@ -98,9 +101,9 @@ public class ApiOperationConstants {
     DELETE_CASEBASE_ID 	= "deleteCaseBaseID";
 
     
-
-    
-
-    
-    
+    // API operations for AnalyticsController
+    public static final String 
+    DETAILED_CASE_COMPARISION = "DetailedCaseComparison",
+    LOCAL_SIM_COMPARISION = "LocalSimComparison",
+    GLOBAL_WEIGHTS = "GlobalWeights";
 }

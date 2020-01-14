@@ -19,9 +19,9 @@ import org.json.simple.parser.ParseException;
 
 import static no.ntnu.mycbr.rest.utils.QueryUtils.getFullResult;
 
-import static no.ntnu.mycbr.rest.common.ApiPathConstants.*;
+import static no.ntnu.mycbr.rest.common.IApiPathConstants.*;
 import static no.ntnu.mycbr.rest.controller.service.AnalyticsService.*;
-import static no.ntnu.mycbr.rest.common.ApiOperationConstants.*;
+import static no.ntnu.mycbr.rest.common.IApiOperationConstants.*;
 import static no.ntnu.mycbr.rest.utils.QueryUtils.getFullResult;
 
 

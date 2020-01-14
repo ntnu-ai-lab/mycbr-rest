@@ -1,7 +1,7 @@
 package no.ntnu.mycbr.rest.controller;
 
-import static no.ntnu.mycbr.rest.common.ApiOperationConstants.*;
-import static no.ntnu.mycbr.rest.common.ApiPathConstants.*;
+import static no.ntnu.mycbr.rest.common.IApiOperationConstants.*;
+import static no.ntnu.mycbr.rest.common.IApiPathConstants.*;
 
 import java.util.Map;
 

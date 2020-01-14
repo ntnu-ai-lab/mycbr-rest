@@ -16,10 +16,10 @@ package no.ntnu.mycbr.rest.common;
  * @author Amar Jaiswal
  * @since Dec 2, 2019
  */
-public class ApiOperationConstants {
+public interface IApiOperationConstants {
     
     // API operations for AttributeController
-    public static final String 
+    String 
     ADD_ATTRIBUTE_BY_ID    = "addAttributeByID",
     GET_ATTRIBUTE_BY_ID    = "getAttributeByID",
     GET_ALL_ATTRIBUTES 	   = "getAllAttributes",
@@ -38,7 +38,7 @@ public class ApiOperationConstants {
     
     
     // API operations for ConceptController
-    public static final String 
+    String 
     ADD_CONCEPT_ID 	 = "addConceptID",
     GET_CONCEPT_BY_ID 	 = "getConceptByID",	// To be implemented.
     GET_All_CONCEPTS 	 = "getAllConcepts",
@@ -55,7 +55,7 @@ public class ApiOperationConstants {
     
     
     // API operations for CaseController
-    public static final String
+    String
     ADD_MULTIPLE_CASES_USING_JSON = "addMultipleCasesUsingJSON",
     ADD_CASE_USING_JSON = "addCaseUsingJSON",
     
@@ -69,7 +69,7 @@ public class ApiOperationConstants {
     
     
     // API operations for RetrievalController
-    public static final String
+    String
     GET_SIMILAR_CASES = "getSimilarCases",
     GET_SIMILAR_CASES_WITH_CONTENT = "getSimilarCasesWithContent",
     
@@ -84,25 +84,25 @@ public class ApiOperationConstants {
     
     
     // API operations for EphemeralController
-    public static final String
+    String
     GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE = "getSimilarCasesFromEphemeralCaseBase",
     GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE_WITH_CONTENT = "getSimilarCasesFromEphemeralCaseBaseWithContent",
     GET_EPHEMERAL_CASE_BASE_SELF_SIMILARITY = "getEphemeralCaseBaseSelfSimilarity";
     
     // Used as json keys for ephemeral operations
-    public static final String CASEBASE_CASE_ID_LIST = "casebase_case_id_list";
-    public static final String QUERY_CASE_ID_LIST = "query_case_id_list";
+    String CASEBASE_CASE_ID_LIST = "casebase_case_id_list";
+    String QUERY_CASE_ID_LIST = "query_case_id_list";
     
     // API operations for CaseBaseController
-    public static final String 
+    String 
     ADD_CASEBASE_ID 	= "addCaseBaseID",
     GET_CASEBASE_IDS	= "getCaseBaseIDs",
     UPDATE_CASEBASE_ID 	= "updateCaseBasesID",	// To be implemented.
     DELETE_CASEBASE_ID 	= "deleteCaseBaseID";
 
     
-    // API operations for AnalyticsController
-    public static final String 
+    // API operations for AnalyticsController 
+    String
     DETAILED_CASE_COMPARISION = "DetailedCaseComparison",
     LOCAL_SIM_COMPARISION = "LocalSimComparison",
     GLOBAL_WEIGHTS = "GlobalWeights";

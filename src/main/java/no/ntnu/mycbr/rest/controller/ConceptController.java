@@ -24,8 +24,8 @@ import java.nio.file.Paths;
 import java.util.*;
 
 import static no.ntnu.mycbr.rest.common.ApiResponseAnnotations.*;
-import static no.ntnu.mycbr.rest.common.ApiPathConstants.*;
-import static no.ntnu.mycbr.rest.common.ApiOperationConstants.*;
+import static no.ntnu.mycbr.rest.common.IApiPathConstants.*;
+import static no.ntnu.mycbr.rest.common.IApiOperationConstants.*;
 
 @RestController
 public class ConceptController {

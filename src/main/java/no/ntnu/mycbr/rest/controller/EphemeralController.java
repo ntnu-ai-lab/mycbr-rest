@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 import static no.ntnu.mycbr.rest.common.ApiResponseAnnotations.*;
-import static no.ntnu.mycbr.rest.common.ApiPathConstants.*;
-import static no.ntnu.mycbr.rest.common.ApiOperationConstants.*;
+import static no.ntnu.mycbr.rest.common.IApiPathConstants.*;
+import static no.ntnu.mycbr.rest.common.IApiOperationConstants.*;
 
 /**
  * This controller class is responsible to receiving all REST requests pertaining to ephemeral (lasting for 

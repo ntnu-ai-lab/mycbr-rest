@@ -62,7 +62,7 @@ public class SelfSimilarityRetrieval implements RetrievalCustomer{
            }
 	}
 	
-	Collection<Instance> instances = getAllInstances(cb);
+	Collection<Instance> instances = cb.getCases();
 
 	for(Instance instance: instances) {
 	    String key = instance.getName();
@@ -70,10 +70,6 @@ public class SelfSimilarityRetrieval implements RetrievalCustomer{
 	}
 
 	return selfSimMatrix;
-    }
-
-    private Collection<Instance> getAllInstances(ICaseBase casebase) {
-	return casebase.getCases(); 
     }
 
     private LinkedHashMap<String, Double> query(Concept concept, ICaseBase casebase, String caseID) {

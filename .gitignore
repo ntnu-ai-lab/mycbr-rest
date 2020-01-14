@@ -2,20 +2,25 @@ target/*
 
 *.class
 
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
+
 
 # Package Files #
 *.jar
 *.war
 *.ear
 
+
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
 
 # IntelliJ files
 .idea/*
 /target/
+
 
 # All myCBR project related files
 *.prj
@@ -25,13 +30,17 @@ hs_err_pid*
 /src/test/resources/*.config
 /src/main/resources/*.config
 
+
 # IDE specific files
 *.classpath
 *.project
+*.pydevproject
+
 
 # MAC / IOS specific files
 **.DS_Store
 **/.DS_Store
+
 
 # Ignoring .settings/ folder
 .settings/*

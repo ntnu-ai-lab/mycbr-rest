@@ -42,7 +42,6 @@ public class EphemeralService implements RetrievalCustomer{
     private TemporaryAmalgamFctManager tempAmalgamFctManager;
 
     private List<Pair<Instance,Similarity>> results;
-    private LinkedHashMap<String, Double> resultList = new LinkedHashMap<>();
     private Map<String, Map<String, Double>> simMatrix = new LinkedHashMap<String, Map<String, Double>>();
 
     public EphemeralService(String conceptName, String casebaseName, String amalFunc, int k) {		
@@ -68,16 +67,16 @@ public class EphemeralService implements RetrievalCustomer{
      * @param cbSet : Set of caseIDs, that will serve as cases of the ephemeral case base.
      * @return List of Maps where key is the caseID of a case, and value is  a map of retrieved similar cases.
      */
-    public List<LinkedHashMap<String, String>> ephemeralRetrivalForSingleQuery( String query_id, Set<String> cbSet) {
+    public List<Map<String, String>> ephemeralRetrivalForSingleQuery( String query_id, Set<String> cbSet) {
 
 	ICaseBase motherCasebase = cb;
 	ICaseBase ephemeralCasebase = createEmptyCasebase(EPHEMERAL_CASEBASE_NAME, cbSet.size());
 
 	transferCases( cbSet, motherCasebase, ephemeralCasebase);
 
-	LinkedHashMap<String,Double> results = query(concept, ephemeralCasebase, query_id);
+	Map<String,Double> results = retrieve(concept, ephemeralCasebase, query_id);
 	
-	List<LinkedHashMap<String, String>> cases = new ArrayList<>();
+	List<Map<String, String>> cases = new ArrayList<Map<String, String>>();
 
         for (Map.Entry<String, Double> entry : results.entrySet()) {
             String entryCaseID = entry.getKey();
@@ -142,7 +141,7 @@ public class EphemeralService implements RetrievalCustomer{
 
 	for(String key: querySet) {
 	    // query returns LinkedHashMaps
-	    simMatrix.putIfAbsent(key, query(concept, ephemeralCasebase, key));
+	    simMatrix.putIfAbsent(key, retrieve(concept, ephemeralCasebase, key));
 	}
 
 	return simMatrix;
@@ -165,7 +164,7 @@ public class EphemeralService implements RetrievalCustomer{
 	for(Instance instance: instances) {
 	    String key = instance.getName();
 	    // query returns LinkedHashMaps
-	    simMatrix.putIfAbsent(key, query(concept, ephemeralCasebase, key));
+	    simMatrix.putIfAbsent(key, retrieve(concept, ephemeralCasebase, key));
 	}
 
 	return simMatrix;
@@ -196,9 +195,9 @@ public class EphemeralService implements RetrievalCustomer{
 	return cb;
     }
 
-    private LinkedHashMap<String, Double> query( Concept concept, ICaseBase casebase, String caseID) {
+    private Map<String, Double> retrieve( Concept concept, ICaseBase casebase, String caseID) {
 
-	LinkedHashMap<String, Double> resultList = new LinkedHashMap<>();
+	Map<String, Double> resultList = new LinkedHashMap<>();
 
 	Retrieval r = new Retrieval(concept, casebase, this);
 

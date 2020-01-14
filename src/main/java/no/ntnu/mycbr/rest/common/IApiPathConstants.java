@@ -82,7 +82,6 @@ public interface IApiPathConstants {
     String PATH_AMAL_FUNCTIONS = PATH + AMAL_FUNCTIONS;
     String PATH_CASES 		= PATH + CASES;
     String PATH_ATTRIBUTES 	= PATH + ATTRS;
-    String PATH_ATTR_DESC  	= PATH + ATTR + "Description";
     String PATH_VALUE_RANGE    = PATH + VALUE + "Range";
     String PATH_SIM_FUNCTIONS  = PATH + SIM_FUNCTIONS;
     
@@ -123,9 +122,6 @@ public interface IApiPathConstants {
     
     //Path pattern: /concepts/{conceptID}/attributes/{attributeID}/valueRange
     String PATH_CONCEPT_ATTR_VALUE_RANGE = PATH_CONCEPT_ATTR_ID + PATH_VALUE_RANGE;
-    
-    //Path pattern: /concepts/{conceptID}/attributes/{attributeID}/attributeDescription
-    String PATH_CONCEPT_ATTR_DESC = PATH_CONCEPT_ATTR_ID + PATH_ATTR_DESC;
     
     //Path pattern: /concepts/{conceptID}/attributes/{attributeID}/___s
     String PATH_CONCEPT_ATTR_SIM_FUNCTIONS = PATH_CONCEPT_ATTR_ID + PATH_SIM_FUNCTIONS;

@@ -27,10 +27,6 @@ public interface IApiOperationConstants {
     DELETE_ATTRIBUTE_BY_ID = "deleteAttributeByID",
     DELETE_ALL_ATTRIBUTES  = "deleteAllAttributes",
 
-    GET_ATTRIBUTE_VALUE_RANGE 	 = "getAttributeValueRange",
-    GET_ATTRIBUTE_DESCTIPTION 	 = "getAttributeDescription",
-    UPDATE_ATTRIBUTE_VALUE_RANGE = "updateAttributeValueRange", // To be implemented.
-
     ADD_ATTRIBUTE_SIMILARITY_FUNCTION 	 	= "addAttributeSimilarityFunction",
     GET_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS 	= "getAllAttributeSimilarityFunctions",
     UPDATE_ATTRIBUTE_SIMILARITY_FUNCTION 	= "updateAttributeSimilarityFunction", // To be implemented.

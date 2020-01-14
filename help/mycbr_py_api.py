@@ -19,7 +19,7 @@ from typing import Mapping
 from typing import NoReturn
 
 class _Constant:
-    BASE_URL ='http://localhost:8080'
+    BASE_URL = 'http://localhost:8080'
     CASE_ID = 'caseID'
     SIMILARITY = 'similarity'
     
@@ -31,7 +31,7 @@ class MyCBRRestApi:
     __amalgamationFunctionID = None
     __columnNames = None
     
-    def __init__ (self, base_url=None, conceptID = None):
+    def __init__ (self, base_url=None):
         
         if base_url is None:
             base_url = _Constant.BASE_URL
@@ -43,18 +43,233 @@ class MyCBRRestApi:
         
     def _getCurrentBaseURL(self):
         return self.__base_url
+    
     def _getCurrentConceptID(self):
         return self.__conceptID
+    
     def _getCurrentCasebaseID(self):
         return self.__casebaseID
+    
     def _getCurrentAmalgamationFunctionID(self):
         return self.__amalgamationFunctionID
-    def _getCurrentColumnNames(self):
-        return self.__columnNames
+    
+    def _getCurrentColumnNames (self) -> List[str]:
+        """     
+        Get the column names that is set in the current instance.
 
+        Returns
+        -------
+            List[str] : column names, including 'caseID' and 'similarity'.
+        """
+        return self.__columnNames
+    
+    def _setCurrentConceptID (self, conceptID:str = None) -> bool:
+        """     
+        To set the default concept name.
+        Parameters
+        ----------
+            :param conceptID : Name of the concept (default: None)
+        Returns
+        -------
+            Boolean : True is concept name is set, else flase.
+        """
+        
+        flag = False
+        
+        if (conceptID is not None) and (conceptID is not ''):
+            self.__conceptID = conceptID
+            if conceptID is self.__conceptID:
+                flag = True
+                self.setColumnNames(conceptID)
+        
+        return flag
+
+    def _setCurrentCasebaseID (self, casebaseID:str = None) -> bool:
+        """     
+        To set the default casebase name.
+        Parameters
+        ----------
+            :param casebaseID : Name of the casebase (default: None)
+        Returns
+        -------
+            Boolean : True is casebase name is set, else flase.
+        """
+        
+        flag = False
+        
+        if (casebaseID is not None) and (casebaseID is not ''):
+            self.__casebaseID = casebaseID
+            if casebaseID is self.__casebaseID:
+                flag = True
+
+        return flag
+
+    def _setCurrentAmalgamationFunctionID (self, amalgamationFunctionID:str = None) -> bool:
+        """     
+        To set the default amalgamation function.
+
+        Parameters
+        ----------
+            :param amalgamationFunctionID : Name of the amalgamation function (default: None)
+
+        Returns
+        -------
+            Boolean : True is amalgamation function is set, else flase.
+        """
+        flag = False
+        
+        if (amalgamationFunctionID is not None) and (amalgamationFunctionID is not ''):
+            self.__amalgamationFunctionID = amalgamationFunctionID
+            if amalgamationFunctionID is self.__amalgamationFunctionID:
+                flag = True
+
+        return flag
+    
+    
+    def _setColumnNamesForConcept (self, conceptID:str = None) -> List[str]:
+        """     
+        Set all the possible column names for the given conceptID.
+
+        Parameters
+        ----------
+            :param conceptID : Name of the concept (default: self.__conceptID)
+
+        Returns
+        -------
+            Boolean : True is amalgamation function is set, else flase.
+        """
+        
+        flag = False
+        
+        self.__columnNames = self.getColumnNames(conceptID)  
+        
+        if self.__columnNames is not None:
+            flag = True
+
+        return flag
+    
+    def getColumnNames (self, conceptID:str = None) -> List[str]:
+        
+        """     
+        Get all the possible column names for the given conceptID.
+
+        Parameters
+        ----------
+            :param conceptID : Name of the concept (default: self.__conceptID)
+
+        Returns
+        -------
+            List[str] : column names, including 'caseID' and 'similarity'.
+        """
+
+        if conceptID is None:
+            conceptID = self.__conceptID
+            
+        default_columns = [ _Constant.CASE_ID, _Constant.SIMILARITY ]
+        attributes = list (self.getAllAttributes( conceptID=conceptID).keys())
+        #attributes = pd.DataFrame( self.getAllAttributes( conceptID=conceptID)).index.values.tolist()
+        column_list = default_columns + attributes
+
+        return column_list
+    
+    
+    
+    def __rest_response_to_dataframe (self, response:requests.Response ) -> pd.DataFrame:
+    
+        """     
+        Helper function: convert the request response to pandas DataFrame.
+
+        Parameters
+        ----------
+            :param response : response from a REST API call
+
+        Returns
+        -------
+            DataFrame : To be done.
+        """
+
+        response_json = response.json()
+
+        # The below try:, except:, and else: are used to determine if a programme variable is defined or not!
+        try:
+            column_list
+
+        except NameError:
+            # print('column_list is not defined!!!')
+            df = pd.DataFrame(response_json)
+
+        else:
+
+            df = pd.DataFrame(response_json, columns= column_list)
+
+        df.replace('_unknown_', np.nan, inplace=True)
+        # print(df_response_gai)
+
+        if ( df.empty):
+            print("The response from myCBR is empty! Kindly have a look!")
+            print("The Dataframe is : ", df)
+
+        return df
+    
+
+    def show_ordered_ssm (
+            self,
+            df:pd.DataFrame, 
+            name:str = 'NotProvided', 
+            ticks_interval:int =10, 
+            figsize:Tuple[int,int] =(10,9), 
+            isAnnot:bool=False
+        ) -> pd.DataFrame:
+    
+        """ 
+        Get the Self-Similarity Matrix in an ordered form, where the first column has the highest sum.
+
+        Parameters
+        ----------
+            :param df : The Self-Similarity Matrix in pandas DataFrame format, where indexs and columns are same i.e. caseIDs.
+            :param name : The name to be shown on the plot title. (default: NotProvided).
+            :param ticks_interval : The interval of ticks for the Self-Similarity heatmap.
+            :param figsize : Figure size of the Heatmap plot (default: (10,10)).
+            :param isAnnot : True, will annotate each cell with its similarity value (default: False).
+
+        Plots
+        -----
+            Heatmap : heatmap of the ordered Self-Similarity Matrix.
+
+        Returns
+        -------
+            DataFrame : Ordered Self-Similarity Matrix. NaN represents that a caseID was not compared for the similarity.
+        """
+
+        ordered_series = df.sum( axis=1).sort_values( ascending=False)
+        lis = ordered_series.index.tolist()
+
+        df_1 = df[lis]
+        df_temp = df_1.reindex(lis)
+
+        plt.figure( figsize=figsize)
+
+        ax = sns.heatmap(
+            df_temp, 
+            cmap='viridis', 
+            xticklabels=ticks_interval, 
+            yticklabels=ticks_interval, 
+            fmt='g', 
+            annot=isAnnot, 
+            annot_kws={'size': 9}
+        )
+        
+        ax.invert_xaxis()
+
+        plt.yticks(rotation=0) 
+        plt.title('Self-Similarity Matrix (ordered) for : '+name)
+
+        return df_temp
+        
+
+    # ****************** myCBR-rest API Calls **************************
     
     def getAllConcepts (self) -> List[str]:
-        
         """ 
         Get all the concepts for the given myCBR project.
 
@@ -76,29 +291,6 @@ class MyCBRRestApi:
         concept_list = response.json()
         
         return concept_list
-    
-    
-    def setConceptID (self, conceptID:str = None) -> bool:
-    
-        """     
-        To set the default concept name.
-        Parameters
-        ----------
-            :param conceptID : Name of the concept (default: None)
-        Returns
-        -------
-            Boolean : True is concept name is set, else flase.
-        """
-        
-        flag = False
-        
-        if (conceptID is not None) and (conceptID is not ''):
-            self.__conceptID = conceptID
-            if conceptID is self.__conceptID:
-                flag = True
-                self.setColumnNames(conceptID)
-        
-        return flag
     
     
     def getCaseBaseIDs (self) -> List[str]:
@@ -123,28 +315,6 @@ class MyCBRRestApi:
         casebases = response.json()
 
         return casebases
-    
-    
-    def setCasebaseID (self, casebaseID:str = None) -> bool:
-    
-        """     
-        To set the default casebase name.
-        Parameters
-        ----------
-            :param casebaseID : Name of the casebase (default: None)
-        Returns
-        -------
-            Boolean : True is casebase name is set, else flase.
-        """
-        
-        flag = False
-        
-        if (casebaseID is not None) and (casebaseID is not ''):
-            self.__casebaseID = casebaseID
-            if casebaseID is self.__casebaseID:
-                flag = True
-
-        return flag
     
    
     def getAllAmalgamationFunctions (self, conceptID:str = None) -> List[str]:
@@ -177,29 +347,6 @@ class MyCBRRestApi:
         return amalgamation_list
     
     
-    def setAmalgamationFunctionID (self, amalgamationFunctionID:str = None) -> bool:
-    
-        """     
-        To set the default amalgamation function.
-
-        Parameters
-        ----------
-            :param amalgamationFunctionID : Name of the amalgamation function (default: None)
-
-        Returns
-        -------
-            Boolean : True is amalgamation function is set, else flase.
-        """
-        flag = False
-        
-        if (amalgamationFunctionID is not None) and (amalgamationFunctionID is not ''):
-            self.__amalgamationFunctionID = amalgamationFunctionID
-            if amalgamationFunctionID is self.__amalgamationFunctionID:
-                flag = True
-
-        return flag
-    
-    
     def getAllAttributes (self, conceptID:str = None) -> Dict[str,str]:
     
         """     
@@ -230,71 +377,7 @@ class MyCBRRestApi:
 
         return attribute_list
     
-    
-    def getColumnNames (self, conceptID:str = None) -> List[str]:
         
-        """     
-        Get all the possible column names for the given conceptID.
-
-        Parameters
-        ----------
-            :param conceptID : Name of the concept (default: self.__conceptID)
-
-        Returns
-        -------
-            List[str] : column names, including 'caseID' and 'similarity'.
-        """
-
-        if conceptID is None:
-            conceptID = self.__conceptID
-            
-        default_columns = [ _Constant.CASE_ID, _Constant.SIMILARITY ]
-        attributes = list (self.getAllAttributes( conceptID=conceptID).keys())
-        #attributes = pd.DataFrame( self.getAllAttributes( conceptID=conceptID)).index.values.tolist()
-        column_list = default_columns + attributes
-
-        return column_list
-    
-    
-    def _setColumnNamesForConcept (self, conceptID:str = None) -> List[str]:
-        
-        """     
-        Set all the possible column names for the given conceptID.
-
-        Parameters
-        ----------
-            :param conceptID : Name of the concept (default: self.__conceptID)
-
-        Returns
-        -------
-            Boolean : True is amalgamation function is set, else flase.
-        """
-        
-        flag = False
-        
-        print( conceptID)
-        
-        self.__columnNames = self.getColumnNames(conceptID)  
-        
-        if self.__columnNames is not None:
-            flag = True
-
-        return flag
-    
-    
-    def getDefalultColumnNames (self) -> List[str]:
-        
-        """     
-        Get the column names that is set in the current instance.
-
-        Returns
-        -------
-            List[str] : column names, including 'caseID' and 'similarity'.
-        """
-
-        return self.__columnNames
-    
-    
     def getAttributeByID (self, attributeID:str, conceptID:str = None) -> json:
 
         """     
@@ -422,44 +505,6 @@ class MyCBRRestApi:
         response = requests.delete( url= final_url)
 
         return response.json()
-
-    
-    def __rest_response_to_dataframe (self, response:requests.Response ) -> pd.DataFrame:
-    
-        """     
-        Helper function: convert the request response to pandas DataFrame.
-
-        Parameters
-        ----------
-            :param response : response from a REST API call
-
-        Returns
-        -------
-            DataFrame : To be done.
-        """
-
-        response_json = response.json()
-
-        # The below try:, except:, and else: are used to determine if a programme variable is defined or not!
-        try:
-            column_list
-
-        except NameError:
-            # print('column_list is not defined!!!')
-            df = pd.DataFrame(response_json)
-
-        else:
-
-            df = pd.DataFrame(response_json, columns= column_list)
-
-        df.replace('_unknown_', np.nan, inplace=True)
-        # print(df_response_gai)
-
-        if ( df.empty):
-            print("The response from myCBR is empty! Kindly have a look!")
-            print("The Dataframe is : ", df)
-
-        return df
     
     
     def getAllCasesFromCaseBase (self, conceptID:str = None, casebaseID:str = None) -> pd.DataFrame:
@@ -692,62 +737,7 @@ class MyCBRRestApi:
 
         return df
     
-    
-    def show_ordered_ssm (
-            self,
-            df:pd.DataFrame, 
-            name:str = 'NotProvided', 
-            ticks_interval:int =10, 
-            figsize:Tuple[int,int] =(10,9), 
-            isAnnot:bool=False
-        ) -> pd.DataFrame:
-    
-        """ 
-        Get the Self-Similarity Matrix in an ordered form, where the first column has the highest sum.
-
-        Parameters
-        ----------
-            :param df : The Self-Similarity Matrix in pandas DataFrame format, where indexs and columns are same i.e. caseIDs.
-            :param name : The name to be shown on the plot title. (default: NotProvided).
-            :param ticks_interval : The interval of ticks for the Self-Similarity heatmap.
-            :param figsize : Figure size of the Heatmap plot (default: (10,10)).
-            :param isAnnot : True, will annotate each cell with its similarity value (default: False).
-
-        Plots
-        -----
-            Heatmap : heatmap of the ordered Self-Similarity Matrix.
-
-        Returns
-        -------
-            DataFrame : Ordered Self-Similarity Matrix. NaN represents that a caseID was not compared for the similarity.
-        """
-
-        ordered_series = df.sum( axis=1).sort_values( ascending=False)
-        lis = ordered_series.index.tolist()
-
-        df_1 = df[lis]
-        df_temp = df_1.reindex(lis)
-
-        plt.figure( figsize=figsize)
-
-        ax = sns.heatmap(
-            df_temp, 
-            cmap='viridis', 
-            xticklabels=ticks_interval, 
-            yticklabels=ticks_interval, 
-            fmt='g', 
-            annot=isAnnot, 
-            annot_kws={'size': 9}
-        )
-        
-        ax.invert_xaxis()
-
-        plt.yticks(rotation=0) 
-        plt.title('Self-Similarity Matrix (ordered) for : '+name)
-
-        return df_temp
-    
-    
+     
     def getEphemeralCaseBaseSelfSimilarity (
             self,
             ephemeralCaseIDs:List[str], 

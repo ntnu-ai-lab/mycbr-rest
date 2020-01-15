@@ -20,6 +20,7 @@ public interface ApiOperationConstants {
     
     // API operations for AttributeController
     String 
+    GET_ACTIVE_ATTRIBUTES = "getActiveAttributes",
     ADD_ATTRIBUTE_BY_ID    = "addAttributeByID",
     GET_ATTRIBUTE_BY_ID    = "getAttributeByID",
     GET_ALL_ATTRIBUTES 	   = "getAllAttributes",

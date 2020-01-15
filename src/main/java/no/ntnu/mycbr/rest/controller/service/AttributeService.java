@@ -1,8 +1,13 @@
 package no.ntnu.mycbr.rest.controller.service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -21,10 +26,13 @@ import no.ntnu.mycbr.core.model.FloatDesc;
 import no.ntnu.mycbr.core.model.IntegerDesc;
 import no.ntnu.mycbr.core.model.StringDesc;
 import no.ntnu.mycbr.core.model.SymbolDesc;
+import no.ntnu.mycbr.core.similarity.AmalgamationFct;
 import no.ntnu.mycbr.core.similarity.DoubleFct;
 import no.ntnu.mycbr.core.similarity.SimFct;
 import no.ntnu.mycbr.core.similarity.config.NumberConfig;
 import no.ntnu.mycbr.rest.App;
+import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctManager;
+import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctNotChangedException;
 
 /**
  * The AttributeService facilitates CRUD operations on attributes of a concept.
@@ -196,6 +204,64 @@ public class AttributeService {
 	}
 
 	return map;
+    }
+    
+    public Map<String, Double> getActiveAttributes(String amalgamationFunctionID) {
+	Map<String, Double> result = new HashMap<String, Double>();
+	
+	TemporaryAmalgamFctManager tempAmalgamFctManager = new TemporaryAmalgamFctManager(concept);
+
+	// This will change the default Amalgamation Function of the myCBR project to a user specified function
+	try {
+	    tempAmalgamFctManager.changeAmalgamFct(amalgamationFunctionID);
+	} catch (TemporaryAmalgamFctNotChangedException e) {
+	    e.printStackTrace();
+	}
+	
+	
+	AmalgamationFct activeAmalg = concept.getActiveAmalgamFct();
+
+	if (!isActiveAmalgamationFunction(activeAmalg, amalgamationFunctionID)) {
+	    return result;
+	}
+
+	Map<String, AttributeDesc> attrDescMap = concept.getAllAttributeDescs();
+
+	for (String key : attrDescMap.keySet()) {
+	    AttributeDesc attrDesc = attrDescMap.get(key);
+	    Number weight = activeAmalg.getWeight(attrDesc);
+	    result.put(key, weight.doubleValue());
+	}
+	return sortByKey(result);
+    }
+    
+    private boolean isActiveAmalgamationFunction(AmalgamationFct activeAmalg, String amalgamationFunctionID) {
+	boolean flag = false;
+
+	if (activeAmalg.getName().equalsIgnoreCase(amalgamationFunctionID)) {
+	    flag = true;
+	} else {
+	    logger.error("The active amalgamation is not set to : "+amalgamationFunctionID);
+	    logger.warn("The current active amalgamation is : "+activeAmalg.getName());
+	}
+
+	return flag;
+    }
+    
+    private Map<String, Double> sortByKey (Map<String, Double> map) {
+
+	// LinkedHashMap preserves the order of insertion.
+	Map<String, Double> sortedMap = new LinkedHashMap<String, Double>();
+
+	ArrayList<String> sortedKeys = new ArrayList<String>(map.keySet()); 
+
+	Collections.sort(sortedKeys);  
+
+	// Display the TreeMap which is naturally sorted 
+	for (String key : sortedKeys)  
+	    sortedMap.put(key, map.get(key)) ;
+
+	return sortedMap;
     }
     
     /*

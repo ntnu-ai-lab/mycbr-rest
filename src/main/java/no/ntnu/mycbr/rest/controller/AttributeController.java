@@ -3,6 +3,7 @@ package no.ntnu.mycbr.rest.controller;
 import static no.ntnu.mycbr.rest.common.IApiOperationConstants.*;
 import static no.ntnu.mycbr.rest.common.IApiPathConstants.*;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -30,6 +31,20 @@ public class AttributeController {
     
     private final Log logger = LogFactory.getLog(getClass());
     private static final String STRING = "String";
+    
+    
+    //get all the active attributes for an amalgamationFunction
+    @ApiOperation(value = GET_ACTIVE_ATTRIBUTES, nickname = GET_ACTIVE_ATTRIBUTES)
+    @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_AMAL_FUNCTION_ID +"/getActiveAttributes", headers=ACCEPT_APPLICATION_JSON)
+    @ApiResponsesDefault
+    public Map<String, Double> getActiveAtributes(
+	    @PathVariable(value=CONCEPT_ID) String conceptID,
+	    @PathVariable(value=AMAL_FUNCTION_ID) String amalgamationFunctionID) {
+	
+	AttributeService service = new AttributeService(conceptID);
+	
+	return service.getActiveAttributes(amalgamationFunctionID);
+    }
     
     //get an attribute by ID
     @ApiOperation(value = GET_ATTRIBUTE_BY_ID, nickname = GET_ATTRIBUTE_BY_ID)

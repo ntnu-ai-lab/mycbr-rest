@@ -66,15 +66,15 @@ public class SelfSimilarityRetrieval implements RetrievalCustomer{
 
 	for(Instance instance: instances) {
 	    String key = instance.getName();
-	    selfSimMatrix.putIfAbsent(key, query(concept, cb, key));
+	    selfSimMatrix.putIfAbsent(key, retrieve(concept, cb, key));
 	}
 
 	return selfSimMatrix;
     }
 
-    private LinkedHashMap<String, Double> query(Concept concept, ICaseBase casebase, String caseID) {
+    private Map<String, Double> retrieve(Concept concept, ICaseBase casebase, String caseID) {
 
-	LinkedHashMap<String, Double> resultList = new LinkedHashMap<>();
+	Map<String, Double> resultList = new LinkedHashMap<>();
 
 	Retrieval r = new Retrieval(concept, casebase, this);
 

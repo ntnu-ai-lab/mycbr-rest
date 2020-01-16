@@ -20,17 +20,20 @@ import static no.ntnu.mycbr.rest.common.IApiPathConstants.*;
 /**
  * This controller class is responsible to serving all REST requests related to analytics on a myCBR system.
  * @author Kerstin Bach
- * @updated Amar Jaiswal
- * @since Jan 13, 2020
+ * @updated Amar Jaiswal Jan 16, 2020
  */
 @RestController
 public class AnalyticsController {
 
+    private static final String GLOBAL_WEIGHTS = "/globalWeights";
+    private static final String LOCAL_SIM_COMPARISON = "/localSimComparison";
+    private static final String DETAILED_CASE_COMPARISON = "/detailedCaseComparison";
+    
     private static final String CASE_ID_1 = "caseID_1";
     private static final String CASE_ID_2 = "caseID_2";
 
     @ApiOperation(value = "compares 2 instances including weights (weighted sum)", nickname = DETAILED_CASE_COMPARISION)
-    @RequestMapping(method = RequestMethod.GET, path= PATH_ANALYTICS_CONCEPT_AMAL_FUNCTION_ID + "/DetailedCaseComparison", produces = APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, path= PATH_ANALYTICS_CONCEPT_AMAL_FUNCTION_ID + DETAILED_CASE_COMPARISON, produces = APPLICATION_JSON)
     @ApiResponsesDefault
     public @ResponseBody List<Map<String, Double>> DetailedCaseComparison(
             @PathVariable(value=CONCEPT_ID) String conceptID,
@@ -44,7 +47,7 @@ public class AnalyticsController {
     }
 
     @ApiOperation(value = "compares 2 instances and returns the local sim for each attribute", nickname = LOCAL_SIM_COMPARISION)
-    @RequestMapping(method = RequestMethod.GET, path= PATH_ANALYTICS_CONCEPT_AMAL_FUNCTION_ID +"/LocalSimComparison", produces = APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, path= PATH_ANALYTICS_CONCEPT_AMAL_FUNCTION_ID +LOCAL_SIM_COMPARISON, produces = APPLICATION_JSON)
     @ApiResponsesDefault
     public @ResponseBody List<Map<String, Double>> LocalSimComparison(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
@@ -58,7 +61,7 @@ public class AnalyticsController {
     }
 
     @ApiOperation(value = "Returns the weights for each attribute specified in the global similarity measure", nickname = GLOBAL_WEIGHTS)
-    @RequestMapping(method = RequestMethod.GET, path= PATH_ANALYTICS_CONCEPT_AMAL_FUNCTION_ID +"/GlobalWeights", produces = APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, path= PATH_ANALYTICS_CONCEPT_AMAL_FUNCTION_ID +GLOBAL_WEIGHTS, produces = APPLICATION_JSON)
     @ApiResponsesDefault
     public @ResponseBody List<Map<String, Double>> GlobalWeights(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,

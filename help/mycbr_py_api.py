@@ -1055,3 +1055,4 @@ class MyCBRRestApi:
         df = pd.DataFrame(response.json()).round( deci_precision)
 
         return df
+ 

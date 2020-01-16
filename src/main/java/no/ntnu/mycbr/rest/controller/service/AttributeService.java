@@ -100,6 +100,13 @@ public class AttributeService {
 	return true;
     }
 
+    /**
+     * 
+     * @param conceptID
+     * @param attributeID
+     * @param attributeJSON : e.g. "{"type": "Double","min": "0.0","max": "1.0"}"
+     * @return
+     */
     public boolean addAttribute(String conceptID, String attributeID, String attributeJSON) {
 	Concept subConcept = project.getSubConcepts().get(conceptID);
 	JSONParser parser = new JSONParser();

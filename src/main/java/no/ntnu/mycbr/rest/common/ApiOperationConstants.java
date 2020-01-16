@@ -16,7 +16,7 @@ package no.ntnu.mycbr.rest.common;
  * @author Amar Jaiswal
  * @since Dec 2, 2019
  */
-public interface IApiOperationConstants {
+public interface ApiOperationConstants {
     
     // API operations for AttributeController
     String 

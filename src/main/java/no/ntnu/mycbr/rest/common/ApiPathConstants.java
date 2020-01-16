@@ -13,7 +13,7 @@ package no.ntnu.mycbr.rest.common;
  * @author Amar Jaiswal
  * @since Dec 2, 2019
  */
-public interface IApiPathConstants {
+public interface ApiPathConstants {
 
     // The media type constants
     String APPLICATION_JSON = "application/json";

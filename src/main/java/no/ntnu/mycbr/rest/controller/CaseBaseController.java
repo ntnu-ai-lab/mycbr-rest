@@ -18,8 +18,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static no.ntnu.mycbr.rest.common.IApiPathConstants.*;
-import static no.ntnu.mycbr.rest.common.IApiOperationConstants.*;
+import static no.ntnu.mycbr.rest.common.ApiPathConstants.*;
+import static no.ntnu.mycbr.rest.common.ApiOperationConstants.*;
 
 @RestController
 public class CaseBaseController {

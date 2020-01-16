@@ -14,8 +14,8 @@ import io.swagger.annotations.ApiOperation;
 import no.ntnu.mycbr.rest.common.ApiResponseAnnotations.ApiResponsesDefault;
 import no.ntnu.mycbr.rest.controller.service.AnalyticsService;
 
-import static no.ntnu.mycbr.rest.common.IApiOperationConstants.*;
-import static no.ntnu.mycbr.rest.common.IApiPathConstants.*;
+import static no.ntnu.mycbr.rest.common.ApiOperationConstants.*;
+import static no.ntnu.mycbr.rest.common.ApiPathConstants.*;
 
 /**
  * This controller class is responsible to serving all REST requests related to analytics on a myCBR system.

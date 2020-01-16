@@ -31,21 +31,7 @@ public class AttributeController {
     
     private final Log logger = LogFactory.getLog(getClass());
     private static final String STRING = "String";
-    
-    
-    //get all the active attributes for an amalgamationFunction
-    @ApiOperation(value = GET_ACTIVE_ATTRIBUTES, nickname = GET_ACTIVE_ATTRIBUTES)
-    @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_AMAL_FUNCTION_ID +"/getActiveAttributes", headers=ACCEPT_APPLICATION_JSON)
-    @ApiResponsesDefault
-    public Map<String, Double> getActiveAtributes(
-	    @PathVariable(value=CONCEPT_ID) String conceptID,
-	    @PathVariable(value=AMAL_FUNCTION_ID) String amalgamationFunctionID) {
-	
-	AttributeService service = new AttributeService(conceptID);
-	
-	return service.getActiveAttributes(amalgamationFunctionID);
-    }
-    
+     
     //get an attribute by ID
     @ApiOperation(value = GET_ATTRIBUTE_BY_ID, nickname = GET_ATTRIBUTE_BY_ID)
     @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_ATTR_ID, headers=ACCEPT_APPLICATION_JSON)
@@ -56,19 +42,6 @@ public class AttributeController {
 	
 	return new AttributeService().getAttributeByID(conceptID, attributeID);
     }
-    
-   /* // get attribute description (details)
-    @ApiOperation(value = GET_ATTRIBUTE_DESCTIPTION, nickname = GET_ATTRIBUTE_DESCTIPTION)
-    @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_ATTR_DESC, headers=ACCEPT_APPLICATION_JSON)
-    @ApiResponsesDefault
-    public Map<String, Object> getAttributeDiscription(
-	    @PathVariable(value=CONCEPT_ID) String conceptID,
-	    @PathVariable(value=ATTR_ID) String attributeID) {
-	
-	AttributeService service = new AttributeService(conceptID, attributeID);
-	
-	return service.getAttributeDiscription();
-    } */
 
     //get All attributes
     @ApiOperation(value = GET_ALL_ATTRIBUTES, nickname = GET_ALL_ATTRIBUTES)
@@ -80,6 +53,44 @@ public class AttributeController {
 	AttributeService service = new AttributeService(conceptID);
 	
 	return service.getAllAttributes();
+    }
+    
+    //get all the active attributes for an amalgamationFunction
+    @ApiOperation(value = GET_ACTIVE_ATTRIBUTES, nickname = GET_ACTIVE_ATTRIBUTES)
+    @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_AMAL_FUNCTION_ID +"/getActiveAttributes", headers=ACCEPT_APPLICATION_JSON)
+    @ApiResponsesDefault
+    public Map<String, Object> getActiveAtributes(
+	    @PathVariable(value=CONCEPT_ID) String conceptID,
+	    @PathVariable(value=AMAL_FUNCTION_ID) String amalgamationFunctionID) {
+	
+	AttributeService service = new AttributeService(conceptID);
+	
+	return service.getActiveAttributes(amalgamationFunctionID);
+    }
+    
+    //get active attributes' similarity function for an amalgamationFunction
+    @ApiOperation(value = GET_ATTRIBUTE_ACTIVE_SIMILARITY_FUNCTIONS, nickname = GET_ATTRIBUTE_ACTIVE_SIMILARITY_FUNCTIONS)
+    @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_AMAL_FUNCTION_ID +"/getAttributeActiveSimilarityFunctions", headers=ACCEPT_APPLICATION_JSON)
+    @ApiResponsesDefault
+    public Map<String, Object> getActiveAttributeSimilarityFunction(
+	    @PathVariable(value=CONCEPT_ID) String conceptID,
+	    @PathVariable(value=AMAL_FUNCTION_ID) String amalgamationFunctionID) {
+	
+	AttributeService service = new AttributeService(conceptID);
+	
+	return service.getAttributeActiveSimilarityFunctions(amalgamationFunctionID);
+    }
+    
+    //get all attribute similarity function IDs for a concept
+    @ApiOperation(value = GET_ALL_ATTRIBUTE_SIMILARITY_FUNCTION_IDS, nickname = GET_ALL_ATTRIBUTE_SIMILARITY_FUNCTION_IDS)
+    @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_ID +"/getAllAttributeSimilarityFunctionIDs", headers=ACCEPT_APPLICATION_JSON)
+    @ApiResponsesDefault
+    public Map<String, Object> getAllAttributeSimilarityFunctionIDs(
+	    @PathVariable(value=CONCEPT_ID) String conceptID) {
+	
+	AttributeService service = new AttributeService(conceptID);
+	
+	return service.getAllAttributeSimilarityFunctionIDs();
     }
     
     //add one attribute

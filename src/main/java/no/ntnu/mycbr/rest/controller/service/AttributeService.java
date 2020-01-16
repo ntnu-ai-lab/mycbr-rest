@@ -28,6 +28,7 @@ import no.ntnu.mycbr.core.model.StringDesc;
 import no.ntnu.mycbr.core.model.SymbolDesc;
 import no.ntnu.mycbr.core.similarity.AmalgamationFct;
 import no.ntnu.mycbr.core.similarity.DoubleFct;
+import no.ntnu.mycbr.core.similarity.ISimFct;
 import no.ntnu.mycbr.core.similarity.SimFct;
 import no.ntnu.mycbr.core.similarity.config.NumberConfig;
 import no.ntnu.mycbr.rest.App;
@@ -41,11 +42,11 @@ import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctNotChangedException;
  */
 public class AttributeService {
 
-    private static final String RANGE = "range";
-
     private final Log logger = LogFactory.getLog(getClass());
 
     private static final String STRING = "String";
+    private static final String RANGE = "range";
+    private static final String SIM_FUNC ="simFct";
 
     private Project project;
     private Concept concept;
@@ -179,16 +180,16 @@ public class AttributeService {
     public Map<String, Object> getAttributeByID(String conceptID, String attributeID) {
 	Concept subConcept = project.getSubConcepts().get(conceptID);
 	attributeDesc = subConcept.getAttributeDesc(attributeID);
-	
+
 	HashMap<String, AttributeDesc> allAttributeDescs = subConcept.getAllAttributeDescs();
 
 	if(!allAttributeDescs.containsKey(attributeID))
 	    return null;
 
 	Map<String, Object> map = allAttributeDescs.get(attributeID).getRepresentation();
-	
+
 	addRangeIfAbsent(map);
-	
+
 	return map;
     }
 
@@ -205,10 +206,10 @@ public class AttributeService {
 
 	return map;
     }
-    
-    public Map<String, Double> getActiveAttributes(String amalgamationFunctionID) {
-	Map<String, Double> result = new HashMap<String, Double>();
-	
+
+    public Map<String, Object> getActiveAttributes(String amalgamationFunctionID) {
+	Map<String, Object> result = new HashMap<String, Object>();
+
 	TemporaryAmalgamFctManager tempAmalgamFctManager = new TemporaryAmalgamFctManager(concept);
 
 	// This will change the default Amalgamation Function of the myCBR project to a user specified function
@@ -217,8 +218,7 @@ public class AttributeService {
 	} catch (TemporaryAmalgamFctNotChangedException e) {
 	    e.printStackTrace();
 	}
-	
-	
+
 	AmalgamationFct activeAmalg = concept.getActiveAmalgamFct();
 
 	if (!isActiveAmalgamationFunction(activeAmalg, amalgamationFunctionID)) {
@@ -234,7 +234,55 @@ public class AttributeService {
 	}
 	return sortByKey(result);
     }
-    
+
+    public Map<String, Object> getAttributeActiveSimilarityFunctions(String amalgamationFunctionID) {
+	Map<String, Object> result = new HashMap<String, Object>();
+
+	TemporaryAmalgamFctManager tempAmalgamFctManager = new TemporaryAmalgamFctManager(concept);
+
+	// This will change the default Amalgamation Function of the myCBR project to a user specified function
+	try {
+	    tempAmalgamFctManager.changeAmalgamFct(amalgamationFunctionID);
+	} catch (TemporaryAmalgamFctNotChangedException e) {
+	    e.printStackTrace();
+	}
+
+	AmalgamationFct activeAmalg = concept.getActiveAmalgamFct();
+
+	if (!isActiveAmalgamationFunction(activeAmalg, amalgamationFunctionID)) {
+	    return result;
+	}
+
+	Map<String, AttributeDesc> attrDescMap = concept.getAllAttributeDescs();
+
+	for (String key : attrDescMap.keySet()) {
+	    AttributeDesc attrDesc = attrDescMap.get(key);
+	    if ( activeAmalg.isActive(attrDesc)) {
+		String simName = ((ISimFct) activeAmalg.getActiveFct(attrDesc)).getName();
+		result.put(key, simName);
+	    }
+	}
+	return sortByKey(result);
+    }
+
+    public Map<String, Object> getAllAttributeSimilarityFunctionIDs() {
+	Map<String, Object> result = new HashMap<String, Object>();
+
+	Map<String, AttributeDesc> attrDescMap = concept.getAllAttributeDescs();
+
+	for (String key : attrDescMap.keySet()) {
+	    result.put(key, getAllSims(attrDescMap, key));
+	}
+	return sortByKey(result);
+    }
+
+    private Set<String> getAllSims(Map<String, AttributeDesc> attrDescMap, String key) {
+	AttributeDesc attrDesc = attrDescMap.get(key);
+	Map<String, Object> simFunc = (Map<String, Object>) attrDesc.getRepresentation().get(SIM_FUNC);	
+	Set<String> simFuncSet = simFunc.keySet();
+	return simFuncSet;
+    }
+
     private boolean isActiveAmalgamationFunction(AmalgamationFct activeAmalg, String amalgamationFunctionID) {
 	boolean flag = false;
 
@@ -247,11 +295,11 @@ public class AttributeService {
 
 	return flag;
     }
-    
-    private Map<String, Double> sortByKey (Map<String, Double> map) {
+
+    private Map<String, Object> sortByKey (Map<String, Object> map) {
 
 	// LinkedHashMap preserves the order of insertion.
-	Map<String, Double> sortedMap = new LinkedHashMap<String, Double>();
+	Map<String, Object> sortedMap = new LinkedHashMap<String, Object>();
 
 	ArrayList<String> sortedKeys = new ArrayList<String>(map.keySet()); 
 
@@ -263,7 +311,7 @@ public class AttributeService {
 
 	return sortedMap;
     }
-    
+
     /*
      public Map<String,Object> getAttributeDiscription() {
 
@@ -273,8 +321,8 @@ public class AttributeService {
 
 	return map;
     } 
-    */
-    
+     */
+
     private void addRangeIfAbsent(Map<String, Object> map) {
 	if ( !map.containsKey(RANGE)) {
 

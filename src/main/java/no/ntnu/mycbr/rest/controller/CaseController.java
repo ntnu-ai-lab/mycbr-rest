@@ -31,6 +31,8 @@ import static no.ntnu.mycbr.rest.common.ApiOperationConstants.*;
 @RestController
 public class CaseController
 {
+    private static final String CASES_BY_PATTERN = "/casesByPattern";
+
     @Autowired
     private CaseService instanceService;
 
@@ -143,7 +145,7 @@ public class CaseController
 
     //Delete instances according to pattern
     @ApiOperation(value=DELETE_ALL_CASES_IN_CASEBASE_USING_PATTERN, nickname=DELETE_ALL_CASES_IN_CASEBASE_USING_PATTERN)
-    @RequestMapping(method=RequestMethod.DELETE, value = PATH_CONCEPT_CASEBASE_CASES + "/casesByPattern")
+    @RequestMapping(method=RequestMethod.DELETE, value = PATH_CONCEPT_CASEBASE_CASES + CASES_BY_PATTERN)
     @ApiResponsesDefault
     public boolean deleteInstancePattern(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
@@ -187,21 +189,14 @@ public class CaseController
     public ArrayList<String> addInstancesJSON(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID,
-	    @RequestParam(value=CASES, defaultValue="{'cases':[{'Att':'Value'},{'Att':'Value'}]}") String cases) {
-	
+	    @RequestBody(required= true) JSONObject json) {
+
 	Project p = App.getProject();
 	if(!p.getCaseBases().containsKey(casebaseID)){
 	    return new ArrayList<>();
 	}
 	Concept c = (Concept)p.getSubConcepts().get(conceptID);
 
-	JSONParser parser = new JSONParser();
-	JSONObject json = null;
-	try {
-	    json = (JSONObject) parser.parse(cases);
-	} catch (ParseException e) {
-	    e.printStackTrace();
-	}
 	JSONArray newCases = (JSONArray) json.get(CASES);
 
 	return instanceService.addInstances(c,casebaseID, newCases);
@@ -215,7 +210,7 @@ public class CaseController
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID,
 	    @PathVariable(value=CASE_ID) String caseID,
-	    @RequestParam(value="casedata", defaultValue="{}") String casedata) {
+	    @RequestBody(required= true) JSONObject json) {
 	
 	Project p = App.getProject();
 	if(!p.getCaseBases().containsKey(casebaseID)){
@@ -223,16 +218,7 @@ public class CaseController
 	}
 	ICaseBase cb = p.getCaseBases().get(casebaseID);
 	Concept c = (Concept)p.getSubConcepts().get(conceptID);
-
-	JSONParser parser = new JSONParser();
-	JSONObject json = null;
-	try {
-	    json = (JSONObject) parser.parse(casedata);
-	} catch (ParseException e) {
-	    e.printStackTrace();
-	}
-	JSONObject inpcase = json;
-	return null != instanceService.addInstance(c,cb,caseID,inpcase);
-
+	
+	return null != instanceService.addInstance(c, cb, caseID, json);
     }
 }

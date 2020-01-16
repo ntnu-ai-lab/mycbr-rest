@@ -28,6 +28,14 @@ import static no.ntnu.mycbr.rest.utils.QueryUtils.getFullResult;
 @RestController
 public class RetrievalController {
 
+    private static final String RETRIEVAL = "/retrieval";
+    private static final String RETRIEVAL_BY_CASE_ID = "/retrievalByCaseID";
+    private static final String RETRIEVAL_BY_MULTIPLE_CASE_I_DS = "/retrievalByMultipleCaseIDs";
+    private static final String RETRIEVAL_BY_ATTRIBUTE = "/retrievalByAttribute";
+    private static final String RETRIEVAL_BY_MULTIPLE_ATTRIBUTES = "/retrievalByMultipleAttributes";
+    private static final String RETRIEVAL_BY_CASE_ID_WITH_CONTENT = "/retrievalByCaseIDWithContent";
+    private static final String RETRIEVAL_WITH_CONTENT = "/retrievalWithContent";
+    
     private static final String VW = "vw";
     private static final String CAR0 = "car0";
     private static final String MANUFACTURER = "manufacturer";
@@ -39,7 +47,7 @@ public class RetrievalController {
      */
     @Deprecated
     @ApiOperation(value = "use: "+GET_SIMILAR_CASES_BY_MULTIPLE_ATTRIBUTES, nickname = "use: "+GET_SIMILAR_CASES_BY_MULTIPLE_ATTRIBUTES)
-    @RequestMapping(method = RequestMethod.POST, path=PATH_CONCEPT_CASEBASE_ID+"/retrieval", produces=APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.POST, path=PATH_CONCEPT_CASEBASE_ID+RETRIEVAL, produces=APPLICATION_JSON)
     @ApiResponsesDefault
     public Query getSimilarInstances(
 	    @RequestParam(value=CASEBASE, defaultValue=DEFAULT_CASEBASE) String casebase,
@@ -52,7 +60,7 @@ public class RetrievalController {
     }
 
     @ApiOperation(value = GET_SIMILAR_CASES_BY_CASE_ID, nickname = GET_SIMILAR_CASES_BY_CASE_ID)
-    @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPT_CASEBASE_AMAL_FUNCTION_ID+"/retrievalByCaseID", produces=APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPT_CASEBASE_AMAL_FUNCTION_ID+RETRIEVAL_BY_CASE_ID, produces=APPLICATION_JSON)
     @ApiResponsesDefault
     public Map<String, Double> getSimilarCasesByID(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
@@ -67,7 +75,7 @@ public class RetrievalController {
     }
 
     @ApiOperation(value = GET_SIMILAR_CASES_BY_MULTIPLE_CASE_IDS, nickname = GET_SIMILAR_CASES_BY_MULTIPLE_CASE_IDS)
-    @RequestMapping(method = RequestMethod.POST, path=PATH_CONCEPT_CASEBASE_AMAL_FUNCTION_ID+"/retrievalByMultipleCaseIDs", produces=APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.POST, path=PATH_CONCEPT_CASEBASE_AMAL_FUNCTION_ID+RETRIEVAL_BY_MULTIPLE_CASE_I_DS, produces=APPLICATION_JSON)
     @ApiResponsesDefault
     public Map<String, HashMap<String, Double>> getSimilarCasesByIDs(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
@@ -147,7 +155,7 @@ public class RetrievalController {
     }
 
     @ApiOperation(value = GET_SIMILAR_CASES_BY_ATTRIBUTE, nickname = GET_SIMILAR_CASES_BY_ATTRIBUTE)
-    @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPT_CASEBASE_AMAL_FUNCTION_ID+"/retrievalByAttribute", produces=APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPT_CASEBASE_AMAL_FUNCTION_ID+RETRIEVAL_BY_ATTRIBUTE, produces=APPLICATION_JSON)
     @ApiResponsesDefault
     public Query getSimilarInstancesByAttribute(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
@@ -161,7 +169,7 @@ public class RetrievalController {
     }
 
     @ApiOperation(value = GET_SIMILAR_CASES_BY_MULTIPLE_ATTRIBUTES, nickname = GET_SIMILAR_CASES_BY_MULTIPLE_ATTRIBUTES)
-    @RequestMapping(method = RequestMethod.POST, path=PATH_CONCEPT_CASEBASE_AMAL_FUNCTION_ID+"/retrievalByMultipleAttributes", produces=APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.POST, path=PATH_CONCEPT_CASEBASE_AMAL_FUNCTION_ID+RETRIEVAL_BY_MULTIPLE_ATTRIBUTES, produces=APPLICATION_JSON)
     @ApiResponsesDefault
     public @ResponseBody List<LinkedHashMap<String, String>> getSimilarInstancesWithContent(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
@@ -176,7 +184,7 @@ public class RetrievalController {
     }
 
     @ApiOperation(value = GET_SIMILAR_CASES_BY_CASE_ID_WITH_CONTENT, nickname = GET_SIMILAR_CASES_BY_CASE_ID_WITH_CONTENT)
-    @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPT_CASEBASE_AMAL_FUNCTION_ID+"/retrievalByCaseIDWithContent", produces=APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPT_CASEBASE_AMAL_FUNCTION_ID+RETRIEVAL_BY_CASE_ID_WITH_CONTENT, produces=APPLICATION_JSON)
     @ApiResponsesDefault
     public @ResponseBody List<LinkedHashMap<String, String>> getSimilarInstancesByIDWithContent(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
@@ -191,7 +199,7 @@ public class RetrievalController {
     }
 
     @ApiOperation(value = GET_SIMILAR_CASES_WITH_CONTENT, nickname = GET_SIMILAR_CASES_WITH_CONTENT)
-    @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPT_CASEBASE_ID+"/retrievalWithContent", produces=APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPT_CASEBASE_ID+RETRIEVAL_WITH_CONTENT, produces=APPLICATION_JSON)
     @ApiResponsesDefault
     public @ResponseBody List<LinkedHashMap<String, String>> getSimilarInstancesByAttributeWithContent(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,

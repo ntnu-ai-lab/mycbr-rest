@@ -35,7 +35,10 @@ public class EphemeralController {
      * @param queryCaseID : The caseID that serves as a query
      * @param k           : Number of desired retrieved cases per query case.
      * @param ephemeralCaseIDs : The ephemeralCaseIDs is a list of caseIDs used for creating an ephemeral case base.
-     * @return
+     * @return List<Map<String, String>> : List<E> - list of cases (E) from the ephemeral case base. 
+     * The number of cases in the list depends on the value of k. 
+     * Map<K,V> - case representation as a map, where K is the attribute name (including the caseID and similarity) 
+     * as a String and V is the respective value as a String.
      */
    @ApiOperation(value = GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE_WITH_CONTENT, nickname = GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE_WITH_CONTENT)
     @RequestMapping(method = RequestMethod.POST, path=PATH_EPHEMERAL_RETRIEVAL_WITH_CONTENT, produces=APPLICATION_JSON)
@@ -64,7 +67,10 @@ public class EphemeralController {
      * @param mapOfcaseIDs : Keys are <code>query_case_id_list</code> and <code>casebase_case_id_list</code>. 
      * The <code>query_case_id_list</code> contains list of caseIDs to be queried. 
      * The <code>casebase_case_id_list</code> contains the list of caseIDs used for creating an ephemeral case base.
-     * @return
+     * @return Map<String, Map<String, String>> : Outer Map<K1,V1> - K1: a caseID from the query_case_id_list, V1: inner map (Map<K2,V2>). 
+     * This map will contain all the caseIDs as a key from the query_case_id_list.
+     * Inner Map<K2,V2> - K1: a caseID from the casebase_case_id_list, V2: similarity score for K1 vs K2, respectively. 
+     * The number of cases in the inner map (Map<K2,V2>) depends on the value of k. 
      */
     @ApiOperation(value = GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE, nickname = GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE)
     @RequestMapping(method = RequestMethod.POST, path=PATH_EPHEMERAL_RETRIEVAL, produces=APPLICATION_JSON)
@@ -92,7 +98,10 @@ public class EphemeralController {
      * @param amalgamationFunctionID : Amalgamation function (global similarity function) of the myCBR project.
      * @param k          : Number of desired retrieved cases per query case.
      * @param casebaseCaseIDList : List of caseIDs used for creation ephemeral case base.
-     * @return
+     * @return Map<String, Map<String, String>> : Outer Map<K1,V1> - K1: a caseID from the casebaseCaseIDList, V1: inner map (Map<K2,V2>). 
+     * This map will contain all the caseIDs as a key from the casebaseCaseIDList.
+     * Inner Map<K2,V2> - K1: a caseID from the casebaseCaseIDList, V2: similarity score for K1 vs K2, respectively. 
+     * The number of cases in the inner map (Map<K2,V2>) depends on the value of k. 
      */
     @ApiOperation(value = GET_EPHEMERAL_CASE_BASE_SELF_SIMILARITY, nickname = GET_EPHEMERAL_CASE_BASE_SELF_SIMILARITY)
     @RequestMapping(method = RequestMethod.POST, path=PATH_EPHEMERAL_SELF_SIMILARITY, produces=APPLICATION_JSON)

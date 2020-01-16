@@ -1055,3 +1055,252 @@ class MyCBRRestApi:
         df = pd.DataFrame(response.json()).round( deci_precision)
 
         return df
+    
+
+    def compareTwoCases (
+            self, 
+            caseID1:str,
+            caseID2:str,
+            amalgamationFunctionID:str, 
+            conceptID:str = None, 
+            casebaseID:str = None, 
+            k:int =-1, 
+            deci_precision:int=3
+        ) -> pd.DataFrame:
+        
+        """ 
+        Retrieve similar cases with content by caseID.
+
+            * Sample URL: ~/analytics/concepts/animal/amalgamationFunctions/rank_wt_all/DetailedCaseComparison?caseID_1=animal0&caseID_2=animal2
+
+        Parameters
+        ----------
+            :param caseID1 : The caseID of the first case
+            :param caseID2 : The caseID of the second case
+            :param amalgamationFunctionID : Name of the amalgamation function
+            :param conceptID : Name of the concept (default: self.__conceptID)
+            :param casebaseID : Name of the casebase (default: self.__casebaseID)
+            :param k : Name of the retrieved cases (default: -1, where -1 means all)
+            :param deci_precision : The numeric precision value for similarity (default: 3)
+
+        Returns
+        -------
+            DataFrame : The rows are the cases from the casebase with unique "caseID" and columns are the feature values.
+
+        Note
+        ----
+            _unknown_ : is the placeholder for empty values
+        """
+
+        if conceptID is None:
+            conceptID = self.__conceptID
+        if casebaseID is None:
+            casebaseID = self.__casebaseID
+            
+        final_url = self.__base_url \
+                    + '/analytics' \
+                    + '/concepts/'+ conceptID \
+                    + '/casebases/'+ casebaseID \
+                    + '/amalgamationFunctions/'+ amalgamationFunctionID \
+                    + '/DetailedCaseComparison?caseID_1='+ caseID1 \
+                    + '&caseID_2='+ caseID2
+        #print( final_url)
+
+        response = requests.get( url= final_url)
+
+        df = pd.DataFrame(response.json()).round( deci_precision)
+
+        return df
+    
+    
+    
+    
+
+    def computeLocalSimilarityWithAllCases (
+            self, 
+            caseID:str,
+            amalgamationFunctionID:str, 
+            conceptID:str = None, 
+            casebaseID:str = None, 
+            deci_precision:int=3
+        ) -> pd.DataFrame:
+        
+        """ 
+        Compute the local similarity (attribute similarities) for a given caseID against the entire case base.
+
+            * Sample URL: ~/analytics/concepts/animal/casebases/case_base/amalgamationFunctions/rank_wt_all/computeLocalSimilarityWithAllCases?caseID=animal0
+            
+        Parameters
+        ----------
+            :param caseID : The caseID
+            :param amalgamationFunctionID : Name of the amalgamation function
+            :param conceptID : Name of the concept (default: self.__conceptID)
+            :param casebaseID : Name of the casebase (default: self.__casebaseID)
+            :param deci_precision : The numeric precision value for similarity (default: 3)
+
+        Returns
+        -------
+            DataFrame : The rows are the cases from the casebase with unique "caseID" and columns are the feature values.
+
+        Note
+        ----
+            _unknown_ : is the placeholder for empty values
+        """
+
+        if conceptID is None:
+            conceptID = self.__conceptID
+        if casebaseID is None:
+            casebaseID = self.__casebaseID
+            
+        final_url = self.__base_url \
+                    + '/analytics' \
+                    + '/concepts/'+ conceptID \
+                    + '/casebases/'+ casebaseID \
+                    + '/amalgamationFunctions/'+ amalgamationFunctionID \
+                    + '/computeLocalSimilarityWithAllCases?caseID='+ caseID
+
+        #print( final_url)
+
+        response = requests.get( url= final_url)
+
+        df = pd.DataFrame(response.json()).round( deci_precision)
+        
+        df = df.transpose()
+
+        return df
+    
+    
+    def computeGlobalSimilarityWithAllCases (
+            self, 
+            caseID:str,
+            amalgamationFunctionID:str, 
+            conceptID:str = None, 
+            casebaseID:str = None, 
+            deci_precision:int=3
+        ) -> pd.DataFrame:
+        
+        """ 
+        Compute the global similarity (attribute similarities including the weights) for a given caseID against the entire case base.
+
+            * Sample URL: ~/analytics/concepts/animal/casebases/case_base/amalgamationFunctions/rank_wt_all/computeGlobalSimilarityWithAllCases?caseID=animal0
+            
+        Parameters
+        ----------
+            :param caseID : The caseID
+            :param amalgamationFunctionID : Name of the amalgamation function
+            :param conceptID : Name of the concept (default: self.__conceptID)
+            :param casebaseID : Name of the casebase (default: self.__casebaseID)
+            :param deci_precision : The numeric precision value for similarity (default: 3)
+
+        Returns
+        -------
+            DataFrame : The rows are the cases from the casebase with unique "caseID" and columns are the feature values.
+
+        Note
+        ----
+            _unknown_ : is the placeholder for empty values
+        """
+
+        if conceptID is None:
+            conceptID = self.__conceptID
+        if casebaseID is None:
+            casebaseID = self.__casebaseID
+            
+        final_url = self.__base_url \
+                    + '/analytics' \
+                    + '/concepts/'+ conceptID \
+                    + '/casebases/'+ casebaseID \
+                    + '/amalgamationFunctions/'+ amalgamationFunctionID \
+                    + '/computeGlobalSimilarityWithAllCases?caseID='+ caseID
+
+        #print( final_url)
+
+        response = requests.get( url= final_url)
+
+        df = pd.DataFrame(response.json()).round( deci_precision)
+        
+        df = df.transpose()
+
+        return df
+    
+    
+    def getAttributeActiveSimilarityFunctions (
+            self, 
+            amalgamationFunctionID:str, 
+            conceptID:str = None, 
+        ) -> pd.DataFrame:
+        
+        """ 
+        Get attributes' active similarity functions for a given amalgamation function.
+
+            * Sample URL: ~/analytics/concepts/animal/amalgamationFunctions/rank_wt_all/getAttributeActiveSimilarityFunctions
+            
+        Parameters
+        ----------
+            :param amalgamationFunctionID : Name of the amalgamation function
+            :param conceptID : Name of the concept (default: self.__conceptID)
+
+        Returns
+        -------
+            DataFrame : The rows are unique "attributeID" and columns are active 'localSimilarityFunctionID'.
+        """
+
+        if conceptID is None:
+            conceptID = self.__conceptID
+            
+        final_url = self.__base_url \
+                    + '/concepts/'+ conceptID \
+                    + '/amalgamationFunctions/'+ amalgamationFunctionID \
+                    + '/getAttributeActiveSimilarityFunctions'
+
+        #print( final_url)
+
+        response = requests.get( url= final_url)
+
+        response_json = response.json()
+        
+        df = pd.DataFrame(list(response_json.values()), index=response_json.keys())
+        
+        df.index.name = 'attributeID'
+        df.columns = ['localSimilarityFunctionID']
+
+        return df
+
+    
+    def getAllAttributeSimilarityFunctionIDs (
+            self, 
+            conceptID:str = None, 
+        ) -> pd.DataFrame:
+        
+        """ 
+        Get attributes' all similarity function IDs.
+
+            * Sample URL: ~/analytics/concepts/animal/getAllAttributeSimilarityFunctionIDs
+            
+        Parameters
+        ----------
+            :param conceptID : Name of the concept (default: self.__conceptID)
+
+        Returns
+        -------
+            DataFrame : The rows are the unique "attributeID" and columns are the 'localSimilarityFunctionIDs'.
+        """
+
+        if conceptID is None:
+            conceptID = self.__conceptID
+            
+        final_url = self.__base_url \
+                    + '/concepts/'+ conceptID \
+                    + '/getAllAttributeSimilarityFunctionIDs'
+
+        #print( final_url)
+
+        response = requests.get( url= final_url)
+
+        dict_lsf = response.json()
+        
+        df = pd.DataFrame([(k, *v) for k, v in dict_lsf.items()])
+        #python 3.6+ with f-strings
+        df.columns = ['attributeID'] + [f'LSF_ID_{x}' for x in df.columns[1:]]
+
+        return df

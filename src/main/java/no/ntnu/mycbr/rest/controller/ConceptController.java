@@ -221,4 +221,17 @@ public class ConceptController {
 	
 	return null != conceptService.addConcept(conceptID);
     }
+    
+    
+    //add one concept
+    @ApiOperation(value="addWeightedSumAmalgamationFunction", nickname="addWeightedSumAmalgamationFunction")
+    @RequestMapping(method=RequestMethod.PUT, value = PATH_CONCEPT_AMAL_FUNCTION_ID + "/addWeightedSumAmalgamationFunction")
+    @ApiResponsesDefault
+    public boolean addWeightedSumAmalgamationFunction(
+	    @PathVariable(value=CONCEPT_ID) String conceptID,
+	    @PathVariable(value=AMAL_FUNCTION_ID) String amalgamationFunctionID) {
+	
+	return conceptService.addWeightedSumAmalgamationFunction(conceptID, amalgamationFunctionID);
+    }
+    
 }

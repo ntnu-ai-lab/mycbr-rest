@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -85,6 +86,7 @@ public class ConceptService {
         }
         return recDeleteConcept(superConcept);
     }
+    
     //recursively deletes a concept and all subconcepts
     private static boolean recDeleteConcept(Concept superConcept){
         HashMap<String,Concept> subConcepts = superConcept.getAllSubConcepts();
@@ -97,6 +99,7 @@ public class ConceptService {
         superConcept.getSuperConcept().removeSubConcept(superConcept.getName());
         return ret;
     }
+    
     public boolean addDoubleSimilarityFunction(Concept c, String attributeName, String similarityFunctionName, Double parameter)
     {
         DoubleDesc attributeDesc = (DoubleDesc) c.getAllAttributeDescs().get(attributeName);
@@ -110,8 +113,22 @@ public class ConceptService {
 
     public boolean addAmalgamationFunction(Concept c, String amalgamationFunctionID, String amalgamationFunctionType){
         AmalgamationConfig config = AmalgamationConfig.valueOf(amalgamationFunctionType);
-        AmalgamationFct fct = c.addAmalgamationFct(config,amalgamationFunctionID, false);
+        AmalgamationFct fct = c.addAmalgamationFct(config, amalgamationFunctionID, false);
         c.setActiveAmalgamFct(fct);
+        return true;
+    }
+    
+    public boolean addWeightedSumAmalgamationFunction(String conceptID, String amalgamationFunctionID){
+	Project project = App.getProject();
+	Concept concept = project.getConceptByID(conceptID);
+	concept.addAmalgamationFct(AmalgamationConfig.WEIGHTED_SUM, "amar_test_amal_fun", false);
+	
+	List<AmalgamationFct> amalList = concept.getAvailableAmalgamFcts();
+	
+	AmalgamationFct newAmal = amalList.get(15);
+	
+	Map<String, AttributeDesc> attrMap = concept.getAllAttributeDescs();
+	
         return true;
     }
 }

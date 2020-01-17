@@ -28,8 +28,10 @@ public interface ApiOperationConstants {
     DELETE_ATTRIBUTE_BY_ID = "deleteAttributeByID",
     DELETE_ALL_ATTRIBUTES  = "deleteAllAttributes",
 
-    ADD_ATTRIBUTE_SIMILARITY_FUNCTION 	 	= "addAttributeSimilarityFunction",
+    GET_ALL_ATTRIBUTE_SIMILARITY_FUNCTION_IDS 	= "getAllAttributeSimilarityFunctionIDs",
+    GET_ATTRIBUTE_ACTIVE_SIMILARITY_FUNCTIONS 	= "getAttributeActiveSimilarityFunctions",
     GET_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS 	= "getAllAttributeSimilarityFunctions",
+    ADD_ATTRIBUTE_SIMILARITY_FUNCTION 	 	= "addAttributeSimilarityFunction",
     UPDATE_ATTRIBUTE_SIMILARITY_FUNCTION 	= "updateAttributeSimilarityFunction", // To be implemented.
     DELETE_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS 	= "deleteAllAttributeSimilarityFunctions";
     

@@ -10,6 +10,7 @@ import no.ntnu.mycbr.core.similarity.ISimFct;
 import no.ntnu.mycbr.core.similarity.Similarity;
 
 import no.ntnu.mycbr.rest.App;
+import no.ntnu.mycbr.rest.common.IApiPathConstants;
 import no.ntnu.mycbr.rest.utils.ListUtil;
 import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctManager;
 import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctNotChangedException;

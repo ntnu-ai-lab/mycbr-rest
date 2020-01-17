@@ -45,3 +45,7 @@ hs_err_pid*
 # Ignoring .settings/ folder
 .settings/*
 
+
+# Python files
+help/.ipynb_checkpoints/
+help/__pycache__/

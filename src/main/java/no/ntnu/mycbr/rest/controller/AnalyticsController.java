@@ -3,8 +3,10 @@ package no.ntnu.mycbr.rest.controller;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -70,6 +72,35 @@ public class AnalyticsController {
 
         AnalyticsService service = new AnalyticsService(conceptID, amalgamationFunctionID);
         return service.computeGlobalSimilarityOfTwoCases(caseID1, caseID2);
+    }
+    
+    
+    @ApiOperation(value = "computeEphemeralLocalSimilarity for (weighted sum)", nickname = "computeEphemeralLocalSimilarity")
+    @RequestMapping(method = RequestMethod.POST, path= PATH_ANALYTICS_CONCEPT_CASEBASE_AMAL_FUNCTION_ID + "/computeEphemeralLocalSimilarity", produces = APPLICATION_JSON)
+    @ApiResponsesDefault
+    public @ResponseBody Map<String, LinkedHashMap<String, Double>> computeEphemeralLocalSimilarity(
+            @PathVariable(value=CONCEPT_ID) String conceptID,
+            @PathVariable(value=CASEBASE_ID) String casebaseID,
+            @PathVariable(value=AMAL_FUNCTION_ID) String amalgamationFunctionID,
+            @RequestParam(value=CASE_ID) String caseID,
+            @RequestBody(required = true)  Set<String> ephemeralCaseIDs) {
+
+        AnalyticsService service = new AnalyticsService(conceptID, casebaseID, amalgamationFunctionID);
+        return service.computeEphemeralLocalSimilarity(caseID, ephemeralCaseIDs);
+    }
+    
+    @ApiOperation(value = "computeEphemeralGlobalSimilarity for (weighted sum)", nickname = "computeEphemeralGlobalSimilarity")
+    @RequestMapping(method = RequestMethod.POST, path= PATH_ANALYTICS_CONCEPT_CASEBASE_AMAL_FUNCTION_ID + "/computeEphemeralGlobalSimilarity", produces = APPLICATION_JSON)
+    @ApiResponsesDefault
+    public @ResponseBody Map<String, LinkedHashMap<String, Double>> computeEphemeralGlobalSimilarity(
+            @PathVariable(value=CONCEPT_ID) String conceptID,
+            @PathVariable(value=CASEBASE_ID) String casebaseID,
+            @PathVariable(value=AMAL_FUNCTION_ID) String amalgamationFunctionID,
+            @RequestParam(value=CASE_ID) String caseID,
+            @RequestBody(required = true)  Set<String> ephemeralCaseIDs) {
+
+        AnalyticsService service = new AnalyticsService(conceptID, casebaseID, amalgamationFunctionID);
+        return service.computeEphemeralGlobalSimilarity(caseID, ephemeralCaseIDs);
     }
     
     

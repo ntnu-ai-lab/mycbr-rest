@@ -200,6 +200,126 @@ public class AnalyticsService {
     }
 
 
+    public Map<String, LinkedHashMap<String, Double>> computeEphemeralLocalSimilarity(String caseID, Set<String> ephemeralCaseIDs) {
+	Map<String,  LinkedHashMap<String, Double>> result = new  HashMap<String, LinkedHashMap<String, Double>>();
+
+	Instance caze = concept.getInstance(caseID);
+	AmalgamationFct activeAmalg = concept.getActiveAmalgamFct();
+	if (!isActiveAmalgamationFunction(activeAmalg)) {
+	    return result;
+	}
+
+	Map<String, AttributeDesc> attrDescMap = concept.getAllAttributeDescs();
+
+	List<String> attrNameList = new LinkedList<>();
+
+	for (String key : attrDescMap.keySet()) {
+	    if ( activeAmalg.isActive(attrDescMap.get(key))) {
+		attrNameList.add(key);
+	    }
+	}
+
+	// Sort the active attribute names
+	Collections.sort(attrNameList);
+
+	// get all the cases from the casebase
+	Collection<Instance> cases = casebase.getCases();
+
+	for (Instance tempCase : cases) {
+	    String validCase = tempCase.getName();
+
+	    if ( ephemeralCaseIDs.contains(validCase)) {
+		LinkedHashMap<String, Double> caseResult = new LinkedHashMap<>();
+
+		for (String key : attrNameList) {
+		    AttributeDesc attrDesc = attrDescMap.get(key);
+
+		    Attribute case1Att = caze.getAttForDesc(attrDesc);
+		    Attribute case2Att = tempCase.getAttForDesc(attrDesc);
+
+		    ISimFct simfct = (ISimFct) activeAmalg.getActiveFct(attrDesc);
+
+		    try {
+			Similarity sim = simfct.calculateSimilarity(case1Att, case2Att);
+			caseResult.put(key, sim.getValue());
+		    } catch (Exception e) {
+			e.printStackTrace();
+			logger.error(e.getLocalizedMessage());
+		    }
+		}
+		result.put(tempCase.getName(), caseResult);
+	    }
+	}
+	return result;
+    }
+
+    public Map<String, LinkedHashMap<String, Double>> computeEphemeralGlobalSimilarity(String caseID, Set<String> ephemeralCaseIDs) {
+	Map<String,  LinkedHashMap<String, Double>> result = new  HashMap<String, LinkedHashMap<String, Double>>();
+
+	Instance caze = concept.getInstance(caseID);
+	AmalgamationFct activeAmalg = concept.getActiveAmalgamFct();
+	if (!isActiveAmalgamationFunction(activeAmalg)) {
+	    return result;
+	}
+
+	Map<String, AttributeDesc> attrDescMap = concept.getAllAttributeDescs();
+
+	double totalWeight = 0.0;
+
+	for( AttributeDesc desc : attrDescMap.values())
+	    totalWeight += activeAmalg.getWeight(desc).doubleValue();
+
+	List<String> attrNameList = new LinkedList<>();
+
+	for (String key : attrDescMap.keySet()) {
+	    if ( activeAmalg.isActive(attrDescMap.get(key))) {
+		attrNameList.add(key);
+	    }
+	}
+
+	// Sort the active attribute names
+	Collections.sort(attrNameList);
+
+	// get all the cases from the casebase
+	Collection<Instance> cases = casebase.getCases();
+
+	for (Instance tempCase : cases) {
+	    String validCase = tempCase.getName();
+
+	    if ( ephemeralCaseIDs.contains(validCase)) {
+		LinkedHashMap<String, Double> caseResult = new LinkedHashMap<>();
+
+		double globalSim = 0;
+
+		for (String key : attrNameList) {
+		    AttributeDesc attrDesc = attrDescMap.get(key);
+
+		    Attribute case1Att = caze.getAttForDesc(attrDesc);
+		    Attribute case2Att = tempCase.getAttForDesc(attrDesc);
+
+		    ISimFct simfct = (ISimFct) activeAmalg.getActiveFct(attrDesc);
+
+		    double attrWeight = activeAmalg.getWeight(attrDesc).doubleValue();
+
+		    try {
+			Similarity sim = simfct.calculateSimilarity(case1Att, case2Att);
+			double wt = (attrWeight * sim.getValue()) / totalWeight;
+			caseResult.put(key, wt);
+			globalSim += wt;
+		    } catch (Exception e) {
+			e.printStackTrace();
+			logger.error(e.getLocalizedMessage());
+		    }
+		}
+		caseResult.put("similarity", globalSim);
+
+		result.put(tempCase.getName(), caseResult);
+	    }
+	}
+	return result;
+    }
+    
+
     public Map<String, LinkedHashMap<String, Double>> computeLocalSimilarityWithAllCases(String caseID) {
 	Map<String,  LinkedHashMap<String, Double>> result = new  HashMap<String, LinkedHashMap<String, Double>>();
 
@@ -226,7 +346,7 @@ public class AnalyticsService {
 	Collection<Instance> cases = casebase.getCases();
 
 	// remove the query case
-	cases.remove(caze);
+	//cases.remove(caze);
 
 	for (Instance tempCase : cases) {
 
@@ -252,8 +372,8 @@ public class AnalyticsService {
 	}
 	return result;
     }
-    
-    
+
+
     public Map<String, LinkedHashMap<String, Double>> computeGlobalSimilarityWithAllCases(String caseID) {
 	Map<String,  LinkedHashMap<String, Double>> result = new  HashMap<String, LinkedHashMap<String, Double>>();
 
@@ -264,7 +384,7 @@ public class AnalyticsService {
 	}
 
 	Map<String, AttributeDesc> attrDescMap = concept.getAllAttributeDescs();
-	
+
 	double totalWeight = 0.0;
 
 	for( AttributeDesc desc : attrDescMap.values())
@@ -284,15 +404,12 @@ public class AnalyticsService {
 	// get all the cases from the casebase
 	Collection<Instance> cases = casebase.getCases();
 
-	// remove the query case
-	cases.remove(caze);
-
 	for (Instance tempCase : cases) {
 
 	    LinkedHashMap<String, Double> caseResult = new LinkedHashMap<>();
-	    
+
 	    double globalSim = 0;
-	    
+
 	    for (String key : attrNameList) {
 		AttributeDesc attrDesc = attrDescMap.get(key);
 
@@ -302,7 +419,7 @@ public class AnalyticsService {
 		ISimFct simfct = (ISimFct) activeAmalg.getActiveFct(attrDesc);
 
 		double attrWeight = activeAmalg.getWeight(attrDesc).doubleValue();
-		
+
 		try {
 		    Similarity sim = simfct.calculateSimilarity(case1Att, case2Att);
 		    double wt = (attrWeight * sim.getValue()) / totalWeight;
@@ -314,7 +431,7 @@ public class AnalyticsService {
 		}
 	    }
 	    caseResult.put("similarity", globalSim);
-	    
+
 	    result.put(tempCase.getName(), caseResult);
 	}
 	return result;

@@ -136,7 +136,7 @@ public interface ApiPathConstants {
     //Path pattern: /analytics/concepts/{conceptID}/amalgamationFunctions/{amalgamationFunctionID}
     String PATH_ANALYTICS_CONCEPT_AMAL_FUNCTION_ID = PATH_ANALYTICS + PATH_CONCEPT_AMAL_FUNCTION_ID;
     
-    String COMPUTE_SELF_SIMLARITY = "computeSelfSimlarity";
+    String COMPUTE_SELF_SIMLARITY = "computeSelfSimilarity";
     String RETRIEVAL_BY_CASE_IDS = "retrievalByCaseIDs";
     String RETRIEVAL_BY_CASE_ID_WITH_CONTENT = "retrievalByCaseIDWithContent";
     

@@ -37,8 +37,9 @@ public class EphemeralController {
      * @param ephemeralCaseIDs : The ephemeralCaseIDs is a list of caseIDs used for creating an ephemeral case base.
      * @return List<Map<String, String>> : List<E> - list of cases (E) from the ephemeral case base. 
      * The number of cases in the list depends on the value of k. 
-     * Map<K,V> - case representation as a map, where K is the attribute name (including the caseID and similarity) 
-     * as a String and V is the respective value as a String.
+     * Map<K,V> - case representation as a map, where K is the respective attributeID and V is the respective value as a String. 
+     * This map includes two additional keys: "caseID" and "similarity" apart from the attributeIDs. 
+     * 
      */
    @ApiOperation(value = GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE_WITH_CONTENT, nickname = GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE_WITH_CONTENT)
     @RequestMapping(method = RequestMethod.POST, path=PATH_EPHEMERAL_RETRIEVAL_WITH_CONTENT, produces=APPLICATION_JSON)

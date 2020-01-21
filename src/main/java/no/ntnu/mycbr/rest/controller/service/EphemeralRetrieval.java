@@ -24,12 +24,12 @@ import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctManager;
 import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctNotChangedException;
 
 /**
- * The EphemeralService facilitates retrieval on an ephemeral case base including Self-Similarity retrieval.
+ * The EphemeralRetrieval facilitates retrieval on an ephemeral case base including Self-Similarity retrieval.
  * @author Amar Jaiswal
  * @since Nov 24, 2019
  */
-//s@Service
-public class EphemeralService implements RetrievalCustomer{
+
+public class EphemeralRetrieval implements RetrievalCustomer{
     
     // The name used for ephemeral case base
     private static final String EPHEMERAL_CASEBASE_NAME = "ephemeral_casebase";
@@ -44,7 +44,7 @@ public class EphemeralService implements RetrievalCustomer{
     private List<Pair<Instance,Similarity>> results;
     private Map<String, Map<String, Double>> simMatrix = new LinkedHashMap<String, Map<String, Double>>();
 
-    public EphemeralService(String conceptName, String casebaseName, String amalFunc, int k) {		
+    public EphemeralRetrieval(String conceptName, String casebaseName, String amalFunc, int k) {		
 	this.k = k;
 	this.project = App.getProject();
 	this.cb = (DefaultCaseBase)project.getCaseBases().get(casebaseName);

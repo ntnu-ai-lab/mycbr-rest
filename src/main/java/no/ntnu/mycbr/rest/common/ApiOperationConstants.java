@@ -86,8 +86,8 @@ public interface ApiOperationConstants {
     GET_EPHEMERAL_CASE_BASE_SELF_SIMILARITY = "getEphemeralCaseBaseSelfSimilarity";
     
     // Used as json keys for ephemeral operations
-    String CASEBASE_CASE_ID_LIST = "casebase_case_id_list";
-    String QUERY_CASE_ID_LIST = "query_case_id_list";
+    String EPHEMERAL_CASE_IDS = "ephemeralCaseIDs";
+    String QUERY_CASE_IDS = "queryCaseIDs";
     
     // API operations for CaseBaseController
     String 

@@ -1,7 +1,7 @@
 package no.ntnu.mycbr.rest.controller;
 
 import io.swagger.annotations.ApiOperation;
-import no.ntnu.mycbr.rest.controller.service.EphemeralService;
+import no.ntnu.mycbr.rest.controller.service.EphemeralRetrieval;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,7 +25,7 @@ public class EphemeralController {
     private final Log logger = LogFactory.getLog(getClass());
 
     //@Autowired
-    //private EphemeralService ephemeralService;
+    //private EphemeralRetrieval ephemeralService;
 
     /**
      * Perform retrieval on an ephemeral case base with a single query (caseID).
@@ -52,8 +52,8 @@ public class EphemeralController {
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k,
 	    @RequestBody(required = true)  Set<String> ephemeralCaseIDs) {
 
-	EphemeralService ephemeralService = new EphemeralService(conceptID, casebaseID, amalgamationFunctionID, k);
-	List<Map<String, String>> retrivalResults = ephemeralService
+	EphemeralRetrieval ephemeralRetrieval = new EphemeralRetrieval(conceptID, casebaseID, amalgamationFunctionID, k);
+	List<Map<String, String>> retrivalResults = ephemeralRetrieval
 		.ephemeralRetrivalForSingleQuery(queryCaseID, ephemeralCaseIDs);
 
 	return retrivalResults;
@@ -65,12 +65,12 @@ public class EphemeralController {
      * @param casebaseID : Case base name of the myCBR project.
      * @param amalgamationFunctionID : Amalgamation function (global similarity function) of the myCBR project.
      * @param k          : Number of desired retrieved cases per query case.
-     * @param mapOfcaseIDs : Keys are <code>query_case_id_list</code> and <code>casebase_case_id_list</code>. 
-     * The <code>query_case_id_list</code> contains list of caseIDs to be queried. 
-     * The <code>casebase_case_id_list</code> contains the list of caseIDs used for creating an ephemeral case base.
-     * @return Map<String, Map<String, String>> : Outer Map<K1,V1> - K1: a caseID from the query_case_id_list, V1: inner map (Map<K2,V2>). 
-     * This map will contain all the caseIDs as a key from the query_case_id_list.
-     * Inner Map<K2,V2> - K1: a caseID from the casebase_case_id_list, V2: similarity score for K1 vs K2, respectively. 
+     * @param mapOfcaseIDs : This map has only two entries (i.e. it contains only two keys: "queryCaseIDs" and "ephemeralCaseIDs". 
+     * The value of key <code>queryCaseIDs</code> contains a list of caseIDs to be queried. 
+     * The value of key <code>ephemeralCaseIDs</code> contains the list of caseIDs used for creating an ephemeral case base.
+     * @return Map<String, Map<String, String>> : Outer Map<K1,V1> - K1: a caseID from the queryCaseIDs, V1: inner map (Map<K2,V2>). 
+     * This map will contain all the caseIDs as a key from the queryCaseIDs.
+     * Inner Map<K2,V2> - K2: a caseID from the ephemeralCaseIDs, V2: similarity score for K1 vs K2, respectively. 
      * The number of cases in the inner map (Map<K2,V2>) depends on the value of k. 
      */
     @ApiOperation(value = GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE, nickname = GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE)
@@ -83,11 +83,11 @@ public class EphemeralController {
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k,
 	    @RequestBody(required = true)  Map<String, Set<String>> mapOfcaseIDs) {
 
-	Set<String> querySet = mapOfcaseIDs.get(QUERY_CASE_ID_LIST);
-	Set<String> cbSet = mapOfcaseIDs.get(CASEBASE_CASE_ID_LIST);
+	Set<String> querySet = mapOfcaseIDs.get(QUERY_CASE_IDS);
+	Set<String> cbSet = mapOfcaseIDs.get(EPHEMERAL_CASE_IDS);
 
-	EphemeralService ephemeralService = new EphemeralService(conceptID, casebaseID, amalgamationFunctionID, k);
-	Map<String, Map<String, Double>> retrivalResults = ephemeralService.ephemeralRetrival(querySet, cbSet);
+	EphemeralRetrieval ephemeralRetrieval = new EphemeralRetrieval(conceptID, casebaseID, amalgamationFunctionID, k);
+	Map<String, Map<String, Double>> retrivalResults = ephemeralRetrieval.ephemeralRetrival(querySet, cbSet);
 
 	return retrivalResults;
     }
@@ -98,10 +98,10 @@ public class EphemeralController {
      * @param casebaseID : Case base name of the myCBR project.
      * @param amalgamationFunctionID : Amalgamation function (global similarity function) of the myCBR project.
      * @param k          : Number of desired retrieved cases per query case.
-     * @param casebaseCaseIDList : List of caseIDs used for creation ephemeral case base.
-     * @return Map<String, Map<String, String>> : Outer Map<K1,V1> - K1: a caseID from the casebaseCaseIDList, V1: inner map (Map<K2,V2>). 
-     * This map will contain all the caseIDs as a key from the casebaseCaseIDList.
-     * Inner Map<K2,V2> - K1: a caseID from the casebaseCaseIDList, V2: similarity score for K1 vs K2, respectively. 
+     * @param ephemeralCaseIDs : List of caseIDs used for creation ephemeral case base.
+     * @return Map<String, Map<String, String>> : Outer Map<K1,V1> - K1: a caseID from the ephemeralCaseIDs, V1: inner map (Map<K2,V2>). 
+     * This map will contain all the caseIDs as a key from the ephemeralCaseIDs.
+     * Inner Map<K2,V2> - K1: a caseID from the ephemeralCaseIDs, V2: similarity score for K1 vs K2, respectively. 
      * The number of cases in the inner map (Map<K2,V2>) depends on the value of k. 
      */
     @ApiOperation(value = GET_EPHEMERAL_CASE_BASE_SELF_SIMILARITY, nickname = GET_EPHEMERAL_CASE_BASE_SELF_SIMILARITY)
@@ -112,10 +112,10 @@ public class EphemeralController {
 	    @PathVariable(value=CASEBASE_ID) String casebaseID, 
 	    @PathVariable(value=AMAL_FUNCTION_ID) String amalgamationFunctionID,
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k,
-	    @RequestBody(required = true)  Set<String> casebaseCaseIDList) {
+	    @RequestBody(required = true)  Set<String> ephemeralCaseIDs) {
 
-	EphemeralService ephemeralService = new EphemeralService(conceptID, casebaseID, amalgamationFunctionID, k);
-	Map<String, Map<String, Double>> retrivalResults = ephemeralService.computeSelfSimilarity(casebaseCaseIDList);
+	EphemeralRetrieval ephemeralRetrieval = new EphemeralRetrieval(conceptID, casebaseID, amalgamationFunctionID, k);
+	Map<String, Map<String, Double>> retrivalResults = ephemeralRetrieval.computeSelfSimilarity(ephemeralCaseIDs);
 
 	return retrivalResults;
     }

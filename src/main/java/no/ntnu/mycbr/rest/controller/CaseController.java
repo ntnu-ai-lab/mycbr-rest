@@ -60,6 +60,27 @@ public class CaseController
 	return queriedCase.getCase();
     }
 
+    //Get multiple cases by case IDs
+    @ApiOperation(value = GET_CASES_BY_CASE_IDS, nickname = GET_CASES_BY_CASE_IDS)
+    @RequestMapping(method = RequestMethod.POST, value = PATH_CONCEPT_ID+"/getCasesByCaseIDs", 
+    headers=ACCEPT_APPLICATION_JSON)
+    @ApiResponsesDefault
+    public Map<String, Map<String, String>> getCasesByCaseIDs(
+	    @PathVariable(value=CONCEPT_ID) String conceptID,
+	    @RequestBody(required= true) Set<String> caseIDs) {
+
+	Map<String, Map<String, String>> caseMap = new HashMap<String,Map<String, String>>();
+	
+	Project project = App.getProject();
+	
+	for( String caseID: caseIDs) {
+	    Case caze = new Case( project.getInstance(caseID).getName(),conceptID);
+	    caseMap.putIfAbsent(caseID, caze.getCase());
+	}
+		
+	return caseMap;
+    }
+    
     //Delete one instance
     @ApiOperation(value = DELETE_CASE_BY_CASE_ID, nickname = DELETE_CASE_BY_CASE_ID)
     @RequestMapping(method = RequestMethod.DELETE, value = PATH_CONCEPT_CASEBASE_CASE_ID, 

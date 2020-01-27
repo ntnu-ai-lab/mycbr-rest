@@ -59,6 +59,7 @@ public interface ApiOperationConstants {
     ADD_CASE_USING_JSON = "addCaseUsingJSON",
     
     GET_CASE_BY_CASE_ID = "getCaseByCaseID",
+    GET_CASES_BY_CASE_IDS = "getCasesByCaseIDs",
     GET_ALL_CASES  = "getAllCases",
     GET_ALL_CASES_FROM_CASEBASE = "getAllCasesFromCaseBase",
     

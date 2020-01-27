@@ -65,20 +65,20 @@ public class CaseController
     @RequestMapping(method = RequestMethod.POST, value = PATH_CONCEPT_ID+"/getCasesByCaseIDs", 
     headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
-    public Map<String, Map<String, String>> getCasesByCaseIDs(
+    public List<Map<String, String>> getCasesByCaseIDs(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @RequestBody(required= true) Set<String> caseIDs) {
 
-	Map<String, Map<String, String>> caseMap = new HashMap<String,Map<String, String>>();
+	List< Map<String, String>> cases = new LinkedList<Map<String, String>>();
 	
 	Project project = App.getProject();
 	
 	for( String caseID: caseIDs) {
 	    Case caze = new Case( project.getInstance(caseID).getName(),conceptID);
-	    caseMap.putIfAbsent(caseID, caze.getCase());
+	    cases.add(caze.getCase());
 	}
 		
-	return caseMap;
+	return cases;
     }
     
     //Delete one instance

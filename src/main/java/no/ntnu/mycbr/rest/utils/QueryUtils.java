@@ -1,14 +1,14 @@
 package no.ntnu.mycbr.rest.utils;
 
-import no.ntnu.mycbr.rest.Case;
-import no.ntnu.mycbr.rest.Query;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RESTCBRUtils {
+import no.ntnu.mycbr.rest.controller.helper.Case;
+import no.ntnu.mycbr.rest.controller.helper.Query;
+
+public class QueryUtils {
     public static List<LinkedHashMap<String, String>> getFullResult(Query query, String concept) {
         LinkedHashMap<String, Double> results = query.getSimilarCases();
         List<LinkedHashMap<String, String>> cases = new ArrayList<>();

@@ -120,6 +120,7 @@ public class RetrievalControllerIntegrationTest implements Retrieval.RetrievalCu
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk());
 
+        // Decimals are not correct, but are kept for testing reasons
         res.andExpect((jsonPath(JSON_PATH + CASE_ID_CAR_0).value(0.7300000000000001)));
         res.andExpect((jsonPath(JSON_PATH + CASE_ID_CAR_1).value(0.55)));
         res.andExpect((jsonPath(JSON_PATH + CASE_ID_CAR_2).value(0.9750000000000001)));

@@ -1,4 +1,4 @@
-package no.ntnu.mycbr;
+package no.ntnu.mycbr.rest.cbr;
 
 import no.ntnu.mycbr.core.Project;
 import org.apache.commons.logging.Log;
@@ -65,13 +65,14 @@ public class CBREngine {
 	 * This methods creates a myCBR project and loads the project from a .prj file
 	 */	
 	public Project createProjectFromPRJ(String projectFile){
-		System.out.println("Trying to load prj file with : "+projectFile+" ");
+		System.out.println("Loading myCBR project file "+projectFile);
 
 		Project project = null;
 
 		try{
 
-			project = new Project(projectFile);
+			final String fullProjectPath = new File(projectFile).getAbsolutePath();
+			project = new Project(fullProjectPath);
 
 			// Need to wait until entire project is loaded - otherwise the project object will be corrupted
 			while (project.isImporting()){
@@ -98,7 +99,7 @@ public class CBREngine {
 	 * done at the beginning of this class.
 	 * @return ConceptName instance containing model, sims and cases (if available)
 	 */
-	public Project createemptyCBRProject(){
+	public Project createEmptyCBRProject(){
 
 		Project project = null;
 		try {

@@ -1,9 +1,10 @@
-package no.ntnu.mycbr.rest;
+package no.ntnu.mycbr.rest.controller.helper;
 
 import no.ntnu.mycbr.core.Project;
 import no.ntnu.mycbr.core.casebase.Instance;
-import no.ntnu.mycbr.CBREngine;
 import no.ntnu.mycbr.core.model.Concept;
+import no.ntnu.mycbr.rest.App;
+import no.ntnu.mycbr.rest.cbr.CBREngine;
 
 import java.util.LinkedHashMap;
 
@@ -19,8 +20,8 @@ public class Case {
     public Case(String caseID) {
 
         Project project = App.getProject();
-        Concept myConcept = project.getConceptByID(CBREngine.getConceptName());
-        Instance instance = myConcept.getInstance(caseID);
+        Concept concept = project.getConceptByID(CBREngine.getConceptName());
+        Instance instance = concept.getInstance(caseID);
         if(instance != null)
             casecontent = new LinkedHashMap<>(getSortedCaseContent(instance));
         else
@@ -30,21 +31,23 @@ public class Case {
     public Case(String caseID, String conceptID) {
 
         Project project = App.getProject();
-        Concept myConcept = project.getConceptByID(conceptID);
-        Instance aInstance = myConcept.getInstance(caseID);
-        casecontent = new LinkedHashMap<>(getSortedCaseContent(aInstance));
+        Concept concept = project.getConceptByID(conceptID);
+        Instance instance = concept.getInstance(caseID);
+        
+        casecontent.put(CASE_ID, instance.getName());
+        casecontent.putAll(getSortedCaseContent(instance));
     }
 
     // Used by full results
-    public Case(String concept, String caseID, double similarity) {
+    public Case(String conceptID, String caseID, double similarity) {
 
         Project project = App.getProject();
-        Concept myConcept = project.getConceptByID(concept);
-        Instance aInstance = myConcept.getInstance(caseID);
+        Concept concept = project.getConceptByID(conceptID);
+        Instance instance = concept.getInstance(caseID);
 
         casecontent.put(SIMILARITY, Double.toString(similarity));
-        casecontent.put(CASE_ID, aInstance.getName());
-        casecontent.putAll(getSortedCaseContent(aInstance));
+        casecontent.put(CASE_ID, instance.getName());
+        casecontent.putAll(getSortedCaseContent(instance));
     }
 
     public LinkedHashMap<String, String> getCase() {

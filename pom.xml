@@ -9,7 +9,6 @@
 	<name>mycbr-rest</name>
 	<url>http://maven.apache.org</url>
 
-<<<<<<< HEAD
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit.version>3.8.1</junit.version>
@@ -22,20 +21,6 @@
     <hibernate.version>1.0.1.Final</hibernate.version>
     <powermock.version>1.5.5</powermock.version>
   </properties>
-=======
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<junit.version>3.8.1</junit.version>
-		<java.version>1.8</java.version>
-		<mycbr.version>3.3-SNAPSHOT</mycbr.version>
-		<spring.version>2.1.1.RELEASE</spring.version>
-		<springfox.version>2.9.2</springfox.version>
-		<jackson.version>1.9.12</jackson.version>
-		<mvn.compiler.version>3.5.1</mvn.compiler.version>
-		<hibernate.version>1.0.1.Final</hibernate.version>
-	</properties>
->>>>>>> master
-
 
 	<repositories>
 		<repository>
@@ -49,148 +34,6 @@
 		</repository>
 	</repositories>
 
-<<<<<<< HEAD
-  <dependencies>
-    <dependency>
-      <groupId>javax.xml.ws</groupId>
-      <artifactId>com.springsource.javax.xml.ws</artifactId>
-      <version>2.1.1</version>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.powermock</groupId>
-      <artifactId>powermock-api-mockito</artifactId>
-      <version>${powermock.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.powermock</groupId>
-      <artifactId>powermock-module-junit4</artifactId>
-      <version>${powermock.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.powermock</groupId>
-          <artifactId>powermock-core</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.powermock</groupId>
-          <artifactId>powermock-reflect</artifactId>
-        </exclusion>
-      </exclusions>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>no.ntnu</groupId>
-      <artifactId>myCBR</artifactId>
-      <version>${mycbr.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <version>${spring.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.jackson</groupId>
-      <artifactId>jackson-mapper-asl</artifactId>
-      <version>${jackson.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-swagger-ui</artifactId>
-      <version>${springfox.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-swagger2</artifactId>
-      <version>${springfox.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate.javax.persistence</groupId>
-      <artifactId>hibernate-jpa-2.0-api</artifactId>
-      <version>${hibernate.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.googlecode.json-simple</groupId>
-      <artifactId>json-simple</artifactId>
-      <version>1.1.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>RELEASE</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.12</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
-
-
-  <build>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>${mvn.compiler.version}</version>
-          <configuration>
-            <source>${java.version}</source>
-            <target>${java.version}</target>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-maven-plugin</artifactId>
-          <version>${spring.version}</version>
-          <executions>
-            <execution>
-              <goals>
-                <goal>repackage</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-
-      <!--  <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.20</version>
-          <configuration>
-            <useSystemClassLoader>false</useSystemClassLoader>
-          </configuration>
-        </plugin>
-      -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.21.0</version>
-          <configuration>
-            <systemPropertyVariables>
-              <buildDirectory>${project.build.directory}</buildDirectory>
-            </systemPropertyVariables>
-          </configuration>
-        </plugin>
-
-      </plugins>
-   </build>
-=======
 	<dependencies>
 		<dependency>
 			<groupId>javax.xml.ws</groupId>
@@ -294,7 +137,6 @@
 			</plugin>
 		</plugins>
 	</build>
->>>>>>> master
 
 	<pluginRepositories>
 		<pluginRepository>

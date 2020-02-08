@@ -260,10 +260,11 @@ public class Query implements RetrievalCustomer {
         Concept myConcept = project.getConceptByID(concept);
 
         // if an amalgamation Function is specified, set this amalgamation function for the retrieval - otherwise use the currently active function
-        if(!(amalFunc == null))
-            myConcept.setActiveAmalgamFct(project.getFct(amalFunc));
+        TemporaryAmalgamFctManager tempAmalgamFctManager = new TemporaryAmalgamFctManager(myConcept);
 
         try {
+            if(amalFunc!=null)
+        	tempAmalgamFctManager.changeAmalgamFct(amalFunc);
 
             Retrieval r = new Retrieval(myConcept, cb,this);
             if (k > 0) {
@@ -309,7 +310,8 @@ public class Query implements RetrievalCustomer {
         TemporaryAmalgamFctManager tempAmalgamFctManager = new TemporaryAmalgamFctManager(myConcept);
 
         try {
-            tempAmalgamFctManager.changeAmalgamFct(amalFunc);
+            if(amalFunc!=null)
+        	tempAmalgamFctManager.changeAmalgamFct(amalFunc);
 
             Retrieval r = new Retrieval(myConcept, cb, this);
 

@@ -21,6 +21,7 @@ import static no.ntnu.mycbr.rest.common.ApiOperationConstants.*;
 @RestController
 public class EphemeralController {
 
+    private static final String POST = "POST";
     private static final String DEFAULT_CASE_ID = "car0";
     private final Log logger = LogFactory.getLog(getClass());
 
@@ -41,7 +42,25 @@ public class EphemeralController {
      * This map includes two additional keys: "caseID" and "similarity" apart from the attributeIDs. 
      * 
      */
-   @ApiOperation(value = GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE_WITH_CONTENT, nickname = GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE_WITH_CONTENT)
+   @ApiOperation(value = GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE_WITH_CONTENT, 
+	   httpMethod = POST,
+	   notes = "  Perform retrieval on an ephemeral case base with a single query (caseID).\n" + 
+	   	" conceptID   : Concept name of the myCBR project.\n" + 
+	   	" casebaseID  : Case base name of the myCBR project.\n" + 
+	   	" amalgamationFunctionID : Amalgamation function (global similarity function) of the myCBR project.\n" + 
+	   	" queryCaseID : The caseID that serves as a query\n" + 
+	   	" k           : Number of desired retrieved cases per query case.\n" + 
+	   	" ephemeralCaseIDs : The ephemeralCaseIDs is a list of caseIDs used for creating an ephemeral case base.\n" + 
+	   	" Response : List<Map<String, String>> : List<E> - list of cases (E) from the ephemeral case base. \n" + 
+	   	" The number of cases in the list depends on the value of k. \n" + 
+	   	" Map<K,V> - case representation as a map, where K is the respective attributeID and V is the respective value as a String. \n" + 
+	   	" This map includes two additional keys: \"caseID\" and \"similarity\" apart from the attributeIDs.",
+	   produces = APPLICATION_JSON,
+	   response = List.class,
+	   responseContainer = "List<Map<String, String>> : List<E> - list of cases (E) from the ephemeral case base. \\n\" + \n" + 
+	   	" The number of cases in the list depends on the value of k. \\n\" + \n" + 
+	   	" Map<K,V> - case representation as a map, where K is the respective attributeID and V is the respective value as a String. \\n\" + \n" + 
+	   	" This map includes two additional keys: \\\"caseID\\\" and \\\"similarity\\\" apart from the attributeIDs.")
     @RequestMapping(method = RequestMethod.POST, path=PATH_EPHEMERAL_RETRIEVAL_WITH_CONTENT, produces=APPLICATION_JSON)
     @ApiResponsesDefault
     public @ResponseBody List<Map<String, String>> retrievalFromEphemeralCaseBaseWithContent(

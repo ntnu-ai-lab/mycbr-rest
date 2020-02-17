@@ -59,18 +59,18 @@ public class EphemeralControllerTest implements RetrievalCustomer {
     private final static String URL_PATH = "/ephemeral" + "/concepts/" + TEST_CONCEPT_ID + "/casebases/"
 	    + TEST_CASEBASE_ID + "/amalgamationFunctions/" + TEST_AMAL_FUNC_ID + "/retrievalByCaseIDs?k=-1";
 
-    private final static String TEST_API_POST_BODY_10_CASES = "{ " + "\"query_case_id_list\": [ "
+    private final static String TEST_API_POST_BODY_10_CASES = "{ " + "\"queryCaseIDs\": [ "
 	    + "\"car0\", \"car2\", \"car3\", \"car4\", \"car5\", \"car6\", \"car7\", \"car8\", \"car9\"" + "], "
-	    + "\"casebase_case_id_list\": [ "
+	    + "\"ephemeralCaseIDs\": [ "
 	    + "\"car0\", \"car2\", \"car3\", \"car4\", \"car5\", \"car6\", \"car7\", \"car8\", \"car9\"" + "]}";
 
-    private final static String TEST_API_POST_BODY_50_CASES = "{ " + "\"query_case_id_list\": [ "
+    private final static String TEST_API_POST_BODY_50_CASES = "{ " + "\"queryCaseIDs\": [ "
 	    + "\"car0\", \"car2\", \"car3\", \"car4\", \"car5\", \"car6\", \"car7\", \"car8\", \"car9\","
 	    + "\"car10\", \"car12\", \"car13\", \"car14\", \"car15\", \"car16\", \"car17\", \"car18\", \"car19\","
 	    + "\"car20\", \"car22\", \"car23\", \"car24\", \"car25\", \"car26\", \"car27\", \"car28\", \"car29\","
 	    + "\"car30\", \"car32\", \"car33\", \"car34\", \"car35\", \"car36\", \"car37\", \"car38\", \"car39\","
 	    + "\"car40\", \"car42\", \"car43\", \"car44\", \"car45\", \"car46\", \"car47\", \"car48\", \"car49\""
-	    + "], " + "\"casebase_case_id_list\": [ "
+	    + "], " + "\"ephemeralCaseIDs\": [ "
 	    + "\"car0\", \"car2\", \"car3\", \"car4\", \"car5\", \"car6\", \"car7\", \"car8\", \"car9\","
 	    + "\"car10\", \"car12\", \"car13\", \"car14\", \"car15\", \"car16\", \"car17\", \"car18\", \"car19\","
 	    + "\"car20\", \"car22\", \"car23\", \"car24\", \"car25\", \"car26\", \"car27\", \"car28\", \"car29\","
@@ -78,7 +78,7 @@ public class EphemeralControllerTest implements RetrievalCustomer {
 	    + "\"car40\", \"car42\", \"car43\", \"car44\", \"car45\", \"car46\", \"car47\", \"car48\", \"car49\""
 	    + "]}";
 
-    private final static String TEST_API_POST_BODY_100_CASES = "{ " + "\"query_case_id_list\": [ "
+    private final static String TEST_API_POST_BODY_100_CASES = "{ " + "\"queryCaseIDs\": [ "
 	    + "\"car0\", \"car2\", \"car3\", \"car4\", \"car5\", \"car6\", \"car7\", \"car8\", \"car9\","
 	    + "\"car10\", \"car12\", \"car13\", \"car14\", \"car15\", \"car16\", \"car17\", \"car18\", \"car19\","
 	    + "\"car20\", \"car22\", \"car23\", \"car24\", \"car25\", \"car26\", \"car27\", \"car28\", \"car29\","
@@ -89,7 +89,7 @@ public class EphemeralControllerTest implements RetrievalCustomer {
 	    + "\"car70\", \"car72\", \"car73\", \"car74\", \"car75\", \"car76\", \"car77\", \"car78\", \"car79\","
 	    + "\"car80\", \"car82\", \"car83\", \"car84\", \"car85\", \"car86\", \"car87\", \"car88\", \"car89\","
 	    + "\"car90\", \"car92\", \"car93\", \"car94\", \"car95\", \"car96\", \"car97\", \"car98\", \"car99\""
-	    + "], " + "\"casebase_case_id_list\": [ "
+	    + "], " + "\"ephemeralCaseIDs\": [ "
 	    + "\"car0\", \"car2\", \"car3\", \"car4\", \"car5\", \"car6\", \"car7\", \"car8\", \"car9\","
 	    + "\"car10\", \"car12\", \"car13\", \"car14\", \"car15\", \"car16\", \"car17\", \"car18\", \"car19\","
 	    + "\"car20\", \"car22\", \"car23\", \"car24\", \"car25\", \"car26\", \"car27\", \"car28\", \"car29\","

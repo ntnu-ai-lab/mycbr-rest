@@ -1,4 +1,4 @@
-package eu.selfback.rest;
+package no.ntnu.mycbr.rest.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

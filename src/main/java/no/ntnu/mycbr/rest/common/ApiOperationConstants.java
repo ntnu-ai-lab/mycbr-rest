@@ -51,7 +51,24 @@ public interface ApiOperationConstants {
     GET_ALL_AMALGAMATION_FUNCTIONS 	= "getAllAmalgamationFunctions",
     DELETE_AMALGAMATION_FUNCTION 	= "deleteAmalgamationFunction",
     DELETE_ALL_AMALGAMATION_FUNCTIONS 	= "deleteAllAmalgamationFunctions";
-    
+
+
+    // API operations for SimilarityController
+    String
+    GET_GLOBAL_SIM	 	    = "getGlobalSimilarity",
+    GET_ALL_GLOBAL_SIMS	 	= "getAllGlobalSimilarities",
+    ADD_GLOBAL_SIM		    = "addGlobalSimilarity",
+    DELETE_GLOBAL_SIM	 	= "deleteGlobalSimilarity",
+    DELETE_ALL_GLOBAL_SIMS	= "deleteAllGlobalSimilarities",
+
+    GET_LOCAL_SIM	 	    = "getLocalSimilarity",
+    GET_ALL_LOCAL_SIMS	 	= "getAllLocalSimilarities",
+    ADD_LOCAL_SIM		    = "addLocalSimilarity",
+    DELETE_LOCAL_SIM	 	= "getLocalSimilarity",
+    DELETE_ALL_LOCAL_SIMS	= "getAllLocalSimilarities",
+
+    COPY_PASTE_GLOBAL_SIM	= "copyPasteGlobalSim";
+
     
     // API operations for CaseController
     String

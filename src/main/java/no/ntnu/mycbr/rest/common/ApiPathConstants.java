@@ -31,14 +31,16 @@ public interface ApiPathConstants {
 
     
     // myCBR-rest API: core vocabulary - single
-    String CONCEPT 	= "concept";
+    String CONCEPT 	    = "concept";
     String CASEBASE 	= "casebase";
     String AMAL_FUNCTION= "amalgamationFunction";
-    String ATTR 	= "attribute";
-    String CASE 	= "case";
-    String INSTANCE	= "instance";
-    String VALUE 	= "value";
+    String ATTR 	    = "attribute";
+    String CASE 	    = "case";
+    String INSTANCE	    = "instance";
+    String VALUE 	    = "value";
     String SIM_FUNCTION = "similarityFunction";
+    String GLOBAL_SIM   = "globalSim";
+    String LOCAL_SIM    = "localSim";
 
     String EPHEMERAL 	= "ephemeral";
     String ANALYTICS 	= "analytics";
@@ -54,6 +56,9 @@ public interface ApiPathConstants {
     String INSTANCES		= INSTANCE 	+ S;
     String VALUES 		= VALUE 	+ S;
     String SIM_FUNCTIONS 	= SIM_FUNCTION	+ S;
+
+    String GLOBAL_SIMS   = GLOBAL_SIM + S;
+    String LOCAL_SIMS    = LOCAL_SIM + S;
     
     
     // myCBR-rest API: ID vocabulary
@@ -65,6 +70,9 @@ public interface ApiPathConstants {
     String CASE_ID 		= CASE 		+ ID;
     String INSTANCE_ID 		= INSTANCE 	+ ID;
     String SIM_FUNCTION_ID	= SIM_FUNCTION 	+ ID;
+
+    String GLOBAL_SIM_ID   = GLOBAL_SIM + ID;
+    String LOCAL_SIM_ID    = LOCAL_SIM + ID;
     
     
     // myCBR-rest API: type vocabulary specific names
@@ -75,7 +83,7 @@ public interface ApiPathConstants {
     
     // Path variables
     
-    // Path pattern: /___ss
+    // Path pattern: /___s
     String PATH 		="/";
     String PATH_CONCEPTS 	= PATH + CONCEPTS;
     String PATH_CASEBASES 	= PATH + CASEBASES;
@@ -84,6 +92,9 @@ public interface ApiPathConstants {
     String PATH_ATTRIBUTES 	= PATH + ATTRS;
     String PATH_VALUE_RANGE    = PATH + VALUE + "Range";
     String PATH_SIM_FUNCTIONS  = PATH + SIM_FUNCTIONS;
+
+    String PATH_GLOBAL_SIMS  = PATH + GLOBAL_SIMS;
+    String PATH_LOCAL_SIMS  = PATH + LOCAL_SIMS;
     
     String PATH_EPHEMERAL  = PATH + EPHEMERAL;
     String PATH_ANALYTICS  = PATH + ANALYTICS;
@@ -96,6 +107,9 @@ public interface ApiPathConstants {
     String PATH_CASE_ID 	  = PATH_CASES          + "/{" + CASE_ID	 + "}"; 
     String PATH_ATTR_ID 	  = PATH_ATTRIBUTES     + "/{" + ATTR_ID         + "}";
     String PATH_SIM_FUNCTION_ID   = PATH_SIM_FUNCTIONS  + "/{" + SIM_FUNCTION_ID + "}";
+
+    String PATH_GLOBAL_SIM_ID   = PATH_GLOBAL_SIMS  + "/{" + GLOBAL_SIM_ID + "}";
+    String PATH_LOCAL_SIM_ID    = PATH_LOCAL_SIMS  + "/{" + LOCAL_SIM_ID + "}";
     
     
     // Path pattern: /concepts/{conceptID}/___s 
@@ -103,13 +117,17 @@ public interface ApiPathConstants {
     String PATH_CONCEPT_AMAL_FUNCTIONS = PATH_CONCEPT_ID + PATH_AMAL_FUNCTIONS;    
     String PATH_CONCEPT_CASES 	 	= PATH_CONCEPT_ID + PATH_CASES; 
     String PATH_CONCEPT_ATTRS 	 	= PATH_CONCEPT_ID + PATH_ATTRIBUTES;
-    
-    
- // Path pattern: /concepts/{conceptID}/___s/{___ID}  
-    String PATH_CONCEPT_CASEBASE_ID 	 = PATH_CONCEPT_ID + PATH_CASEBASE_ID;
-    String PATH_CONCEPT_AMAL_FUNCTION_ID = PATH_CONCEPT_ID + PATH_AMAL_FUNCTION_ID;
-    String PATH_CONCEPT_CASE_ID     	 = PATH_CONCEPT_ID + PATH_CASE_ID;
-    String PATH_CONCEPT_ATTR_ID	  	 = PATH_CONCEPT_ID + PATH_ATTR_ID;
+    String PATH_CONCEPT_GLOBAL_SIMS   = PATH_CONCEPT_ID + PATH_GLOBAL_SIMS;
+    String PATH_CONCEPT_LOCAL_SIMS    = PATH_CONCEPT_ID + PATH_LOCAL_SIMS;
+
+
+    // Path pattern: /concepts/{conceptID}/___s/{___ID}
+    String PATH_CONCEPT_CASEBASE_ID 	= PATH_CONCEPT_ID + PATH_CASEBASE_ID;
+    String PATH_CONCEPT_AMAL_FUNCTION_ID= PATH_CONCEPT_ID + PATH_AMAL_FUNCTION_ID;
+    String PATH_CONCEPT_CASE_ID     	= PATH_CONCEPT_ID + PATH_CASE_ID;
+    String PATH_CONCEPT_ATTR_ID	  	    = PATH_CONCEPT_ID + PATH_ATTR_ID;
+    String PATH_CONCEPT_GLOBAL_SIM_ID   = PATH_CONCEPT_ID + PATH_GLOBAL_SIM_ID;
+    String PATH_CONCEPT_LOCAL_SIM_ID    = PATH_CONCEPT_ID + PATH_LOCAL_SIM_ID;
     
     
     //Path pattern: /concepts/{conceptID}/casebases/{casebaseID}/___s

@@ -119,39 +119,39 @@ public class ConceptController {
 	    @RequestParam(value="h5file") MultipartFile h5file,
 	    @RequestParam(value="jsonfile") MultipartFile jsonfile) {
 
-	logger.info("adding new Amalgamation Function");
-	if (h5file.isEmpty() || jsonfile.isEmpty()) {
-	    return new ResponseEntity("please select a file!", HttpStatus.OK);
-	}
-	String firstfile = jsonfile.getOriginalFilename();
-	String baseFileName = firstfile.substring(firstfile.lastIndexOf("/")+1,firstfile.lastIndexOf("."));
-	if(baseFileName.contentEquals("/"))
-	    baseFileName = file_path+baseFileName;
-	else
-	    baseFileName = file_path+"/"+baseFileName;
-	try {
-	    HashMap<MultipartFile,String> map = new HashMap<>();
-	    map.put(h5file,baseFileName+".h5");
-	    map.put(jsonfile,baseFileName+".json");
-	    saveUploadedFiles(map);
+		logger.info("adding new Amalgamation Function");
+		if (h5file.isEmpty() || jsonfile.isEmpty()) {
+			return new ResponseEntity("please select a file!", HttpStatus.OK);
+		}
+		String firstfile = jsonfile.getOriginalFilename();
+		String baseFileName = firstfile.substring(firstfile.lastIndexOf("/")+1,firstfile.lastIndexOf("."));
+		if(baseFileName.contentEquals("/"))
+			baseFileName = file_path+baseFileName;
+		else
+			baseFileName = file_path+"/"+baseFileName;
+		try {
+			HashMap<MultipartFile,String> map = new HashMap<>();
+			map.put(h5file,baseFileName+".h5");
+			map.put(jsonfile,baseFileName+".json");
+			saveUploadedFiles(map);
 
-	} catch (IOException e) {
-	    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-	}
+		} catch (IOException e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 
-	System.setProperty("NeuralRetrievalModelFilePath",baseFileName);
-	//Then create the function
-	Concept concept = App.getProject().getSubConcepts().get(conceptID);
-	if(type.contains("direct")) {
-	    AmalgamationConfig config = AmalgamationConfig.NEURAL_NETWORK_SOLUTION_DIRECTLY; //NICE
-	    AmalgamationFct fct = concept.addAmalgamationFct(config, amalgamationFunctionID, false);
-	    concept.setActiveAmalgamFct(fct);
-	}else if(type.contains("gabel")){
-	    AmalgamationConfig config = AmalgamationConfig.NEURAL_NETWORK_SOLUTION_GABEL; //NICE
-	    AmalgamationFct fct = concept.addAmalgamationFct(config, amalgamationFunctionID, false);
-	    concept.setActiveAmalgamFct(fct);
-	}
-	return new ResponseEntity("Successfully uploaded", HttpStatus.OK);
+		System.setProperty("NeuralRetrievalModelFilePath",baseFileName);
+		//Then create the function
+		Concept concept = App.getProject().getSubConcepts().get(conceptID);
+		if(type.contains("direct")) {
+			AmalgamationConfig config = AmalgamationConfig.NEURAL_NETWORK_SOLUTION_DIRECTLY; //NICE
+			AmalgamationFct fct = concept.addAmalgamationFct(config, amalgamationFunctionID, false);
+			concept.setActiveAmalgamFct(fct);
+		}else if(type.contains("gabel")){
+			AmalgamationConfig config = AmalgamationConfig.NEURAL_NETWORK_SOLUTION_GABEL; //NICE
+			AmalgamationFct fct = concept.addAmalgamationFct(config, amalgamationFunctionID, false);
+			concept.setActiveAmalgamFct(fct);
+		}
+		return new ResponseEntity("Successfully uploaded", HttpStatus.OK);
 
     }
 

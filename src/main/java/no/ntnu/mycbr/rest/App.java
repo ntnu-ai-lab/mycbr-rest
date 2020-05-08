@@ -32,9 +32,9 @@ public class App {
     private static Project project;
 
     public static void main(String[] args) {
-	System.out.println("\n Starting the myCBR");
-	startCBR();
-	SpringApplication.run(App.class, args);
+		System.out.println("\n Starting the myCBR");
+		startCBR();
+		SpringApplication.run(App.class, args);
     }
 
     public static void startCBR() {

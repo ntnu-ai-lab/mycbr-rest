@@ -47,5 +47,5 @@ hs_err_pid*
 
 
 # Ignore Python files
-help/.ipynb_checkpoints/
-help/__pycache__/
+**.ipynb_checkpoints/
+**__pycache__/

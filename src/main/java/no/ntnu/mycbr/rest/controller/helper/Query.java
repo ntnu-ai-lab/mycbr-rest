@@ -66,7 +66,7 @@ public class Query implements RetrievalCustomer {
             tempAmalgamFctManager.changeAmalgamFct(amalFunc);
 
             Retrieval r = new Retrieval(myConcept, cb,this);
-            r.setRetrievalEngine(new NeuralRetrieval(project,r));
+            // r.setRetrievalEngine(new NeuralRetrieval(project,r));
 
             try {
                 Instance query = r.getQueryInstance();

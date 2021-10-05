@@ -7,7 +7,7 @@ import no.ntnu.mycbr.core.casebase.Attribute;
 import no.ntnu.mycbr.core.casebase.Instance;
 import no.ntnu.mycbr.core.casebase.MultipleAttribute;
 import no.ntnu.mycbr.core.model.*;
-import no.ntnu.mycbr.core.retrieval.NeuralRetrieval;
+//import no.ntnu.mycbr.core.retrieval.NeuralRetrieval;
 import no.ntnu.mycbr.core.retrieval.Retrieval;
 import no.ntnu.mycbr.core.retrieval.Retrieval.RetrievalCustomer;
 import no.ntnu.mycbr.core.retrieval.RetrievalResult;
@@ -66,7 +66,7 @@ public class Query implements RetrievalCustomer {
             tempAmalgamFctManager.changeAmalgamFct(amalFunc);
 
             Retrieval r = new Retrieval(myConcept, cb,this);
-            r.setRetrievalEngine(new NeuralRetrieval(project,r));
+            //r.setRetrievalEngine(new Retrieval(project,r));
 
             try {
                 Instance query = r.getQueryInstance();

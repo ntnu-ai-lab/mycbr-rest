@@ -75,7 +75,6 @@ public class AttributeController {
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=ATTR_ID) String attributeID,
 	    @RequestParam(value="attributeJSON", defaultValue = "{}") String attributeJSON) {
-	
 	return new AttributeService().addAttribute(conceptID, attributeID, attributeJSON);
     }
     

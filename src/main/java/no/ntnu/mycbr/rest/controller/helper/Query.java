@@ -66,8 +66,8 @@ public class Query implements RetrievalCustomer {
             tempAmalgamFctManager.changeAmalgamFct(amalFunc);
 
             Retrieval r = new Retrieval(myConcept, cb,this);
+            //r.setRetrievalEngine(new NeuralRetrieval(project,r));
             //r.setRetrievalEngine(new Retrieval(project,r));
-
             try {
                 Instance query = r.getQueryInstance();
 
@@ -318,7 +318,6 @@ public class Query implements RetrievalCustomer {
 
                 SymbolDesc queryDesc = (SymbolDesc) myConcept.getAllAttributeDescs().get(attribute);
                 query.addAttribute(queryDesc, queryDesc.getAttribute(value));
-
                 if (k > -1) {
                     r.setK(k);
                     r.setRetrievalMethod(Retrieval.RetrievalMethod.RETRIEVE_K_SORTED);

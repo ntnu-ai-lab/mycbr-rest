@@ -1,4 +1,4 @@
-package no.ntnu.mycbr.rest.service;
+package no.ntnu.mycbr.rest.controller.service;
 
 import no.ntnu.mycbr.core.ICaseBase;
 import no.ntnu.mycbr.core.Project;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class InstanceService {
+public class CaseService {
     Project p = App.getProject();
     private final Log logger = LogFactory.getLog(getClass());
 

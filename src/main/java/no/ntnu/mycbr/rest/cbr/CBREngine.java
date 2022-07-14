@@ -1,4 +1,4 @@
-package no.ntnu.mycbr;
+package no.ntnu.mycbr.rest.cbr;
 
 import no.ntnu.mycbr.core.Project;
 import org.apache.commons.logging.Log;
@@ -99,7 +99,7 @@ public class CBREngine {
 	 * done at the beginning of this class.
 	 * @return ConceptName instance containing model, sims and cases (if available)
 	 */
-	public Project createemptyCBRProject(){
+	public Project createEmptyCBRProject(){
 
 		Project project = null;
 		try {

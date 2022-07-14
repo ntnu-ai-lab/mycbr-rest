@@ -1,17 +1,51 @@
+# Ignore generated files
 target/*
-
 *.class
 
-# Mobile Tools for Java (J2ME)
+
+# Ignore Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Package Files #
+
+# Ignore Package Files #
 *.jar
 *.war
 *.ear
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+
+# Ignore virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-# IntelliJ files
+
+# Ignore IntelliJ files
 .idea/*
+/target/
+
+
+# Ignore All myCBR project related files
+*.prj
+*.myExp
+*.myCBR
+*.myCB
+/src/test/resources/*.config
+/src/main/resources/*.config
+
+
+# Ignore IDE specific files
+*.classpath
+*.project
+*.pydevproject
+
+
+# Ignore MAC / IOS specific files
+**.DS_Store
+**/.DS_Store
+
+
+# Ignore .settings/ folder
+.settings/*
+
+
+# Ignore Python files
+**.ipynb_checkpoints/
+**__pycache__/

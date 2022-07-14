@@ -1,4 +1,4 @@
-package no.ntnu.mycbr.rest;
+package no.ntnu.mycbr.rest.controller.helper;
 
 import no.ntnu.mycbr.core.DefaultCaseBase;
 import no.ntnu.mycbr.core.ICaseBase;
@@ -7,11 +7,12 @@ import no.ntnu.mycbr.core.casebase.Attribute;
 import no.ntnu.mycbr.core.casebase.Instance;
 import no.ntnu.mycbr.core.casebase.MultipleAttribute;
 import no.ntnu.mycbr.core.model.*;
-import no.ntnu.mycbr.core.retrieval.NeuralRetrieval;
+//import no.ntnu.mycbr.core.retrieval.NeuralRetrieval;
 import no.ntnu.mycbr.core.retrieval.Retrieval;
 import no.ntnu.mycbr.core.retrieval.Retrieval.RetrievalCustomer;
 import no.ntnu.mycbr.core.retrieval.RetrievalResult;
 import no.ntnu.mycbr.core.similarity.Similarity;
+import no.ntnu.mycbr.rest.App;
 import no.ntnu.mycbr.rest.utils.ConcurrentCustomer;
 import no.ntnu.mycbr.util.Pair;
 import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctNotChangedException;
@@ -65,7 +66,7 @@ public class Query implements RetrievalCustomer {
             tempAmalgamFctManager.changeAmalgamFct(amalFunc);
 
             Retrieval r = new Retrieval(myConcept, cb,this);
-            r.setRetrievalEngine(new NeuralRetrieval(project,r));
+            //r.setRetrievalEngine(new Retrieval(project,r));
 
             try {
                 Instance query = r.getQueryInstance();
@@ -136,7 +137,7 @@ public class Query implements RetrievalCustomer {
     public static HashMap<String,HashMap<String,Double>> retrieve(String casebase,
                                                                   String concept,
                                                                   String amalFunc,
-                                                                  List<String> caseIDs,
+                                                                  Set<String> caseIDs,
                                                                   List<String> queryBase,
                                                                   int k) {
         Project project = App.getProject();
@@ -165,7 +166,7 @@ public class Query implements RetrievalCustomer {
         return ret;
 
     }
-    public static HashMap<String,HashMap<String,Double>> retrieve(String casebase, String concept, String amalFunc, List<String> caseIDs, int k) {
+    public static HashMap<String,HashMap<String,Double>> retrieve(String casebase, String concept, String amalFunc, Set<String> caseIDs, int k) {
         Project project = App.getProject();
         // create case bases and assign the case bases that will be used for submitting a query
         DefaultCaseBase cb = (DefaultCaseBase)project.getCaseBases().get(casebase);
@@ -173,13 +174,11 @@ public class Query implements RetrievalCustomer {
         Concept myConcept = project.getConceptByID(concept);
         HashMap<String,HashMap<String,Double>> ret = new HashMap<String,HashMap<String,Double>>();
         ConcurrentCustomer concurrentCustomer = new ConcurrentCustomer();
-        TemporaryAmalgamFctManager tempAmalgamFctManager = null;
-        if(amalFunc!= null)
-            new TemporaryAmalgamFctManager(myConcept);
+        TemporaryAmalgamFctManager tempAmalgamFctManager = new TemporaryAmalgamFctManager(myConcept);
 
         try {
             if(amalFunc!=null)
-                tempAmalgamFctManager.changeAmalgamFct(amalFunc);
+        	tempAmalgamFctManager.changeAmalgamFct(amalFunc);
 
             ExecutorService executor = Executors.newFixedThreadPool(48);
             ArrayList<Retrieval> retrievalThreads = new ArrayList<>();
@@ -204,8 +203,6 @@ public class Query implements RetrievalCustomer {
                     }
                     retrievals.put(caseID,r);
                     retrievalThreads.add(r);
-
-
                 }
                 catch (Exception e) {
                     e.printStackTrace();
@@ -270,9 +267,11 @@ public class Query implements RetrievalCustomer {
         try {
 
             Retrieval r = new Retrieval(myConcept, cb,this);
-            r.setK(k);
-            if(k>0){
+            if (k > 0) {
+                r.setK(k);
                 r.setRetrievalMethod(Retrieval.RetrievalMethod.RETRIEVE_K_SORTED);
+            } else {
+                r.setRetrievalMethod(Retrieval.RetrievalMethod.RETRIEVE_SORTED);
             }
             //r.setRetrievalEngine(new NeuralRetrieval(project,r));
 
@@ -349,6 +348,8 @@ public class Query implements RetrievalCustomer {
             tempAmalgamFctManager.rollBack();
         }
     }
+    
+    
 
     public LinkedHashMap<String, Double> getSimilarCases() {
         return resultList;

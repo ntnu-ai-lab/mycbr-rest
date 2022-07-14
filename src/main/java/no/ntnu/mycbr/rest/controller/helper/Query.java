@@ -195,7 +195,8 @@ public class Query implements RetrievalCustomer {
                 try {
                     Instance query = r.getQueryInstance();
                     Instance caze = myConcept.getInstance(caseID);
-
+                    if(caze == null)
+                        throw new IllegalArgumentException("There is no such case in the casebase: " + caseID);
                     for (Map.Entry<AttributeDesc, Attribute> e : caze.getAttributes()
                             .entrySet()) {
                         query.addAttribute(e.getKey(), e.getValue());

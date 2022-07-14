@@ -1,4 +1,4 @@
-id,body,ccm,code,color,door,fule,manufacturer,mile,model,power,price,speed,year,zip
+id,body,ccm,code,color,door,fuel,manufacturer,mile,model,power,price,speed,year,zip
 42,coupe,1600,285,yellow,2,gasoline,bmw,44271,316i,102,27699,183,1996,1
 46,sedan,1600,689,turquoise,4,gasoline,bmw,38618,316i,102,25899,183,1994,1
 138,fastback,1600,6,dark_red,2,gasoline,bmw,53714,316i,102,25599,183,1995,6

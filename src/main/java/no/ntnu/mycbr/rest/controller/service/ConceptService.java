@@ -11,10 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ConceptService {
@@ -109,7 +106,10 @@ public class ConceptService {
     }
 
     public boolean addAmalgamationFunction(Concept c, String amalgamationFunctionID, String amalgamationFunctionType){
-        AmalgamationConfig config = AmalgamationConfig.valueOf(amalgamationFunctionType);
+
+        List<AmalgamationFct> amalgamationFunctions = c.getAvailableAmalgamFcts();
+        AmalgamationFct sourceFct = null;
+                AmalgamationConfig config = AmalgamationConfig.valueOf(amalgamationFunctionType);
         AmalgamationFct fct = c.addAmalgamationFct(config,amalgamationFunctionID, false);
         c.setActiveAmalgamFct(fct);
         return true;

@@ -73,19 +73,16 @@ public class ConceptController {
     //add one amalgationfunction
     // amalgamationfunctionType needs to be a string matching exactly the name of the enum. https://stackoverflow.com/questions/604424/lookup-java-enum-by-string-value
     // MINIMUM, MAXIMUM, WEIGHTED_SUM, EUCLIDEAN, NEURAL_NETWORK_SOLUTION_DIRECTLY,SIM_DEF;
-    @ApiOperation(value = ADD_AMALGAMATION_FUNCTION, nickname = ADD_AMALGAMATION_FUNCTION)
+    @ApiOperation(value = COPY_AMALGAMATION_FUNCTION, nickname = COPY_AMALGAMATION_FUNCTION)
     @RequestMapping(method = RequestMethod.PUT, path=PATH_CONCEPT_AMAL_FUNCTION_ID, produces = APPLICATION_JSON)
     @ApiResponsesDefault
     public boolean addAmalgamationFunctions(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
-	    @PathVariable(value=AMAL_FUNCTION_ID) String amalgamationFunctionID,
+	    @RequestParam(value= AMAL_FUNCTION_ID) String amalgamationFunctionID,
 	    @RequestParam(value=AMAL_FUNCTION_TYPE) String amalgamationFunctionType) {
 	
-	logger.info("in add amalgamationfunction");
 	Concept concept = App.getProject().getSubConcepts().get(conceptID);
-	AmalgamationConfig config = AmalgamationConfig.valueOf(amalgamationFunctionType);
-	AmalgamationFct fct = concept.addAmalgamationFct(config,amalgamationFunctionID, false);
-	concept.setActiveAmalgamFct(fct);
+    conceptService.addAmalgamationFunction(concept, amalgamationFunctionID, amalgamationFunctionType);
 
 	return true;
     }

@@ -28,7 +28,8 @@ public interface ApiOperationConstants {
     DELETE_ALL_ATTRIBUTES  = "deleteAllAttributes",
 
     ADD_ATTRIBUTE_SIMILARITY_FUNCTION 	 	= "addAttributeSimilarityFunction",
-    GET_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS 	= "getAllAttributeSimilarityFunctions",
+    GET_ALL_SIMILARITY_FUNCTIONS = "getAllSimilarityFunctions",
+    GET_ACTIVE_SIMILARITY_FUNCTION = "getActiveSimilarityFunction",
     UPDATE_ATTRIBUTE_SIMILARITY_FUNCTION 	= "updateAttributeSimilarityFunction", // To be implemented.
     DELETE_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS 	= "deleteAllAttributeSimilarityFunctions";
     
@@ -41,8 +42,8 @@ public interface ApiOperationConstants {
     UPDATE_CONCEPT_ID 	 = "updateConceptID",	// To be implemented.
     DELETE_CONCEPT_BY_ID = "deleteConceptByID",
     DELETE_ALL_CONCEPTS  = "deleteAllConcepts",
-    
-    ADD_AMALGAMATION_FUNCTION		= "addAmalgamationFunction",
+
+    COPY_AMALGAMATION_FUNCTION = "copyAmalgamationFunction",
     ADD_NEURAL_AMALGAMATION_FUNCTION 	= "addNeuralAmalgamationFunction",
     GET_AMALGAMATION_FUNCTION_BY_ID 	= "getAmalgamationFunctionByID", // To be implemented
     GET_ALL_AMALGAMATION_FUNCTIONS 	= "getAllAmalgamationFunctions",

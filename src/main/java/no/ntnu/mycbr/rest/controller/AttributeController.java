@@ -3,6 +3,7 @@ package no.ntnu.mycbr.rest.controller;
 import static no.ntnu.mycbr.rest.common.ApiOperationConstants.*;
 import static no.ntnu.mycbr.rest.common.ApiPathConstants.*;
 
+import java.util.LinkedList;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -99,18 +100,32 @@ public class AttributeController {
 	return new AttributeService().deleteAllAttribute(conceptID);
     }
     
-    //Get all similarity function for attribute
-    @ApiOperation(value = GET_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS, nickname = GET_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS)
-    @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_ATTR_SIM_FUNCTIONS, 
+    //Get active similarity function  the given attribute
+    @ApiOperation(value = GET_ACTIVE_SIMILARITY_FUNCTION, nickname = GET_ACTIVE_SIMILARITY_FUNCTION)
+    @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_ATTR_SIM_FUNCTIONS + "/active",
     	headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
-    public Map<String, Object> getAllSimilarityFunctions(
+    public Map<String, Object> getActiveSimilarityFunction(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=ATTR_ID) String attributeID) {
 	
 	AttributeService service = new AttributeService(conceptID, attributeID);
 	
-	return service.getAllSimilarityFunctions();
+	return service.getActiveSimilarityFunction();
+    }
+
+    //Get active similarity function  the given attribute
+    @ApiOperation(value = GET_ALL_SIMILARITY_FUNCTIONS, nickname = GET_ALL_SIMILARITY_FUNCTIONS)
+    @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_ATTR_SIM_FUNCTIONS + "/all",
+            headers=ACCEPT_APPLICATION_JSON)
+    @ApiResponsesDefault
+    public LinkedList<String> getAllSimilarityFunctions(
+            @PathVariable(value=CONCEPT_ID) String conceptID,
+            @PathVariable(value=ATTR_ID) String attributeID) {
+
+        AttributeService service = new AttributeService(conceptID, attributeID);
+
+        return service.getAllSimilarityFunctions();
     }
     
     //Delete all similarity function for attribute
@@ -133,11 +148,13 @@ public class AttributeController {
     	headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
     public boolean addSimilarityFunction(
-	    @PathVariable(value=CONCEPT) String conceptID,
+	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=ATTR_ID) String attributeID,
 	    @PathVariable(value=SIM_FUNCTION_ID) String similarityFunctionID,
-	    @RequestParam(value="parameter", defaultValue="1.0") Double parameter) {
-	
-	return new AttributeService().addDoubleSimilarityFunction( conceptID, attributeID, similarityFunctionID, parameter);
+	    @RequestParam(value="parameter", defaultValue="1.0") String parameter) {
+	logger.info("AttributeController: " + conceptID + ", " +  attributeID + ", " +  similarityFunctionID  + ", " + parameter);
+    Double parameterD = Double.parseDouble(parameter);
+//	return new AttributeService().addDoubleSimilarityFunction( conceptID, attributeID, similarityFunctionID, parameterD);
+    return new AttributeService().addIntegerSimilarityFunction( conceptID, attributeID, similarityFunctionID);
     }
 }

@@ -1,11 +1,9 @@
 package no.ntnu.mycbr.rest.controller.service;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
+import no.ntnu.mycbr.core.similarity.ISimFct;
+import no.ntnu.mycbr.core.similarity.IntegerFct;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.simple.JSONArray;
@@ -71,12 +69,33 @@ public class AttributeService {
         return true;
     }
 
+    public boolean addIntegerSimilarityFunction(String conceptName, String attributeName, String similarityFunctionName) {
+        Concept subConcept = (Concept) project.getSubConcepts().get(conceptName);
+        IntegerDesc attributeDesc = (IntegerDesc) subConcept.getAllAttributeDescs().get(attributeName);
+
+        for (ISimFct temp : attributeDesc.getSimFcts()) {
+            logger.info("sim name: " + temp.getName());
+        }
+
+
+        IntegerFct intFct = attributeDesc.addIntegerFct(similarityFunctionName, true);
+
+        logger.info("after adding: ");
+        for (ISimFct temp : attributeDesc.getSimFcts()) {
+            logger.info("sim name: " + temp.getName());
+        }
+
+        intFct.setSymmetric(true);
+        intFct.setFunctionTypeL(NumberConfig.CONSTANT);
+        return true;
+    }
+
     public boolean deleteAllSimilarityFunctions() {
         concept.getActiveAmalgamFct().setActiveFct(attributeDesc, null);
         return true;
     }
 
-    public Map<String, Object> getAllSimilarityFunctions() {
+    public Map<String, Object> getActiveSimilarityFunction() {
 
         Object object = concept.getActiveAmalgamFct().getActiveFct(attributeDesc);
         if (object instanceof SimFct) {
@@ -85,6 +104,37 @@ public class AttributeService {
             return null;
     }
 
+    public LinkedList<String> getAllSimilarityFunctions() {
+        IntegerDesc iAttDesc;
+        DoubleDesc dAttDesc;
+        LinkedList<String> fctList= new LinkedList<String>();
+
+        try {
+            String attrDescString = attributeDesc.getAttribute(attributeDesc).getClass().getSimpleName();
+            logger.info("representation: " + attributeDesc.getRepresentation());
+
+
+            String name = attributeDesc.getName();
+            logger.info("name: " + name);
+
+            if (attributeDesc.getClass().getSimpleName().equals("IntegerDesc")){
+                iAttDesc = (IntegerDesc) concept.getAttributeDesc(name);
+                for (ISimFct aIntFct : iAttDesc.getSimFcts()) {
+                    fctList.add(aIntFct.getName());
+                    logger.info("fct: " + aIntFct.getName());
+
+                }
+
+            }
+
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        return fctList;
+
+    }
 
     public boolean deleteAttribute(String conceptID, String attributeID) {
         Concept subConcept = project.getSubConcepts().get(conceptID);

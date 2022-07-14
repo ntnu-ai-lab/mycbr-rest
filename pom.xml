@@ -11,10 +11,11 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<junit.version>3.8.1</junit.version>
+		<junit.version>4.13.2</junit.version>
+		<junit-jupiter-api.version>5.8.2</junit-jupiter-api.version>
 		<java.version>1.8</java.version>
 		<mycbr.version>3.3-SNAPSHOT</mycbr.version>
-		<spring.version>2.1.1.RELEASE</spring.version>
+		<spring.version>2.6.9</spring.version>
 		<springfox.version>2.9.2</springfox.version>
 		<jackson.version>1.9.12</jackson.version>
 		<mvn.compiler.version>3.5.1</mvn.compiler.version>
@@ -85,13 +86,13 @@
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
-			<version>RELEASE</version>
+			<version>${junit-jupiter-api.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

@@ -170,7 +170,7 @@ public class AttributeService {
         String solution = (String) json.get("solution");
         try {
             if (type.contains(STRING)) {
-               //This attribute registers with the concept through callback!
+                //This attribute registers with the concept through callback!
                 addStringAttribute(subConcept, attributeID, solution.contentEquals("True"));
             } else if (type.contains("Double")) {
                 if (json.containsKey("min") && json.containsKey("max")) {
@@ -184,7 +184,7 @@ public class AttributeService {
             } else if (type.contains("Integer")) {
                 if (json.containsKey("min") && json.containsKey("max")) {
                     int min = Integer.valueOf(String.valueOf((Long) json.get("min")));
-					int max = Integer.valueOf(String.valueOf((Long) json.get("max")));
+                    int max = Integer.valueOf(String.valueOf((Long) json.get("max")));
                     //This attribute registers with the concept through callback!
                     attributeDesc = addIntegerAttribute(subConcept, attributeID, min, max, solution.contentEquals("True"));
                 } else
@@ -210,6 +210,49 @@ public class AttributeService {
         project.save();
         return true;
     }
+
+    /**
+     * @param conceptID
+     * @param attributeIDs : e.g. "att1,att2,att3"
+     * @param attributeJSON : e.g. "{"type": "Integer","min": 0,"max": 1,"solution":"True"}"
+     * @return
+     */
+    public boolean addAttributebyLists(String conceptID, String attributeIDs, String attributeJSON) {
+        String[] attributeIDList = attributeIDs.split(",");
+        for (int i=0; i<attributeIDList.length; i++)
+        {
+            String attributeID = attributeIDList[i];
+            addAttribute(conceptID, attributeID, attributeJSON);
+            logger.info(attributeID+" added");
+        }
+        return true;
+    }
+    /*
+    public boolean copyAttribute(String conceptID, String attributeID, String newAttributeID) {
+        logger.info("conceptID,  attributeID,  newAttributeID: " + conceptID +",  "+ attributeID +",  "+   newAttributeID);
+        try {
+            logger.info("concept name: " + project.getConceptByID(conceptID).getName());
+            AttributeDesc existingAtt = project.getConceptByID(conceptID).getAttributeDesc(attributeID);
+            AttributeDesc newAtt = new AttributeDesc();
+
+            logger.info("project atts: " + project.getConceptByID(conceptID).getAllAttributeDescs().keySet());
+
+            logger.info("newAtt name: " + newAtt.getName());
+            logger.info("newAtt getRepresentation: " + newAtt.getRepresentation());
+
+            newAtt.setName(newAttributeID);
+            logger.info("new att name: " + newAtt.getName());
+            //logger.info("old att name: " + project.getConceptByID(conceptID).getAttributeDesc(attributeID).getName());
+            project.getConceptByID(conceptID).addAttributeDesc(newAtt);
+
+            //String attributeJSON = getAttributeByID(conceptID, attributeID).toString();
+            //addAttribute(conceptID,newAttributeID,attributeJSON);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return true;
+    }*/
 
     private AttributeDesc addStringAttribute(Concept c, String attributeName, boolean solution) throws Exception {
         AttributeDesc attributeDesc = new StringDesc(c, attributeName);
@@ -269,17 +312,15 @@ public class AttributeService {
 
         return map;
     }
-    
-    /*
-     public Map<String,Object> getAttributeDiscription() {
+
+     public Map<String,Object> getAttributeDescription() {
 
 	Map<String, Object> map = attributeDesc.getRepresentation();
 
 	addRangeIfAbsent(map);
 
 	return map;
-    } 
-    */
+    }
 
     private void addRangeIfAbsent(Map<String, Object> map) {
         if (!map.containsKey(RANGE)) {

@@ -7,6 +7,9 @@ import no.ntnu.mycbr.core.similarity.config.AmalgamationConfig;
 import no.ntnu.mycbr.rest.*;
 import no.ntnu.mycbr.rest.controller.service.ConceptService;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -87,7 +90,50 @@ public class ConceptController {
 	return true;
     }
 
-    //save file
+
+
+
+	//add one amalgationfunction
+	// amalgamationfunctionType needs to be a string matching exactly the name of the enum. https://stackoverflow.com/questions/604424/lookup-java-enum-by-string-value
+	// MINIMUM, MAXIMUM, WEIGHTED_SUM, EUCLIDEAN, NEURAL_NETWORK_SOLUTION_DIRECTLY,SIM_DEF;
+	@ApiOperation(value = ADD_AMALGAMATION_FUNCTION, nickname = ADD_AMALGAMATION_FUNCTION)
+	@RequestMapping(method = RequestMethod.PUT, path=PATH_CONCEPT_AMAL_FUNCTION_ID+"/SPECIFIED", produces = APPLICATION_JSON)
+	@ApiResponsesDefault
+	public boolean addSpecifiedAmalgamationFunctions(
+			@PathVariable(value=CONCEPT_ID) String conceptID,
+			@PathVariable(value=AMAL_FUNCTION_ID) String amalgamationFunctionID,
+			@RequestParam(value=AMAL_FUNCTION_TYPE) String amalgamationFunctionType,
+			@RequestParam(value="attributeWeightsJSON", defaultValue = "{}") String attributeWeightsJSON)
+	{
+		Concept concept = App.getProject().getSubConcepts().get(conceptID);
+		JSONParser parser = new JSONParser();
+		JSONObject json = null;
+		try {
+
+			json = (JSONObject) parser.parse(attributeWeightsJSON);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		AmalgamationConfig config = AmalgamationConfig.valueOf(amalgamationFunctionType);
+		AmalgamationFct fct = concept.addAmalgamationFct(config,amalgamationFunctionID, false);
+		concept.setActiveAmalgamFct(fct);
+
+		HashMap<String, AttributeDesc> attributeDescMap = concept.getAllAttributeDescs();
+		String att_name;
+		Double att_weight;
+		for (Map.Entry<String, AttributeDesc> att : attributeDescMap.entrySet()) {
+			att_name = att.getKey();
+			att_weight = (Double) json.get(att_name);
+			fct.setWeight(att_name,att_weight);
+		}
+
+		return true;
+	}
+
+
+
+	//save file
     private void saveUploadedFiles(HashMap<MultipartFile,String> filesAndNames) throws IOException {
 
 	for (MultipartFile file : filesAndNames.keySet()) {

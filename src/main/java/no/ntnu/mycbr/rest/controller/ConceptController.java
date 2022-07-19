@@ -73,7 +73,7 @@ public class ConceptController {
 	return true;
     }
 
-    //add one amalgationfunction
+    // copy an existing amalgationfunction
     // amalgamationfunctionType needs to be a string matching exactly the name of the enum. https://stackoverflow.com/questions/604424/lookup-java-enum-by-string-value
     // MINIMUM, MAXIMUM, WEIGHTED_SUM, EUCLIDEAN, NEURAL_NETWORK_SOLUTION_DIRECTLY,SIM_DEF;
     @ApiOperation(value = COPY_AMALGAMATION_FUNCTION, nickname = COPY_AMALGAMATION_FUNCTION)
@@ -97,11 +97,11 @@ public class ConceptController {
 	// amalgamationfunctionType needs to be a string matching exactly the name of the enum. https://stackoverflow.com/questions/604424/lookup-java-enum-by-string-value
 	// MINIMUM, MAXIMUM, WEIGHTED_SUM, EUCLIDEAN, NEURAL_NETWORK_SOLUTION_DIRECTLY,SIM_DEF;
 	@ApiOperation(value = ADD_AMALGAMATION_FUNCTION, nickname = ADD_AMALGAMATION_FUNCTION)
-	@RequestMapping(method = RequestMethod.PUT, path=PATH_CONCEPT_AMAL_FUNCTION_ID+"/SPECIFIED", produces = APPLICATION_JSON)
+	@RequestMapping(method = RequestMethod.PUT, path=PATH_CONCEPT_AMAL_FUNCTIONS, produces = APPLICATION_JSON)
 	@ApiResponsesDefault
-	public boolean addSpecifiedAmalgamationFunctions(
+	public boolean addAmalgamationFunctions(
 			@PathVariable(value=CONCEPT_ID) String conceptID,
-			@PathVariable(value=AMAL_FUNCTION_ID) String amalgamationFunctionID,
+			@RequestParam(value=AMAL_FUNCTION_ID) String amalgamationFunctionID,
 			@RequestParam(value=AMAL_FUNCTION_TYPE) String amalgamationFunctionType,
 			@RequestParam(value="attributeWeightsJSON", defaultValue = "{}") String attributeWeightsJSON)
 	{
@@ -124,10 +124,12 @@ public class ConceptController {
 		Double att_weight;
 		for (Map.Entry<String, AttributeDesc> att : attributeDescMap.entrySet()) {
 			att_name = att.getKey();
-			att_weight = (Double) json.get(att_name);
-			fct.setWeight(att_name,att_weight);
+			if (json.containsKey(att_name)){
+				fct.setWeight(att_name, (Number) json.get(att_name));
+			}
 		}
 
+		App.getProject().save();
 		return true;
 	}
 

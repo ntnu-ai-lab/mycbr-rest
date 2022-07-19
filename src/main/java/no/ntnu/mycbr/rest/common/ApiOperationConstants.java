@@ -19,7 +19,7 @@ package no.ntnu.mycbr.rest.common;
 public interface ApiOperationConstants {
 
     // API operations for AttributeController
-<<<<<<< Updated upstream
+
     String 
     ADD_ATTRIBUTE_BY_ID    = "addAttributeByID",
     GET_ATTRIBUTE_BY_ID    = "getAttributeByID",
@@ -32,7 +32,8 @@ public interface ApiOperationConstants {
     GET_ALL_SIMILARITY_FUNCTIONS = "getAllSimilarityFunctions",
     GET_ACTIVE_SIMILARITY_FUNCTION = "getActiveSimilarityFunction",
     UPDATE_ATTRIBUTE_SIMILARITY_FUNCTION 	= "updateAttributeSimilarityFunction", // To be implemented.
-    DELETE_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS 	= "deleteAllAttributeSimilarityFunctions";
+    DELETE_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS 	= "deleteAllAttributeSimilarityFunctions",
+    GET_ATTRIBUTE_DESCRIPTION = "getAttributeDesc";
     
     
     // API operations for ConceptController
@@ -45,49 +46,16 @@ public interface ApiOperationConstants {
     DELETE_ALL_CONCEPTS  = "deleteAllConcepts",
 
     COPY_AMALGAMATION_FUNCTION = "copyAmalgamationFunction",
+    ADD_AMALGAMATION_FUNCTION = "addAmalgamationFunction",
     ADD_NEURAL_AMALGAMATION_FUNCTION 	= "addNeuralAmalgamationFunction",
     GET_AMALGAMATION_FUNCTION_BY_ID 	= "getAmalgamationFunctionByID", // To be implemented
     GET_ALL_AMALGAMATION_FUNCTIONS 	= "getAllAmalgamationFunctions",
     DELETE_AMALGAMATION_FUNCTION 	= "deleteAmalgamationFunction",
-    DELETE_ALL_AMALGAMATION_FUNCTIONS 	= "deleteAllAmalgamationFunctions";
-    
-    
-=======
-    String
-            ADD_ATTRIBUTE_BY_ID    = "addAttributeByID",
-            ADD_ATTRIBUTES_BY_ID_LIST    = "addAttributesByIDList",
-            GET_ATTRIBUTE_BY_ID    = "getAttributeByID",
-            GET_ALL_ATTRIBUTES 	   = "getAllAttributes",
-            UPDATE_ATTRIBUTE_ID    = "updateAttributeID",	// To be implemented.
-            DELETE_ATTRIBUTE_BY_ID = "deleteAttributeByID",
-            DELETE_ALL_ATTRIBUTES  = "deleteAllAttributes",
-            COPY_ATTRIBUTE_BY_ID    = "copyAttributeByID",
-
-            ADD_ATTRIBUTE_SIMILARITY_FUNCTION 	 	= "addAttributeSimilarityFunction",
-            GET_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS 	= "getAllAttributeSimilarityFunctions",
-            UPDATE_ATTRIBUTE_SIMILARITY_FUNCTION 	= "updateAttributeSimilarityFunction", // To be implemented.
-            DELETE_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS 	= "deleteAllAttributeSimilarityFunctions",
-            GET_ATTRIBUTE_DESCRIPTION = "getAttributeDesc";
+    DELETE_ALL_AMALGAMATION_FUNCTIONS 	= "deleteAllAmalgamationFunctions",
+    GET_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS = "getAllAttributeSimilarityFunctions";
 
 
-    // API operations for ConceptController
-    String
-            ADD_CONCEPT_ID 	 = "addConceptID",
-            GET_CONCEPT_BY_ID 	 = "getConceptByID",	// To be implemented.
-            GET_All_CONCEPTS 	 = "getAllConcepts",
-            UPDATE_CONCEPT_ID 	 = "updateConceptID",	// To be implemented.
-            DELETE_CONCEPT_BY_ID = "deleteConceptByID",
-            DELETE_ALL_CONCEPTS  = "deleteAllConcepts",
 
-    ADD_AMALGAMATION_FUNCTION		= "addAmalgamationFunction",
-            ADD_NEURAL_AMALGAMATION_FUNCTION 	= "addNeuralAmalgamationFunction",
-            GET_AMALGAMATION_FUNCTION_BY_ID 	= "getAmalgamationFunctionByID", // To be implemented
-            GET_ALL_AMALGAMATION_FUNCTIONS 	= "getAllAmalgamationFunctions",
-            DELETE_AMALGAMATION_FUNCTION 	= "deleteAmalgamationFunction",
-            DELETE_ALL_AMALGAMATION_FUNCTIONS 	= "deleteAllAmalgamationFunctions";
-
-
->>>>>>> Stashed changes
     // API operations for CaseController
     String
             ADD_MULTIPLE_CASES_USING_JSON = "addMultipleCasesUsingJSON",

@@ -1,7 +1,6 @@
 package no.ntnu.mycbr.rest.controller;
 
 import static no.ntnu.mycbr.rest.common.ApiOperationConstants.*;
-import static no.ntnu.mycbr.rest.common.ApiOperationConstants.ADD_ATTRIBUTES_BY_ID_LIST;
 import static no.ntnu.mycbr.rest.common.ApiPathConstants.*;
 
 import java.util.LinkedList;
@@ -81,16 +80,6 @@ public class AttributeController {
         return new AttributeService().addAttribute(conceptID, attributeID, attributeJSON);
     }
 
-    //add multiple attributes
-    @ApiOperation(value = ADD_ATTRIBUTES_BY_ID_LIST, nickname = ADD_ATTRIBUTES_BY_ID_LIST)
-    @RequestMapping(method = RequestMethod.PUT, value = PATH_CONCEPT_ATTR_ID+"LIST", headers=ACCEPT_APPLICATION_JSON)
-    @ApiResponsesDefault
-    public boolean addAttributebyLists(
-            @PathVariable(value=CONCEPT_ID) String conceptID,
-            @PathVariable(value=ATTR_IDS) String attributeIDs,
-            @RequestParam(value="attributeJSON", defaultValue = "{}") String attributeJSON) {
-        return new AttributeService().addAttributebyLists(conceptID, attributeIDs, attributeJSON);
-    }
 
     /*
     @ApiOperation(value = COPY_ATTRIBUTE_BY_ID, nickname = COPY_ATTRIBUTE_BY_ID) // copy
@@ -125,8 +114,7 @@ public class AttributeController {
 
         return new AttributeService().deleteAllAttribute(conceptID);
     }
-<<<<<<< Updated upstream
-    
+
     //Get active similarity function  the given attribute
     @ApiOperation(value = GET_ACTIVE_SIMILARITY_FUNCTION, nickname = GET_ACTIVE_SIMILARITY_FUNCTION)
     @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_ATTR_SIM_FUNCTIONS + "/active",
@@ -141,21 +129,15 @@ public class AttributeController {
 	return service.getActiveSimilarityFunction();
     }
 
-    //Get active similarity function  the given attribute
-    @ApiOperation(value = GET_ALL_SIMILARITY_FUNCTIONS, nickname = GET_ALL_SIMILARITY_FUNCTIONS)
-    @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_ATTR_SIM_FUNCTIONS + "/all",
-            headers=ACCEPT_APPLICATION_JSON)
-    @ApiResponsesDefault
-    public LinkedList<String> getAllSimilarityFunctions(
-=======
+
 
     //Get all similarity function for attribute
     @ApiOperation(value = GET_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS, nickname = GET_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS)
     @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_ATTR_SIM_FUNCTIONS,
             headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
-    public Map<String, Object> getAllSimilarityFunctions(
->>>>>>> Stashed changes
+    public LinkedList<String>  getAllSimilarityFunctions(
+
             @PathVariable(value=CONCEPT_ID) String conceptID,
             @PathVariable(value=ATTR_ID) String attributeID) {
 
@@ -184,7 +166,7 @@ public class AttributeController {
             headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
     public boolean addSimilarityFunction(
-<<<<<<< Updated upstream
+
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=ATTR_ID) String attributeID,
 	    @PathVariable(value=SIM_FUNCTION_ID) String similarityFunctionID,
@@ -193,13 +175,6 @@ public class AttributeController {
     Double parameterD = Double.parseDouble(parameter);
 //	return new AttributeService().addDoubleSimilarityFunction( conceptID, attributeID, similarityFunctionID, parameterD);
     return new AttributeService().addIntegerSimilarityFunction( conceptID, attributeID, similarityFunctionID);
-=======
-            @PathVariable(value=CONCEPT) String conceptID,
-            @PathVariable(value=ATTR_ID) String attributeID,
-            @PathVariable(value=SIM_FUNCTION_ID) String similarityFunctionID,
-            @RequestParam(value="parameter", defaultValue="1.0") Double parameter) {
 
-        return new AttributeService().addDoubleSimilarityFunction( conceptID, attributeID, similarityFunctionID, parameter);
->>>>>>> Stashed changes
     }
 }

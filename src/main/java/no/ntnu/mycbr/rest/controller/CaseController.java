@@ -107,6 +107,24 @@ public class CaseController
 	return ret;
     }
 
+
+	// Deletes all instances from a concept
+	@ApiOperation(value = DELETE_ALL_CASES, nickname = DELETE_ALL_CASES)
+	@RequestMapping(method = RequestMethod.DELETE, value = PATH_CONCEPT_CASES, headers=ACCEPT_APPLICATION_JSON)
+	@ApiResponsesDefault
+	public boolean deleteAllInstances(
+			@PathVariable(value=CONCEPT_ID) String conceptID) {
+
+		Project p = App.getProject();
+		Collection<Instance> instances = p.getAllInstances();
+
+		for(Instance instance : instances){
+			if(instance.getConcept().getName().contentEquals(conceptID))
+				p.getConceptByID(conceptID).removeInstance(instance.getName());
+		}
+		return true;
+	}
+
     // Get all instances of a concept
     @ApiOperation(value = GET_ALL_CASES_FROM_CASEBASE, nickname = GET_ALL_CASES_FROM_CASEBASE)
     @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_CASEBASE_CASES, 

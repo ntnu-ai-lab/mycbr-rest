@@ -51,7 +51,7 @@ public class CaseController
 	    return null;
 
 	Instance instance = p.getInstance(caseID);
-	
+
 	Case queriedCase = new Case(instance.getName(),conceptID); 
 	
 	return queriedCase.getCase();
@@ -190,8 +190,9 @@ public class CaseController
 	return instanceService.addInstances(c,casebaseID, newCases);
     }
 
+	// This call adds a new case; if the ID exists, it does not add anything
     @ApiOperation(value = ADD_CASE_USING_JSON, nickname = ADD_CASE_USING_JSON)
-    @RequestMapping(method = RequestMethod.PUT, value = PATH_CONCEPT_CASEBASE_CASE_ID, 
+    @RequestMapping(method = RequestMethod.POST, value = PATH_CONCEPT_CASEBASE_CASE_ID,
     headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
     public boolean addInstanceJSON(
@@ -205,8 +206,36 @@ public class CaseController
 	    return false;
 	}
 	ICaseBase cb = p.getCaseBases().get(casebaseID);
-	Concept c = (Concept)p.getSubConcepts().get(conceptID);
+	Concept c = (Concept) p.getSubConcepts().get(conceptID);
 	
 	return null != instanceService.addInstance(c, cb, caseID, json);
     }
+
+	// this call updates existing cases
+	@ApiOperation(value = UPDATE_CASE_USING_JSON, nickname = UPDATE_CASE_USING_JSON)
+	@RequestMapping(method = RequestMethod.PUT, value = PATH_CONCEPT_CASEBASE_CASE_ID,
+			headers=ACCEPT_APPLICATION_JSON)
+	@ApiResponsesDefault
+	public boolean updateInstanceJSON(
+			@PathVariable(value=CONCEPT_ID) String conceptID,
+			@PathVariable(value=CASEBASE_ID) String casebaseID,
+			@PathVariable(value=CASE_ID) String caseID,
+			@RequestBody(required= true) JSONObject json) {
+
+		Project p = App.getProject();
+		if(!p.getCaseBases().containsKey(casebaseID)){
+			return false;
+		}
+		ICaseBase cb = p.getCaseBases().get(casebaseID);
+		Concept c = (Concept) p.getSubConcepts().get(conceptID);
+
+		// check if the case exists and delete it
+		if (p.getCaseBases().get(casebaseID).getCases().contains(p.getInstance(caseID))){
+			p.getSubConcepts().get(conceptID).removeInstance(caseID);
+		} else  // if the case does not exist don't do anything
+			return false;
+		// add the case from the provided json
+		return null != instanceService.addInstance(c, cb, caseID, json);
+	}
+
 }

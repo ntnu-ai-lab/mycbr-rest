@@ -64,6 +64,7 @@ public interface ApiOperationConstants {
     String
             ADD_MULTIPLE_CASES_USING_JSON = "addMultipleCasesUsingJSON",
             ADD_CASE_USING_JSON = "addCaseUsingJSON",
+            UPDATE_CASE_USING_JSON = "updateCaseUsingJSON",
 
     GET_CASE_BY_CASE_ID = "getCaseByCaseID",
             GET_ALL_CASES  = "getAllCases",

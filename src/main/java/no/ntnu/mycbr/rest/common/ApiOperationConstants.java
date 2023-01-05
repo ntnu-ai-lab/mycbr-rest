@@ -54,6 +54,10 @@ public interface ApiOperationConstants {
     DELETE_ALL_AMALGAMATION_FUNCTIONS 	= "deleteAllAmalgamationFunctions",
     GET_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS = "getAllAttributeSimilarityFunctions";
 
+    // API operations for ProjectController
+    String
+            SAVE_PROJECT = "saveProject",
+    PROJECT_ID = "projectID";
 
 
     // API operations for CaseController
@@ -67,6 +71,7 @@ public interface ApiOperationConstants {
 
     DELETE_CASE_BY_CASE_ID = "deleteCaseByCaseID",
             DELETE_ALL_CASES  = "deleteAllCases",
+            DELETE_ALL_CASES_FROM_CB = "deleteAllCasesFromCaseBase",
             DELETE_ALL_CASES_IN_CASEBASE_USING_PATTERN = "deleteAllCasesInCaseBaseUsingPattern";
 
 

@@ -160,36 +160,6 @@ public class CaseController
 	return true;
     }
 
-
-    //Delete instances according to pattern
-    @ApiOperation(value=DELETE_ALL_CASES_IN_CASEBASE_USING_PATTERN, nickname=DELETE_ALL_CASES_IN_CASEBASE_USING_PATTERN)
-    @RequestMapping(method=RequestMethod.DELETE, value = PATH_CONCEPT_CASEBASE_CASES + CASES_BY_PATTERN)
-    @ApiResponsesDefault
-    public boolean deleteInstancePattern(
-	    @PathVariable(value=CONCEPT_ID) String conceptID,
-	    @PathVariable(value=CASEBASE_ID) String caseBase,
-	    @RequestParam(value="pattern",defaultValue="*") String pattern) {
-
-	Project p = App.getProject();
-	if(!p.getCaseBases().containsKey(caseBase))
-	    return false;
-	if(pattern.contentEquals("*")){//this means delete all
-	    Collection<Instance> collection = p.getCaseBases().get(caseBase).getCases();
-	    Iterator<Instance> it = collection.iterator();
-	    while(it.hasNext()){
-		p.removeCase(it.next().getName());
-	    }
-	    p.save();
-	}else{
-	    Collection<Instance> collection = p.getCaseBases().get(caseBase).getCases();
-	    for(Instance i : collection){
-		collection.remove(i);
-	    }
-
-	}
-	return true;
-    }
-
     /*
     Add instances
     input should be:

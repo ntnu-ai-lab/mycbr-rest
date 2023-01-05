@@ -67,13 +67,16 @@ public class CaseController
 	    @PathVariable(value=CASEBASE_ID) String casebaseID,
 	    @PathVariable(value=CASE_ID) String caseID) {
 	Project p = App.getProject();
-	if(!p.getCaseBases().containsKey(casebaseID))
-	    return false;
+	if(!p.getCaseBases().containsKey(casebaseID)) {
+		return false;
+	}
 	ICaseBase cb = p.getCaseBases().get(casebaseID);
-	if(cb.containsCase(casebaseID)==null)
-	    return false;
-	p.getCaseBases().get(casebaseID).removeCase(caseID);
-	return true;
+	if(cb.containsCase(caseID)==null) {
+		return false;
+	} else {
+		p.getCaseBases().get(casebaseID).removeCase(caseID);
+		return true;
+	}
     }
 
     // Get all instances in case base of a concept

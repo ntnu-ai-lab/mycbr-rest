@@ -31,7 +31,8 @@ public interface ApiPathConstants {
 
 
     // myCBR-rest API: core vocabulary - single
-    String CONCEPT 	= "concept";
+    String PROJECT      = "project";
+            String CONCEPT 	= "concept";
     String CASEBASE 	= "casebase";
     String AMAL_FUNCTION= "amalgamationFunction";
     String ATTR 	= "attribute";
@@ -82,6 +83,7 @@ public interface ApiPathConstants {
 
     // Path pattern: /___ss
     String PATH 		="/";
+    String PATH_PROJECT = PATH + PROJECT;
     String PATH_CONCEPTS 	= PATH + CONCEPTS;
     String PATH_CASEBASES 	= PATH + CASEBASES;
     String PATH_AMAL_FUNCTIONS = PATH + AMAL_FUNCTIONS;

@@ -141,12 +141,12 @@ public class CaseController
     }
 
 
-    //Delete all instances
-    @ApiOperation(value=DELETE_ALL_CASES, nickname=DELETE_ALL_CASES)
+    //Delete all cases from a casebase
+    @ApiOperation(value=DELETE_ALL_CASES_FROM_CB, nickname=DELETE_ALL_CASES_FROM_CB)
     @RequestMapping(method=RequestMethod.DELETE, value = PATH_CONCEPT_CASEBASE_CASES)
     @ApiResponsesDefault
     public boolean deleteInstances(
-	    @PathVariable(value=CONCEPT) String conceptID,
+	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID) {
 
 	Project p = App.getProject();
@@ -154,8 +154,8 @@ public class CaseController
 	    return false;
 	Collection<Instance> collection = p.getCaseBases().get(casebaseID).getCases();
 	for(Instance i : collection){
-	    collection.remove(i);
-	}
+		p.getCaseBases().get(casebaseID).removeCase(i.getName());
+	 }
 
 	return true;
     }

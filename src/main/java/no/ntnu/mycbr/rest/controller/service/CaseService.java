@@ -2,9 +2,13 @@ package no.ntnu.mycbr.rest.controller.service;
 
 import no.ntnu.mycbr.core.ICaseBase;
 import no.ntnu.mycbr.core.Project;
+import no.ntnu.mycbr.core.casebase.Attribute;
 import no.ntnu.mycbr.core.casebase.Instance;
+import no.ntnu.mycbr.core.casebase.MultipleAttribute;
 import no.ntnu.mycbr.core.model.AttributeDesc;
 import no.ntnu.mycbr.core.model.Concept;
+import no.ntnu.mycbr.core.model.ConceptDesc;
+import no.ntnu.mycbr.core.model.SymbolDesc;
 import no.ntnu.mycbr.core.similarity.AmalgamationFct;
 import no.ntnu.mycbr.core.similarity.config.AmalgamationConfig;
 import no.ntnu.mycbr.rest.App;
@@ -30,12 +34,29 @@ public class CaseService {
                 String strKey = (String) key;
 
                 AttributeDesc attributeDesc = c.getAllAttributeDescs().get(strKey);
-                instance.addAttribute(attributeDesc, inpcase.get(key));
+
+                if (attributeDesc.isMultiple()) {
+                   LinkedList<Attribute> attLL = new LinkedList<Attribute>();
+                    SymbolDesc aSym = (SymbolDesc) c.getAttributeDesc(strKey);
+
+                    StringTokenizer st = new StringTokenizer(inpcase.get(key).toString(), ",");
+                    while (st.hasMoreElements()){
+                        String symbolName = st.nextElement().toString().trim();
+                        attLL.add(aSym.getAttribute(symbolName));
+                    }
+                    MultipleAttribute<SymbolDesc> multiSymbol = new MultipleAttribute<SymbolDesc>(aSym, attLL);
+                    instance.addAttribute(aSym, multiSymbol);
+
+                } else {
+                    instance.addAttribute(attributeDesc, inpcase.get(key));
+                }
             }
         }
         catch (java.text.ParseException e) {
             logger.error("could not add instance ",e);
             return null;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         cb.addCase(instance);

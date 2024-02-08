@@ -2,8 +2,7 @@ package no.ntnu.mycbr.rest.controller.service;
 
 import java.util.*;
 
-import no.ntnu.mycbr.core.similarity.ISimFct;
-import no.ntnu.mycbr.core.similarity.IntegerFct;
+import no.ntnu.mycbr.core.similarity.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.simple.JSONArray;
@@ -19,8 +18,6 @@ import no.ntnu.mycbr.core.model.FloatDesc;
 import no.ntnu.mycbr.core.model.IntegerDesc;
 import no.ntnu.mycbr.core.model.StringDesc;
 import no.ntnu.mycbr.core.model.SymbolDesc;
-import no.ntnu.mycbr.core.similarity.DoubleFct;
-import no.ntnu.mycbr.core.similarity.SimFct;
 import no.ntnu.mycbr.core.similarity.config.NumberConfig;
 import no.ntnu.mycbr.rest.App;
 
@@ -56,6 +53,7 @@ public class AttributeService {
         //  Constructor initialization chain
         this(conceptName);
         attributeDesc = concept.getAttributeDesc(attributeName);
+        logger.info("attributeDesc: " + attributeDesc.getName());
     }
 
     public boolean addDoubleSimilarityFunction(String conceptName, String attributeName, String similarityFunctionName, Double parameter) {
@@ -106,13 +104,10 @@ public class AttributeService {
 
     public LinkedList<String> getAllSimilarityFunctions() {
         IntegerDesc iAttDesc;
+        SymbolDesc sAttDesc;
+        FloatDesc fAttDesc;
         DoubleDesc dAttDesc;
         LinkedList<String> fctList= new LinkedList<String>();
-
-        try {
-            String attrDescString = attributeDesc.getAttribute(attributeDesc).getClass().getSimpleName();
-            logger.info("representation: " + attributeDesc.getRepresentation());
-
 
             String name = attributeDesc.getName();
             logger.info("name: " + name);
@@ -122,18 +117,27 @@ public class AttributeService {
                 for (ISimFct aIntFct : iAttDesc.getSimFcts()) {
                     fctList.add(aIntFct.getName());
                     logger.info("fct: " + aIntFct.getName());
-
                 }
-
+            } else if (attributeDesc.getClass().getSimpleName().equals("DoubleDesc")) {
+                dAttDesc = (DoubleDesc) concept.getAttributeDesc(name);
+                for (ISimFct aDoubleFct : dAttDesc.getSimFcts()) {
+                    fctList.add(aDoubleFct.getName());
+                    logger.info("fct: " + aDoubleFct.getName());
+                }
+            } else if (attributeDesc.getClass().getSimpleName().equals("SymbolDesc")) {
+                sAttDesc = (SymbolDesc) concept.getAttributeDesc(name);
+                for (ISimFct aSymbolFct : sAttDesc.getSimFcts()) {
+                    fctList.add(aSymbolFct.getName());
+                    logger.info("fct: " + aSymbolFct.getName());
+                }
+            } else if (attributeDesc.getClass().getSimpleName().equals("FloatDesc")) {
+                fAttDesc = (FloatDesc) concept.getAttributeDesc(name);
+                for (ISimFct aFloatFct : fAttDesc.getSimFcts()) {
+                    fctList.add(aFloatFct.getName());
+                    logger.info("fct: " + aFloatFct.getName());
+                }
             }
-
-        } catch (java.text.ParseException e) {
-            e.printStackTrace();
-        }
-
-
         return fctList;
-
     }
 
     public boolean deleteAttribute(String conceptID, String attributeID) {
@@ -207,7 +211,7 @@ public class AttributeService {
         } catch (Exception e) {
             logger.error("got an exception: ", e);
         }
-        project.save();
+        //project.save();
         return true;
     }
 

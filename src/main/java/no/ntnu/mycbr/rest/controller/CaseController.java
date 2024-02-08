@@ -17,6 +17,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -185,9 +186,10 @@ public class CaseController
 	}
 	Concept c = (Concept)p.getSubConcepts().get(conceptID);
 
-	JSONArray newCases = (JSONArray) json.get(CASES);
+	JSONObject obj= (JSONObject) JSONValue.parse(String.valueOf(json));
+	JSONArray newCases = (JSONArray) obj.get(CASES);
 
-	return instanceService.addInstances(c,casebaseID, newCases);
+	return instanceService.addInstances(c, casebaseID, newCases);
     }
 
 	// This call adds a new case; if the ID exists, it does not add anything

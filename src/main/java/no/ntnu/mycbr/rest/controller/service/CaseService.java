@@ -66,22 +66,25 @@ public class CaseService {
             instances.add(instance);
             afct.cacheNeuralSims(instances);
         }
+        //p.save();
 
         return instance;
     }
 
-    public ArrayList<String> addInstances(Concept c, String casebaseID, Set<Map<AttributeDesc, String>> inpcases){
+    public ArrayList<String> addInstances(Concept c, String casebaseID, Set<Map<AttributeDesc, String>> inpcases, ArrayList<String> caseIdList){
+
         ICaseBase cb = p.getCaseBases().get(casebaseID);
-        int counter = c.getDirectInstances().size();
+        int counter = 0;
         List<HashMap<String,String>> newCases = new ArrayList<>();
-        String idPrefix = c.getName() + "-" + casebaseID;
+        //String idPrefix = c.getName() + "-" + casebaseID;
         ArrayList<String> ret = new ArrayList<>();
         ArrayList<Instance> newInstances = new ArrayList<>();
         Instance instance = null;
+        //System.out.println("inpcases size: " + inpcases.size());
         try {
             for (Map<AttributeDesc, String> caseData : inpcases) {
+                String id = caseIdList.get(counter);
                 counter++;
-                String id = idPrefix + Integer.toString(counter);
                 ret.add(id);
                 instance = new Instance(c, id);
                 for (AttributeDesc attributeDesc : caseData.keySet()) {
@@ -98,13 +101,16 @@ public class CaseService {
             logger.error("got exception while trying to add instances",e);
             return null;
         }
+        //p.save();
+        //System.out.println("saved project to: " + p.getPath());
         return ret;
     }
     public ArrayList<String> addInstances(Concept c, String casebaseID, JSONArray inpcases){
-        return  addInstances(c,casebaseID,convertJSONArray(c,inpcases));
+        ArrayList<String> caseIdList = extractCaseIdsFromJSON(inpcases);
+        return  addInstances(c,casebaseID,convertJSONArray(c,inpcases), caseIdList);
     }
-    public Set<Map<AttributeDesc, String>> convertJSONArray(Concept c, JSONArray inpcases){
-        Set<Map<AttributeDesc, String>> ret = new HashSet<>();
+    public LinkedHashSet<Map<AttributeDesc, String>> convertJSONArray(Concept c, JSONArray inpcases){
+        LinkedHashSet<Map<AttributeDesc, String>> ret = new LinkedHashSet<>();
         Iterator<JSONObject> it = inpcases.iterator();
 
         while (it.hasNext()) {
@@ -113,6 +119,7 @@ public class CaseService {
             for (Object key : ob.keySet()) {
                 Object retObj = ob.get(key);
                 String input = null;
+
                 if(retObj instanceof Double){
                     input = ((Double)retObj).toString();
                 }else if(retObj instanceof String) {
@@ -120,13 +127,31 @@ public class CaseService {
                 }else if(retObj instanceof  Long) {
                     input = ((Long) retObj).toString();
                 }
+                if(!key.equals("id")){
+                    AttributeDesc attributeDesc = c.getAllAttributeDescs().get( key);
+                    values.put(attributeDesc,input);
+                }
 
-                AttributeDesc attributeDesc = c.getAllAttributeDescs().get( key);
-                values.put(attributeDesc,input);
             }
+            ret.add(values);
         }
-
+        //System.out.println("ret: " + ret);
         return ret;
+    }
+
+    public ArrayList<String> extractCaseIdsFromJSON(JSONArray inpcases){
+        ArrayList<String> caseIdList = new ArrayList<>();
+
+        Iterator<JSONObject> it = inpcases.iterator();
+
+        while (it.hasNext()) {
+            JSONObject ob = it.next();
+            HashMap<AttributeDesc, String> values = new HashMap<>();
+            caseIdList.add(ob.get("id").toString());
+
+        }
+        //System.out.println("caseIdList: " + caseIdList);
+        return caseIdList;
     }
 
 

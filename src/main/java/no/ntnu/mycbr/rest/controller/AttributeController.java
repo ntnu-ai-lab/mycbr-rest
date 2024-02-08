@@ -131,7 +131,7 @@ public class AttributeController {
 
 
 
-    //Get all similarity function for attribute
+    //Get all similarity function for an attribute
     @ApiOperation(value = GET_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS, nickname = GET_ALL_ATTRIBUTE_SIMILARITY_FUNCTIONS)
     @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_ATTR_SIM_FUNCTIONS,
             headers=ACCEPT_APPLICATION_JSON)
@@ -142,6 +142,7 @@ public class AttributeController {
             @PathVariable(value=ATTR_ID) String attributeID) {
 
         AttributeService service = new AttributeService(conceptID, attributeID);
+        //logger.info("simFct" + service.ge);
 
         return service.getAllSimilarityFunctions();
     }
@@ -166,7 +167,6 @@ public class AttributeController {
             headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
     public boolean addSimilarityFunction(
-
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=ATTR_ID) String attributeID,
 	    @PathVariable(value=SIM_FUNCTION_ID) String similarityFunctionID,

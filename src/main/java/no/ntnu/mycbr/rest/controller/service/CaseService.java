@@ -37,16 +37,16 @@ public class CaseService {
 
                 if (attributeDesc.isMultiple()) {
                    LinkedList<Attribute> attLL = new LinkedList<Attribute>();
-                    SymbolDesc aSym = (SymbolDesc) c.getAttributeDesc(strKey);
+                   AttributeDesc aSym = c.getAttributeDesc(strKey);
 
                     StringTokenizer st = new StringTokenizer(inpcase.get(key).toString(), ",");
+
                     while (st.hasMoreElements()){
                         String symbolName = st.nextElement().toString().trim();
                         attLL.add(aSym.getAttribute(symbolName));
                     }
-                    MultipleAttribute<SymbolDesc> multiSymbol = new MultipleAttribute<SymbolDesc>(aSym, attLL);
+                    MultipleAttribute<AttributeDesc> multiSymbol = new MultipleAttribute<>(aSym, attLL);
                     instance.addAttribute(aSym, multiSymbol);
-
                 } else {
                     instance.addAttribute(attributeDesc, inpcase.get(key));
                 }
@@ -101,8 +101,8 @@ public class CaseService {
             logger.error("got exception while trying to add instances",e);
             return null;
         }
-        //p.save();
-        //System.out.println("saved project to: " + p.getPath());
+        p.save();
+        System.out.println("saved project to: " + p.getPath());
         return ret;
     }
     public ArrayList<String> addInstances(Concept c, String casebaseID, JSONArray inpcases){

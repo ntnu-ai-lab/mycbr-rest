@@ -76,6 +76,7 @@ public class CaseController
 		return false;
 	} else {
 		p.getCaseBases().get(casebaseID).removeCase(caseID);
+		p.save();
 		return true;
 	}
     }
@@ -123,6 +124,8 @@ public class CaseController
 			if(instance.getConcept().getName().contentEquals(conceptID))
 				p.getConceptByID(conceptID).removeInstance(instance.getName());
 		}
+		p.save();
+		System.out.println("Deleted all instances of concept: " + conceptID);
 		return true;
 	}
 
@@ -151,13 +154,16 @@ public class CaseController
 	    @PathVariable(value=CASEBASE_ID) String casebaseID) {
 
 	Project p = App.getProject();
+	p.save();
 	if(!p.getCaseBases().containsKey(casebaseID))
 	    return false;
 	Collection<Instance> collection = p.getCaseBases().get(casebaseID).getCases();
 	for(Instance i : collection){
 		p.getCaseBases().get(casebaseID).removeCase(i.getName());
 	 }
-
+	System.out.println("Current project: " + p.getProject().getName());
+	p.getProject().save();
+	System.out.println("Deleted all instances of casebase: " + casebaseID);
 	return true;
     }
 

@@ -1,5 +1,22 @@
 package no.ntnu.mycbr.rest.controller.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.springframework.stereotype.Service;
+
 import no.ntnu.mycbr.core.ICaseBase;
 import no.ntnu.mycbr.core.Project;
 import no.ntnu.mycbr.core.casebase.Attribute;
@@ -10,13 +27,6 @@ import no.ntnu.mycbr.core.model.Concept;
 import no.ntnu.mycbr.core.similarity.AmalgamationFct;
 import no.ntnu.mycbr.core.similarity.config.AmalgamationConfig;
 import no.ntnu.mycbr.rest.App;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.springframework.stereotype.Service;
-
-import java.util.*;
 
 @Service
 public class CaseService {
@@ -67,16 +77,17 @@ public class CaseService {
         return instance;
     }
 
-    public ArrayList<String> addInstances(Concept c, String casebaseID, Set<Map<AttributeDesc, String>> inpcases, ArrayList<String> caseIdList) {
+    public ArrayList<String> addInstances(Concept c, String casebaseID, Set<Map<AttributeDesc, String>> inpcases,
+            ArrayList<String> caseIdList) {
 
         ICaseBase cb = p.getCaseBases().get(casebaseID);
         int counter = 0;
         List<HashMap<String, String>> newCases = new ArrayList<>();
-        //String idPrefix = c.getName() + "-" + casebaseID;
+        // String idPrefix = c.getName() + "-" + casebaseID;
         ArrayList<String> ret = new ArrayList<>();
         ArrayList<Instance> newInstances = new ArrayList<>();
         Instance instance = null;
-        //System.out.println("inpcases size: " + inpcases.size());
+        // System.out.println("inpcases size: " + inpcases.size());
         try {
             for (Map<AttributeDesc, String> caseData : inpcases) {
                 String id = caseIdList.get(counter);
@@ -132,7 +143,7 @@ public class CaseService {
             }
             ret.add(values);
         }
-        //System.out.println("ret: " + ret);
+        // System.out.println("ret: " + ret);
         return ret;
     }
 
@@ -147,10 +158,9 @@ public class CaseService {
             caseIdList.add(ob.get("id").toString());
 
         }
-        //System.out.println("caseIdList: " + caseIdList);
+        // System.out.println("caseIdList: " + caseIdList);
         return caseIdList;
     }
-
 
     public boolean deleteInstance(String conceptID, String caseID) {
         Collection<Instance> instances = p.getAllInstances();
@@ -160,7 +170,6 @@ public class CaseService {
             if (name.contentEquals(caseID)) {
                 Concept c = p.getConceptByID(conceptID);
                 c.removeInstance(name);
-                p.save();
                 return true;
             }
         }

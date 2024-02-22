@@ -160,7 +160,6 @@ public class CaseService {
             if (name.contentEquals(caseID)) {
                 Concept c = p.getConceptByID(conceptID);
                 c.removeInstance(name);
-                p.removeInstance(name);
                 p.save();
                 return true;
             }

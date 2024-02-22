@@ -98,7 +98,6 @@ public class CaseService {
             return null;
         }
         p.save();
-        System.out.println("saved project to: " + p.getPath());
         return ret;
     }
 

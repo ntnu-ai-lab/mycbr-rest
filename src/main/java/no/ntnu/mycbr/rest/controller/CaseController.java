@@ -78,7 +78,16 @@ public class CaseController {
         }
     }
 
-    
+    @ApiOperation(value = DELETE_CASE_BY_CASE_ID, nickname = DELETE_CASE_BY_CASE_ID)
+    @RequestMapping(method = RequestMethod.DELETE, value = PATH_CONCEPT_CASE_ID,
+            headers = ACCEPT_APPLICATION_JSON)
+    @ApiResponsesDefault
+    public boolean deleteInstanceFromProject(
+            @PathVariable(value = CONCEPT_ID) String conceptID,
+            @PathVariable(value = CASE_ID) String caseID) {
+        return this.instanceService.deleteInstance(conceptID, caseID);
+    }
+
     // Get all instances in case base of a concept
     @ApiOperation(value = GET_ALL_CASES, nickname = GET_ALL_CASES)
     @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_CASES, headers = ACCEPT_APPLICATION_JSON)

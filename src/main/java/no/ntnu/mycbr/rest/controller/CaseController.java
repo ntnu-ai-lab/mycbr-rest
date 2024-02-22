@@ -78,6 +78,7 @@ public class CaseController {
         }
     }
 
+    
     // Get all instances in case base of a concept
     @ApiOperation(value = GET_ALL_CASES, nickname = GET_ALL_CASES)
     @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_CASES, headers = ACCEPT_APPLICATION_JSON)
@@ -211,7 +212,7 @@ public class CaseController {
             return false;
         }
         ICaseBase cb = p.getCaseBases().get(casebaseID);
-        Concept c = (Concept) p.getSubConcepts().get(conceptID);
+        Concept c = p.getSubConcepts().get(conceptID);
 
         return null != instanceService.addInstance(c, cb, caseID, json);
     }

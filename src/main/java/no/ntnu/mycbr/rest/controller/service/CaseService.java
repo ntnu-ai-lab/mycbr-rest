@@ -7,8 +7,6 @@ import no.ntnu.mycbr.core.casebase.Instance;
 import no.ntnu.mycbr.core.casebase.MultipleAttribute;
 import no.ntnu.mycbr.core.model.AttributeDesc;
 import no.ntnu.mycbr.core.model.Concept;
-import no.ntnu.mycbr.core.model.ConceptDesc;
-import no.ntnu.mycbr.core.model.SymbolDesc;
 import no.ntnu.mycbr.core.similarity.AmalgamationFct;
 import no.ntnu.mycbr.core.similarity.config.AmalgamationConfig;
 import no.ntnu.mycbr.rest.App;
@@ -66,7 +64,6 @@ public class CaseService {
             instances.add(instance);
             afct.cacheNeuralSims(instances);
         }
-        //p.save();
 
         return instance;
     }
@@ -80,7 +77,6 @@ public class CaseService {
         ArrayList<String> ret = new ArrayList<>();
         ArrayList<Instance> newInstances = new ArrayList<>();
         Instance instance = null;
-        //System.out.println("inpcases size: " + inpcases.size());
         try {
             for (Map<AttributeDesc, String> caseData : inpcases) {
                 String id = caseIdList.get(counter);
@@ -101,8 +97,6 @@ public class CaseService {
             logger.error("got exception while trying to add instances",e);
             return null;
         }
-        p.save();
-        System.out.println("saved project to: " + p.getPath());
         return ret;
     }
     public ArrayList<String> addInstances(Concept c, String casebaseID, JSONArray inpcases){
@@ -135,7 +129,7 @@ public class CaseService {
             }
             ret.add(values);
         }
-        //System.out.println("ret: " + ret);
+
         return ret;
     }
 
@@ -150,7 +144,7 @@ public class CaseService {
             caseIdList.add(ob.get("id").toString());
 
         }
-        //System.out.println("caseIdList: " + caseIdList);
+
         return caseIdList;
     }
 

@@ -32,7 +32,7 @@ public interface ApiPathConstants {
 
     // myCBR-rest API: core vocabulary - single
     String PROJECT      = "project";
-            String CONCEPT 	= "concept";
+    String CONCEPT 	= "concept";
     String CASEBASE 	= "casebase";
     String AMAL_FUNCTION= "amalgamationFunction";
     String ATTR 	= "attribute";
@@ -42,7 +42,7 @@ public interface ApiPathConstants {
     String SIM_FUNCTION = "similarityFunction";
     String LIST = "list";
     String NEW = "new";
-
+    String SAVE = "save";
     String EPHEMERAL 	= "ephemeral";
     String ANALYTICS 	= "analytics";
 
@@ -161,4 +161,7 @@ public interface ApiPathConstants {
     String PATH_EPHEMERAL_RETRIEVAL = PATH_DEFAULT_EPHEMERAL + PATH_RETRIEVAL;
     String PATH_EPHEMERAL_RETRIEVAL_WITH_CONTENT = PATH_DEFAULT_EPHEMERAL + PATH_RETRIEVAL_BY_CASE_ID_WITH_CONTENT;
     String PATH_EPHEMERAL_SELF_SIMILARITY = PATH_DEFAULT_EPHEMERAL + PATH_SELF_SIMLARITY;
+
+    // Path pattern: /___/___
+    String PATH_PROJECT_SAVE = PATH_PROJECT + PATH + SAVE;
 }

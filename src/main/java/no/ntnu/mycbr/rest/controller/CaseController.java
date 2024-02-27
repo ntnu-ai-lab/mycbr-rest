@@ -151,7 +151,6 @@ public class CaseController
 	    @PathVariable(value=CASEBASE_ID) String casebaseID) {
 
 	Project p = App.getProject();
-	p.save();
 	if(!p.getCaseBases().containsKey(casebaseID))
 	    return false;
 	Collection<Instance> collection = p.getCaseBases().get(casebaseID).getCases();

@@ -253,7 +253,6 @@ public class ConceptController {
 	for(String cb : p.getCaseBases().keySet())
 	    p.deleteCaseBase(cb);
 	c.getSuperConcept().removeSubConcept(conceptID);
-	p.save();
 	return true;
     }
 

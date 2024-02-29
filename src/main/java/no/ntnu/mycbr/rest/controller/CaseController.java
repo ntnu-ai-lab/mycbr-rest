@@ -157,7 +157,6 @@ public class CaseController
 	for(Instance i : collection){
 		p.getCaseBases().get(casebaseID).removeCase(i.getName());
 	 }
-
 	return true;
     }
 

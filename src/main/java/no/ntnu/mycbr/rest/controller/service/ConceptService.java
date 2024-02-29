@@ -59,7 +59,6 @@ public class ConceptService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        p.save();
         return c;
     }
 

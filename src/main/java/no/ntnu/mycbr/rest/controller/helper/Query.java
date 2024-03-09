@@ -136,26 +136,20 @@ public class Query implements RetrievalCustomer {
             ConceptDesc conceptDesc = (ConceptDesc) attDesc;
             LinkedHashMap<?, ?> subConcepts = (LinkedHashMap<?, ?>) attr.getValue();
             LinkedList<Attribute> instances = new LinkedList<>();
-            if (!conceptDesc.isMultiple()) {
-                assert subConcepts.size() == 1 : "Subconcept should have only one entry when subconcept is not multiple";
-                String instanceId = (String) subConcepts.keySet().toArray()[0];
+            for (Map.Entry<?, ?> subConceptAttrEntry : subConcepts.entrySet()) {
+                String instanceId = (String) subConceptAttrEntry.getKey();
                 Instance newInstance = (Instance) attDesc.getAttribute(instanceId);
-                LinkedHashMap<?, ?> instanceAttr = (LinkedHashMap<?, ?>) subConcepts.get(instanceId);
+                Object instanceAttrMap = subConceptAttrEntry.getValue();
+                LinkedHashMap<?, ?> instanceAttr = (LinkedHashMap<?, ?>) instanceAttrMap;
                 for (Map.Entry<?, ?> instanceEntry : instanceAttr.entrySet()) {
                     this.addAttrToInstance((Map.Entry<String, Object>) instanceEntry, newInstance.getConcept(), newInstance);
                 }
-                query.addAttribute(conceptDesc, newInstance);
+                instances.add(newInstance);
+            }
+            if (!conceptDesc.isMultiple()) {
+                assert instances.size() == 1 : "Concept has more than 1 subconcept instance when multiple is false"
+                query.addAttribute(conceptDesc, instances.get(0));
             } else {
-                for (Map.Entry<?, ?> subConceptAttrEntry : subConcepts.entrySet()) {
-                    String instanceId = (String) subConceptAttrEntry.getKey();
-                    Instance newInstance = (Instance) attDesc.getAttribute(instanceId);
-                    Object instanceAttrMap = subConceptAttrEntry.getValue();
-                    LinkedHashMap<?, ?> instanceAttr = (LinkedHashMap<?, ?>) instanceAttrMap;
-                    for (Map.Entry<?, ?> instanceEntry : instanceAttr.entrySet()) {
-                        this.addAttrToInstance((Map.Entry<String, Object>) instanceEntry, newInstance.getConcept(), newInstance);
-                    }
-                    instances.add(newInstance);
-                }
                 MultipleAttribute<ConceptDesc> multiSubConcept = new MultipleAttribute<>(conceptDesc, instances);
                 query.addAttribute(conceptDesc, multiSubConcept);
             }

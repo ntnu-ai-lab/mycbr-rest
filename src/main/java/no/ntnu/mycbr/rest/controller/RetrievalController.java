@@ -172,7 +172,7 @@ public class RetrievalController {
             @PathVariable(value = CASEBASE_ID) String casebaseID,
             @PathVariable(value = AMAL_FUNCTION_ID) String amalgamationFunctionID,
             @RequestParam(required = false, value = NO_OF_RETURNED_CASES, defaultValue = DEFAULT_NO_OF_CASES) int k,
-            @RequestBody(required = true) HashMap<String, Object> attributeNameValueMap) {
+            @RequestBody() HashMap<String, Object> attributeNameValueMap) {
 
         Query query = new Query(casebaseID, conceptID, amalgamationFunctionID, attributeNameValueMap, k);
         return getFullResult(query, conceptID);
@@ -189,8 +189,7 @@ public class RetrievalController {
             @RequestParam(required = false, value = NO_OF_RETURNED_CASES, defaultValue = DEFAULT_NO_OF_CASES) int k) {
 
         Query query = new Query(casebaseID, conceptID, amalgamationFunctionID, caseID, k);
-        List<LinkedHashMap<String, String>> cases = getFullResult(query, conceptID);
-        return cases;
+		return getFullResult(query, conceptID);
     }
 
     @ApiOperation(value = GET_SIMILAR_CASES_WITH_CONTENT, nickname = GET_SIMILAR_CASES_WITH_CONTENT)

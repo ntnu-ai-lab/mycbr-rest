@@ -8,7 +8,8 @@ import no.ntnu.mycbr.rest.cbr.CBREngine;
 
 import java.util.LinkedHashMap;
 
-import static no.ntnu.mycbr.rest.utils.Constants.*;
+import static no.ntnu.mycbr.rest.utils.Constants.CASE_ID;
+import static no.ntnu.mycbr.rest.utils.Constants.SIMILARITY;
 import static no.ntnu.mycbr.rest.utils.Helper.getSortedCaseContent;
 
 /**
@@ -17,12 +18,13 @@ import static no.ntnu.mycbr.rest.utils.Helper.getSortedCaseContent;
 public class Case {
 
     private LinkedHashMap<String, String> casecontent = new LinkedHashMap<String, String>();
+
     public Case(String caseID) {
 
         Project project = App.getProject();
         Concept concept = project.getConceptByID(CBREngine.getConceptName());
         Instance instance = concept.getInstance(caseID);
-        if(instance != null)
+        if (instance != null)
             casecontent = new LinkedHashMap<>(getSortedCaseContent(instance));
         else
             casecontent = new LinkedHashMap<>();
@@ -33,14 +35,13 @@ public class Case {
         Project project = App.getProject();
         Concept concept = project.getConceptByID(conceptID);
         Instance instance = concept.getInstance(caseID);
-        
+
         casecontent.put(CASE_ID, instance.getName());
         casecontent.putAll(getSortedCaseContent(instance));
     }
 
     // Used by full results
     public Case(String conceptID, String caseID, double similarity) {
-
         Project project = App.getProject();
         Concept concept = project.getConceptByID(conceptID);
         Instance instance = concept.getInstance(caseID);

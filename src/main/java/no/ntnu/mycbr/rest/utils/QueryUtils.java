@@ -14,12 +14,15 @@ public class QueryUtils {
         List<LinkedHashMap<String, String>> cases = new ArrayList<>();
 
         for (Map.Entry<String, Double> entry : results.entrySet()) {
-            String entryCaseID = entry.getKey();
-            double similarity = entry.getValue();
-            Case caze = new Case(concept, entryCaseID, similarity);
-            cases.add(caze.getCase());
+            try {
+                String entryCaseID = entry.getKey();
+                double similarity = entry.getValue();
+                Case caze = new Case(concept, entryCaseID, similarity);
+                cases.add(caze.getCase());
+            } catch (Exception e) {
+                // If we're here, we have a concept with an ID from a different concept. Case doesn't exist; continue
+            }
         }
-
         return cases;
     }
 }

@@ -147,7 +147,7 @@ public class Query implements RetrievalCustomer {
                 instances.add(newInstance);
             }
             if (!conceptDesc.isMultiple()) {
-                assert instances.size() == 1 : "Concept has more than 1 subconcept instance when multiple is false"
+                assert instances.size() == 1 : "Concept has more than 1 subconcept instance when multiple is false";
                 query.addAttribute(conceptDesc, instances.get(0));
             } else {
                 MultipleAttribute<ConceptDesc> multiSubConcept = new MultipleAttribute<>(conceptDesc, instances);

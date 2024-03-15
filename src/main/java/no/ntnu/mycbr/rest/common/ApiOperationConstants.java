@@ -86,7 +86,7 @@ public interface ApiOperationConstants {
             GET_SIMILAR_CASES_BY_CASE_ID_WITH_CONTENT = "getSimilarCasesByCaseIDWithContent",
 
     GET_SIMILAR_CASES_BY_ATTRIBUTE = "getSimilarCasesByAttribute",
-            GET_SIMILAR_CASES_BY_MULTIPLE_ATTRIBUTES = "getSimilarCasesByMultipleAttributess",
+            GET_SIMILAR_CASES_BY_MULTIPLE_ATTRIBUTES = "getSimilarCasesByMultipleAttributes",
 
     GET_CASE_BASE_SELF_SIMILARITY = "getCaseBaseSelfSimilarity";
 

@@ -15,15 +15,15 @@ calls through a Swagger API
 - Add myCBR to the API
 - To build it go into its root folder and run:
 
-## Deploying the myCBR Rest API
+** Deploying the myCBR Rest API
 
 Next you will have to download and build the Rest API. As the Rest API uses the myCBR SDK you need to install is using the following command:
-```
+#+BEGIN_EXAMPLE
 cd ../mycbr-rest
 mvn install:install-file -Dfile=../mycbr-sdk/target/myCBR-x.x-SNAPSHOT.jar -DpomFile=../mycbr-sdk/pom.xml -DlocalRepositoryPath=lib/no/ntnu/mycbr/mycbr-sdk/
-```
+#+END_EXAMPLE
 For these calls we assume that both the mycbr-sdk and mycbr-rest are located in the same folder:
-```
+#+BEGIN_EXAMPLE
 root
  |__ mycbr-sdk
           |__pom.xml
@@ -36,7 +36,7 @@ root
           |__target
                |__mycbr-rest-x.x-SNAPSHOT.jar
           |__lib/no/ntnu/mycbr/mycbr-sdk/
-```
+#+END_EXAMPLE
 
 #+BEGIN_EXAMPLE
     mvn clean install

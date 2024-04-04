@@ -12,7 +12,31 @@ calls through a Swagger API
   :END:
 - Build and install the newest [[https://github.com/ntnu-ai-lab/mycbr-sdk][myCBR-SDK]]
 - First clone the project
+- Add myCBR to the project
 - To build it go into its root folder and run:
+
+## Adding myCBR to the RestAPI
+
+Next you will have to download and build the Rest API. As the Rest API uses the myCBR SDK you need to install is using the following command: 
+```
+cd ../mycbr-rest 
+mvn install:install-file -Dfile=../mycbr-sdk/target/myCBR-x.x-SNAPSHOT.jar -DpomFile=../mycbr-sdk/pom.xml -DlocalRepositoryPath=lib/no/ntnu/mycbr/mycbr-sdk/
+```
+For these calls we assume that both the mycbr-sdk and mycbr-rest are located in the same folder:
+```
+root
+ |__ mycbr-sdk
+          |__pom.xml
+          |__src
+          |__target
+               |__myCBR-x.x-SNAPSHOT.jar
+ |__ mycbr-rest
+          |__pom.xml
+          |__src
+          |__target
+               |__mycbr-rest-x.x-SNAPSHOT.jar
+          |__lib/no/ntnu/mycbr/mycbr-sdk/
+```
 
 #+BEGIN_EXAMPLE
     mvn clean install

@@ -16,7 +16,6 @@ calls through a Swagger API
 - To build it go into its root folder and run:
 
 ** Deploying the myCBR Rest API
-
 Next you will have to download and build the Rest API. As the Rest API uses the myCBR SDK you need to install is using the following command:
 #+BEGIN_EXAMPLE
 cd ../mycbr-rest
@@ -38,6 +37,7 @@ root
           |__lib/no/ntnu/mycbr/mycbr-sdk/
 #+END_EXAMPLE
 
+** Building and Running the API
 #+BEGIN_EXAMPLE
     mvn clean install
     or

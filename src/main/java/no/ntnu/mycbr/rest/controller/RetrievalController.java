@@ -17,7 +17,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 
-import static no.ntnu.mycbr.rest.utils.QueryUtils.getFullResult;
 
 import static no.ntnu.mycbr.rest.common.ApiPathConstants.*;
 import static no.ntnu.mycbr.rest.controller.service.AnalyticsService.*;
@@ -31,8 +30,10 @@ public class RetrievalController {
     private static final String RETRIEVAL = "/retrieval";
     private static final String RETRIEVAL_BY_CASE_ID = "/retrievalByCaseID";
     private static final String RETRIEVAL_BY_MULTIPLE_CASE_I_DS = "/retrievalByMultipleCaseIDs";
+	private static final String RETRIEVAL_BY_MULTIPLE_CASE_I_DS_W_CONTENT = "/retrievalByMultipleCaseIDsWithContent";
     private static final String RETRIEVAL_BY_ATTRIBUTE = "/retrievalByAttribute";
     private static final String RETRIEVAL_BY_MULTIPLE_ATTRIBUTES = "/retrievalByMultipleAttributes";
+	private static final String MULTIPLE_RETRIEVAL_BY_MULTIPLE_ATTRIBUTES = "/multipleRetrievalByMultipleAttributes";
     private static final String RETRIEVAL_BY_CASE_ID_WITH_CONTENT = "/retrievalByCaseIDWithContent";
     private static final String RETRIEVAL_WITH_CONTENT = "/retrievalWithContent";
     
@@ -86,6 +87,25 @@ public class RetrievalController {
 	
 	Map<String, HashMap<String, Double>> retrievedResult  = Query.retrieve(casebaseIDs, conceptID, amalgamationFunctionID, caseIDs, k);
 	
+	return retrievedResult;
+    }
+
+	@ApiOperation(value = GET_SIMILAR_CASES_BY_MULTIPLE_CASE_IDS_WITH_CONTENT, nickname = GET_SIMILAR_CASES_BY_MULTIPLE_CASE_IDS_WITH_CONTENT)
+    @RequestMapping(method = RequestMethod.POST, path=PATH_CONCEPT_CASEBASE_AMAL_FUNCTION_ID+RETRIEVAL_BY_MULTIPLE_CASE_I_DS_W_CONTENT, produces=APPLICATION_JSON)
+    @ApiResponsesDefault
+    public Map<String,List<LinkedHashMap<String, String>>> getSimilarCasesByIDsWithContent(
+	    @PathVariable(value=CONCEPT_ID) String conceptID,
+	    @PathVariable(value=CASEBASE_ID) String casebaseID,
+	    @PathVariable(value=AMAL_FUNCTION_ID) String amalgamationFunctionID,
+	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k,
+	    @RequestBody(required = true)  Set<String> caseIDs) {
+	Map<String,List<LinkedHashMap<String, String>>> retrievedResult = new HashMap<>();
+	for(String caseID : caseIDs) {
+		Query query = new Query(casebaseID, conceptID, amalgamationFunctionID, caseID, k);
+		List<LinkedHashMap<String, String>> cases = getFullResult(query, conceptID);
+		retrievedResult.put(caseID,cases);
+
+	}
 	return retrievedResult;
     }
 
@@ -181,6 +201,26 @@ public class RetrievalController {
 	Query query = new Query(casebaseID, conceptID, amalgamationFunctionID, attributeNameValueMap, k);
 	List<LinkedHashMap<String, String>> cases = getFullResult(query, conceptID);
 	return cases;
+    }
+
+
+	    @ApiOperation(value = GET_SIMILAR_CASES_BY_MULTIPLE_ATTRIBUTES, nickname = MULTIPLE_RETRIEVAL_BY_MULTIPLE_ATTRIBUTES)
+    @RequestMapping(method = RequestMethod.POST, path=PATH_CONCEPT_CASEBASE_AMAL_FUNCTION_ID+MULTIPLE_RETRIEVAL_BY_MULTIPLE_ATTRIBUTES, produces=APPLICATION_JSON)
+    @ApiResponsesDefault
+    public @ResponseBody List<List<LinkedHashMap<String, String>>> getMultipleSimilarInstancesWithContent(
+	    @PathVariable(value=CONCEPT_ID) String conceptID,
+	    @PathVariable(value=CASEBASE_ID) String casebaseID,
+	    @PathVariable(value=AMAL_FUNCTION_ID) String amalgamationFunctionID,
+	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k,
+	    @RequestBody(required = true)  List<HashMap<String, Object>> attributeNameValueMaps) {
+			// System.out.println(attributeNameValueMaps);
+			List<List<LinkedHashMap<String, String>>> retrievedResult = new ArrayList<>();
+	for(HashMap<String, Object> attributeNameValueMap : attributeNameValueMaps) {
+		Query query = new Query(casebaseID, conceptID, amalgamationFunctionID, attributeNameValueMap, k);
+		List<LinkedHashMap<String, String>> cases = getFullResult(query, conceptID);
+		retrievedResult.add(cases);
+	}
+	return retrievedResult;
     }
 
     @ApiOperation(value = GET_SIMILAR_CASES_BY_CASE_ID_WITH_CONTENT, nickname = GET_SIMILAR_CASES_BY_CASE_ID_WITH_CONTENT)

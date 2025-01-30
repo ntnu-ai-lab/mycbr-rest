@@ -4,12 +4,13 @@ import java.util.*;
 
 import no.ntnu.mycbr.core.similarity.ISimFct;
 import no.ntnu.mycbr.core.similarity.IntegerFct;
+import no.ntnu.mycbr.core.similarity.SymbolFct;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import org.json.simple.parser.ParseException; 
 
 import no.ntnu.mycbr.core.Project;
 import no.ntnu.mycbr.core.model.AttributeDesc;
@@ -19,6 +20,7 @@ import no.ntnu.mycbr.core.model.FloatDesc;
 import no.ntnu.mycbr.core.model.IntegerDesc;
 import no.ntnu.mycbr.core.model.StringDesc;
 import no.ntnu.mycbr.core.model.SymbolDesc;
+import no.ntnu.mycbr.core.casebase.SymbolAttribute;
 import no.ntnu.mycbr.core.similarity.DoubleFct;
 import no.ntnu.mycbr.core.similarity.SimFct;
 import no.ntnu.mycbr.core.similarity.config.NumberConfig;
@@ -58,18 +60,29 @@ public class AttributeService {
         attributeDesc = concept.getAttributeDesc(attributeName);
     }
 
-    public boolean addDoubleSimilarityFunction(String conceptName, String attributeName, String similarityFunctionName, Double parameter) {
+    public boolean addDoubleSimilarityFunction(String conceptName, String attributeName, String similarityFunctionName, Double parameter,String functiontype) {
         Concept subConcept = (Concept) project.getSubConcepts().get(conceptName);
         DoubleDesc attributeDesc = (DoubleDesc) subConcept.getAllAttributeDescs().get(attributeName);
         //DoubleFct doubleFct = new DoubleFct(p,attributeDesc,similarityFunctionName);
         DoubleFct doubleFct = attributeDesc.addDoubleFct(similarityFunctionName, true);
         doubleFct.setSymmetric(true);
-        doubleFct.setFunctionTypeL(NumberConfig.POLYNOMIAL_WITH);
-        doubleFct.setFunctionParameterL(parameter);
+        if (functiontype.equals("constant")){
+            doubleFct.setFunctionTypeL(NumberConfig.CONSTANT);
+            doubleFct.setFunctionParameterL(parameter);
+        }else if (functiontype.equals("step")){
+            doubleFct.setFunctionTypeL(NumberConfig.STEP_AT);
+            doubleFct.setFunctionParameterL(parameter);
+        }else if (functiontype.equals("polynomial")){
+            doubleFct.setFunctionTypeL(NumberConfig.POLYNOMIAL_WITH);
+            doubleFct.setFunctionParameterL(parameter);
+        }else if (functiontype.equals("smooth")){
+            doubleFct.setFunctionTypeL(NumberConfig.SMOOTH_STEP_AT);
+            doubleFct.setFunctionParameterL(parameter);
+        }
         return true;
     }
 
-    public boolean addIntegerSimilarityFunction(String conceptName, String attributeName, String similarityFunctionName) {
+    public boolean addIntegerSimilarityFunction(String conceptName, String attributeName, String similarityFunctionName,Double parameter, String functiontype) {
         Concept subConcept = (Concept) project.getSubConcepts().get(conceptName);
         IntegerDesc attributeDesc = (IntegerDesc) subConcept.getAllAttributeDescs().get(attributeName);
 
@@ -84,11 +97,46 @@ public class AttributeService {
         for (ISimFct temp : attributeDesc.getSimFcts()) {
             logger.info("sim name: " + temp.getName());
         }
-
         intFct.setSymmetric(true);
-        intFct.setFunctionTypeL(NumberConfig.CONSTANT);
+        if (functiontype.equals("constant")){
+            intFct.setFunctionTypeL(NumberConfig.CONSTANT);
+            intFct.setFunctionParameterL(parameter);
+        }else if (functiontype.equals("step")){
+            intFct.setFunctionTypeL(NumberConfig.STEP_AT);
+            intFct.setFunctionParameterL(parameter);
+        }else if (functiontype.equals("polynomial")){
+            intFct.setFunctionTypeL(NumberConfig.POLYNOMIAL_WITH);
+            intFct.setFunctionParameterL(parameter);
+        }else if (functiontype.equals("smooth")){
+            intFct.setFunctionTypeL(NumberConfig.SMOOTH_STEP_AT);
+            intFct.setFunctionParameterL(parameter);
+        }
         return true;
     }
+
+    public boolean addSymbolSimilarityFunction(String conceptName, String attributeName, String similarityFunctionName,ArrayList<ArrayList<Object>> symbolfunction) {
+        Concept subConcept = (Concept) project.getSubConcepts().get(conceptName);
+        SymbolDesc attributeDesc = (SymbolDesc) subConcept.getAllAttributeDescs().get(attributeName);
+
+        for (ISimFct temp : attributeDesc.getSimFcts()) {
+            logger.info("sim name: " + temp.getName());
+        }
+        SymbolFct symbolFct = attributeDesc.addSymbolFct(similarityFunctionName, true);
+        symbolFct.setSymmetric(true);
+        for (ArrayList<Object> mapping :  symbolfunction) {
+            boolean success=symbolFct.setSimilarity((String) mapping.get(0),(String) mapping.get(1),(double) mapping.get(2));
+		}
+        logger.info("after adding: ");
+        for (ISimFct temp : attributeDesc.getSimFcts()) {
+            logger.info("sim name: " + temp.getName());
+        }
+
+        return true;
+    }
+
+
+
+
 
     public boolean deleteAllSimilarityFunctions() {
         concept.getActiveAmalgamFct().setActiveFct(attributeDesc, null);
@@ -98,6 +146,8 @@ public class AttributeService {
     public Map<String, Object> getActiveSimilarityFunction() {
 
         Object object = concept.getActiveAmalgamFct().getActiveFct(attributeDesc);
+        System.out.println(((SimFct) object).getRepresentation());
+        System.out.println("how");
         if (object instanceof SimFct) {
             return ((SimFct) object).getRepresentation();
         } else
@@ -109,14 +159,14 @@ public class AttributeService {
         DoubleDesc dAttDesc;
         LinkedList<String> fctList= new LinkedList<String>();
 
-        try {
-            String attrDescString = attributeDesc.getAttribute(attributeDesc).getClass().getSimpleName();
+        // try {
+            // String attrDescString = attributeDesc.getAttribute(attributeDesc).getClass().getSimpleName();
             logger.info("representation: " + attributeDesc.getRepresentation());
 
 
             String name = attributeDesc.getName();
             logger.info("name: " + name);
-
+            
             if (attributeDesc.getClass().getSimpleName().equals("IntegerDesc")){
                 iAttDesc = (IntegerDesc) concept.getAttributeDesc(name);
                 for (ISimFct aIntFct : iAttDesc.getSimFcts()) {
@@ -127,9 +177,9 @@ public class AttributeService {
 
             }
 
-        } catch (java.text.ParseException e) {
-            e.printStackTrace();
-        }
+        // } catch (java.text.ParseException e) {
+        //     e.printStackTrace();
+        // }
 
 
         return fctList;
@@ -154,10 +204,11 @@ public class AttributeService {
     /**
      * @param conceptID
      * @param attributeID
-     * @param attributeJSON : e.g. "{"type": "Double","min": "0.0","max": "1.0"}"
+     * @param attributeJSON : e.g. "{"type": "Double","min": functionType"0.0","max": "1.0"}"
      * @return
      */
     public boolean addAttribute(String conceptID, String attributeID, String attributeJSON) {
+        System.out.println(attributeJSON);
         Concept subConcept = project.getSubConcepts().get(conceptID);
         JSONParser parser = new JSONParser();
         JSONObject json = null;
@@ -174,8 +225,8 @@ public class AttributeService {
                 addStringAttribute(subConcept, attributeID, solution.contentEquals("True"));
             } else if (type.contains("Double")) {
                 if (json.containsKey("min") && json.containsKey("max")) {
-                    double min = (Long) json.get("min");
-                    double max = (Long) json.get("max");
+                    double min = (double) json.get("min");
+                    double max = (double) json.get("max");
                     //This attribute registers with the concept through callback!
                     attributeDesc = addDoubleAttribute(subConcept, attributeID, min, max, solution.contentEquals("True"));
                 } else
@@ -197,7 +248,8 @@ public class AttributeService {
                     for (Object o : arr) {
                         allowedValues.add((String) o);
                     }
-                    SymbolDesc attributeDesc = new SymbolDesc(subConcept, attributeID, allowedValues);
+                    //SymbolDesc attributeDesc = new SymbolDesc(subConcept, attributeID, allowedValues);
+                    attributeDesc = addSymbolAttribute(subConcept, attributeID, allowedValues, solution.contentEquals("True"));
                     if (solution.contentEquals("True"))
                         attributeDesc.setIsSolution(true);
                 } else
@@ -263,6 +315,13 @@ public class AttributeService {
 
     private AttributeDesc addDoubleAttribute(Concept c, String attributeName, double min, double max, boolean solution) throws Exception {
         AttributeDesc attributeDesc = new DoubleDesc(c, attributeName, min, max);
+        if (solution)
+            attributeDesc.setIsSolution(true);
+        return attributeDesc;
+    }
+
+    private AttributeDesc addSymbolAttribute(final Concept c, final String attributeName,Set<String> allowedValues,boolean solution) throws Exception {
+        AttributeDesc attributeDesc = new SymbolDesc(c, attributeName, allowedValues);
         if (solution)
             attributeDesc.setIsSolution(true);
         return attributeDesc;

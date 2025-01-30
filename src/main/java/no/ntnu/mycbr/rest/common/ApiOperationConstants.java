@@ -83,6 +83,7 @@ public interface ApiOperationConstants {
 
     GET_SIMILAR_CASES_BY_CASE_ID = "getSimilarCasesByCaseID",
             GET_SIMILAR_CASES_BY_MULTIPLE_CASE_IDS = "getSimilarCasesByMultipleCaseIDs",
+            GET_SIMILAR_CASES_BY_MULTIPLE_CASE_IDS_WITH_CONTENT = "getSimilarCasesByMultipleCaseIDsWithContent",
             GET_SIMILAR_CASES_BY_CASE_ID_WITH_CONTENT = "getSimilarCasesByCaseIDWithContent",
 
     GET_SIMILAR_CASES_BY_ATTRIBUTE = "getSimilarCasesByAttribute",

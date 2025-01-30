@@ -11,6 +11,7 @@ import no.ntnu.mycbr.core.model.*;
 import no.ntnu.mycbr.core.retrieval.Retrieval;
 import no.ntnu.mycbr.core.retrieval.Retrieval.RetrievalCustomer;
 import no.ntnu.mycbr.core.retrieval.RetrievalResult;
+import no.ntnu.mycbr.core.retrieval.SequentialRetrieval;
 import no.ntnu.mycbr.core.similarity.Similarity;
 import no.ntnu.mycbr.rest.App;
 import no.ntnu.mycbr.rest.utils.ConcurrentCustomer;
@@ -313,6 +314,7 @@ public class Query implements RetrievalCustomer {
             tempAmalgamFctManager.changeAmalgamFct(amalFunc);
 
             Retrieval r = new Retrieval(myConcept, cb, this);
+            SequentialRetrieval sr = new SequentialRetrieval(project, r);
 
             try {
                 Instance query = r.getQueryInstance();
@@ -328,7 +330,9 @@ public class Query implements RetrievalCustomer {
                 }
 
                 r.start();
-                List<Pair<Instance, Similarity>> results = this.results;
+
+                // List<Pair<Instance, Similarity>> results = this.results;
+                List<Pair<Instance, Similarity>> results = sr.retrieveKSorted(cb, query, 100);
 
                 for (Pair<Instance, Similarity> result : results) {
                     this.resultList.put(result.getFirst().getName(), result.getSecond().getValue());

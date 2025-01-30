@@ -3,6 +3,7 @@ package no.ntnu.mycbr.rest.controller;
 import static no.ntnu.mycbr.rest.common.ApiOperationConstants.*;
 import static no.ntnu.mycbr.rest.common.ApiPathConstants.*;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -123,7 +124,7 @@ public class AttributeController {
     public Map<String, Object> getActiveSimilarityFunction(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=ATTR_ID) String attributeID) {
-	
+	System.out.println("correct api call");
 	AttributeService service = new AttributeService(conceptID, attributeID);
 	
 	return service.getActiveSimilarityFunction();
@@ -170,11 +171,27 @@ public class AttributeController {
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=ATTR_ID) String attributeID,
 	    @PathVariable(value=SIM_FUNCTION_ID) String similarityFunctionID,
-	    @RequestParam(value="parameter", defaultValue="1.0") String parameter) {
+	    @RequestParam(value="parameter", defaultValue="1.0") String parameter,
+        @RequestParam(value="variabletype", defaultValue="integer") String vartype,
+        @RequestBody(required = false) Map<String, ArrayList<ArrayList<Object>>> symbolfunction,
+        @RequestParam(value="functiontype", defaultValue="constant") String functiontype) {
 	logger.info("AttributeController: " + conceptID + ", " +  attributeID + ", " +  similarityFunctionID  + ", " + parameter);
     Double parameterD = Double.parseDouble(parameter);
-//	return new AttributeService().addDoubleSimilarityFunction( conceptID, attributeID, similarityFunctionID, parameterD);
-    return new AttributeService().addIntegerSimilarityFunction( conceptID, attributeID, similarityFunctionID);
+    // System.out.println(vartype);
+    // System.out.println(parameter);
+    // System.out.println(functiontype);
+     System.out.println("over here is the name");
+    if (vartype.equals("integer")){
+        return new AttributeService().addIntegerSimilarityFunction( conceptID, attributeID, similarityFunctionID,parameterD,functiontype);
+    }
+    else if(vartype.equals("double")){
+        return new AttributeService().addDoubleSimilarityFunction( conceptID, attributeID, similarityFunctionID,parameterD,functiontype);
+    }
+    else{
+        System.out.println("in endpoint call");
+        System.out.println(symbolfunction.get("symbolfunction"));
+        return new AttributeService().addSymbolSimilarityFunction( conceptID, attributeID, similarityFunctionID,symbolfunction.get("symbolfunction"));
+    }
 
     }
 }

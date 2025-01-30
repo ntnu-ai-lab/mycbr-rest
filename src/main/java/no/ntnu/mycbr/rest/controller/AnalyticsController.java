@@ -52,7 +52,7 @@ public class AnalyticsController {
     public @ResponseBody List<Map<String, Double>> LocalSimComparison(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
             //@PathVariable(value=CASEBASE_ID) String casebaseID,
-            @RequestParam(value=AMAL_FUNCTION_ID) String amalgamationFunctionID,
+            @PathVariable(value=AMAL_FUNCTION_ID) String amalgamationFunctionID,
             @RequestParam(value=CASE_ID_1) String caseAID,
             @RequestParam(value=CASE_ID_2) String caseBID) {
 

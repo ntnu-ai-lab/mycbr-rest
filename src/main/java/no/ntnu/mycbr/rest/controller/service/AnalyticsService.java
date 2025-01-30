@@ -64,7 +64,7 @@ public class AnalyticsService {
 
             try {
                 ISimFct simfct = (ISimFct) concept.getActiveAmalgamFct().getActiveFct(attrDesc);
-                Similarity sim = simfct.calculateSimilarity(case1Att, case2Att);
+                Similarity sim = simfct.calculateSimilarity(case1Att, case2Att); 
                 LinkedHashMap<String, Double> res = new LinkedHashMap<>();
                 res.put(attrName, weight.doubleValue() * sim.getValue());
                 resultList.add(res);

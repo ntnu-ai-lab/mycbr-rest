@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +41,7 @@ public class ConceptController {
     private ProjectAccessService projectAccessService;
 
     //get all amalgamation functions
-    @ApiOperation(value = GET_ALL_AMALGAMATION_FUNCTIONS, nickname = GET_ALL_AMALGAMATION_FUNCTIONS)
+    @Operation(summary = GET_ALL_AMALGAMATION_FUNCTIONS, operationId = GET_ALL_AMALGAMATION_FUNCTIONS)
     //@RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPTS + "/{concept}/amalgamationFunctions", produces = APPLICATION_JSON)
     @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPT_AMAL_FUNCTIONS, produces = APPLICATION_JSON)
     @ApiResponsesDefault
@@ -61,7 +61,7 @@ public class ConceptController {
     }
     
     //delete all amalgamation functions
-    @ApiOperation(value = DELETE_ALL_AMALGAMATION_FUNCTIONS, nickname = DELETE_ALL_AMALGAMATION_FUNCTIONS)
+    @Operation(summary = DELETE_ALL_AMALGAMATION_FUNCTIONS, operationId = DELETE_ALL_AMALGAMATION_FUNCTIONS)
     @RequestMapping(method = RequestMethod.DELETE, path= PATH_CONCEPT_AMAL_FUNCTIONS, produces = APPLICATION_JSON)
     @ApiResponsesDefault
     public boolean deleteAmalgamationFunctions(
@@ -78,7 +78,7 @@ public class ConceptController {
     // copy an existing amalgationfunction
     // amalgamationfunctionType needs to be a string matching exactly the name of the enum. https://stackoverflow.com/questions/604424/lookup-java-enum-by-string-value
     // MINIMUM, MAXIMUM, WEIGHTED_SUM, EUCLIDEAN, NEURAL_NETWORK_SOLUTION_DIRECTLY,SIM_DEF;
-    @ApiOperation(value = COPY_AMALGAMATION_FUNCTION, nickname = COPY_AMALGAMATION_FUNCTION)
+    @Operation(summary = COPY_AMALGAMATION_FUNCTION, operationId = COPY_AMALGAMATION_FUNCTION)
     @RequestMapping(method = RequestMethod.PUT, path=PATH_CONCEPT_AMAL_FUNCTION_ID, produces = APPLICATION_JSON)
     @ApiResponsesDefault
     public boolean addAmalgamationFunctions(
@@ -98,7 +98,7 @@ public class ConceptController {
 	//add one amalgationfunction
 	// amalgamationfunctionType needs to be a string matching exactly the name of the enum. https://stackoverflow.com/questions/604424/lookup-java-enum-by-string-value
 	// MINIMUM, MAXIMUM, WEIGHTED_SUM, EUCLIDEAN, NEURAL_NETWORK_SOLUTION_DIRECTLY,SIM_DEF;
-	@ApiOperation(value = ADD_AMALGAMATION_FUNCTION, nickname = ADD_AMALGAMATION_FUNCTION)
+	@Operation(summary = ADD_AMALGAMATION_FUNCTION, operationId = ADD_AMALGAMATION_FUNCTION)
 	@RequestMapping(method = RequestMethod.PUT, path=PATH_CONCEPT_AMAL_FUNCTIONS, produces = APPLICATION_JSON)
 	@ApiResponsesDefault
 	public boolean addAmalgamationFunctions(
@@ -154,7 +154,7 @@ public class ConceptController {
 
     }
 
-    @ApiOperation(value = ADD_NEURAL_AMALGAMATION_FUNCTION, nickname = ADD_NEURAL_AMALGAMATION_FUNCTION)
+    @Operation(summary = ADD_NEURAL_AMALGAMATION_FUNCTION, operationId = ADD_NEURAL_AMALGAMATION_FUNCTION)
     @RequestMapping(method = RequestMethod.PUT, 
     	path=PATH_CONCEPT_ID + "/neuralAmalgamationFunctions/{amalgamationFunctionID}", 
     	produces = APPLICATION_JSON)
@@ -203,7 +203,7 @@ public class ConceptController {
     }
 
     //delete one amalgationfunction
-    @ApiOperation(value = DELETE_AMALGAMATION_FUNCTION, nickname = DELETE_AMALGAMATION_FUNCTION)
+    @Operation(summary = DELETE_AMALGAMATION_FUNCTION, operationId = DELETE_AMALGAMATION_FUNCTION)
     @RequestMapping(method = RequestMethod.DELETE, path=PATH_CONCEPT_AMAL_FUNCTION_ID, produces = APPLICATION_JSON)
     @ApiResponsesDefault
     public boolean deleteAmalgamationFunction(
@@ -223,7 +223,7 @@ public class ConceptController {
 
 
     //Get all concepts
-    @ApiOperation(value = GET_All_CONCEPTS, nickname = GET_All_CONCEPTS)
+    @Operation(summary = GET_All_CONCEPTS, operationId = GET_All_CONCEPTS)
     @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPTS, produces = APPLICATION_JSON)
     @ApiResponsesDefault
     public Set<String> getConcepts() {
@@ -233,7 +233,7 @@ public class ConceptController {
     }
 
     //Delete all concepts
-    @ApiOperation(value = DELETE_ALL_CONCEPTS, nickname = DELETE_ALL_CONCEPTS)
+    @Operation(summary = DELETE_ALL_CONCEPTS, operationId = DELETE_ALL_CONCEPTS)
     @RequestMapping(method = RequestMethod.DELETE, path=PATH_CONCEPTS, produces = APPLICATION_JSON)
     @ApiResponsesDefault
     public boolean deleteConcepts() {
@@ -242,7 +242,7 @@ public class ConceptController {
     }
 
     //Delete one concept
-    @ApiOperation(value= DELETE_CONCEPT_BY_ID, nickname= DELETE_CONCEPT_BY_ID)
+    @Operation(summary = DELETE_CONCEPT_BY_ID, operationId = DELETE_CONCEPT_BY_ID)
     @RequestMapping(method=RequestMethod.DELETE, value = PATH_CONCEPT_ID)
     @ApiResponsesDefault
     public boolean deleteConcept(
@@ -259,7 +259,7 @@ public class ConceptController {
     }
 
     //add one concept
-    @ApiOperation(value=ADD_CONCEPT_ID, nickname=ADD_CONCEPT_ID)
+    @Operation(summary = ADD_CONCEPT_ID, operationId = ADD_CONCEPT_ID)
     @RequestMapping(method=RequestMethod.PUT, value = PATH_CONCEPT_ID)
     @ApiResponsesDefault
     public boolean addConcept(

@@ -15,11 +15,11 @@
 		<java.version>17</java.version>
 		<mycbr.version>3.3-SNAPSHOT</mycbr.version>
 		<spring.version>2.7.18</spring.version>
-		<springfox.version>2.9.2</springfox.version>
 		<jackson.version>1.9.12</jackson.version>
 		<mvn.compiler.version>3.11.0</mvn.compiler.version>
 		<hibernate.version>1.0.1.Final</hibernate.version>
 		<simple.json.version>1.1.1</simple.json.version>
+		<springdoc.version>1.8.0</springdoc.version>
 	</properties>
 
 
@@ -64,14 +64,9 @@
 			<version>2.13.5</version>
 		</dependency>
 		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>${springfox.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>${springfox.version}</version>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>${springdoc.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>

@@ -1,6 +1,6 @@
 package no.ntnu.mycbr.rest.controller;
 
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import no.ntnu.mycbr.rest.controller.service.ProjectAccessService;
 import no.ntnu.mycbr.rest.controller.service.EphemeralRetrieval;
 
@@ -45,7 +45,7 @@ public class EphemeralController {
      * This map includes two additional keys: "caseID" and "similarity" apart from the attributeIDs. 
      * 
      */
-   @ApiOperation(value = GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE_WITH_CONTENT, nickname = GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE_WITH_CONTENT)
+   @Operation(summary = GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE_WITH_CONTENT, operationId = GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE_WITH_CONTENT)
     @RequestMapping(method = RequestMethod.POST, path=PATH_EPHEMERAL_RETRIEVAL_WITH_CONTENT, produces=APPLICATION_JSON)
     @ApiResponsesDefault
     public @ResponseBody List<Map<String, String>> retrievalFromEphemeralCaseBaseWithContent(
@@ -77,7 +77,7 @@ public class EphemeralController {
      * Inner Map<K2,V2> - K2: a caseID from the ephemeralCaseIDs, V2: similarity score for K1 vs K2, respectively. 
      * The number of cases in the inner map (Map<K2,V2>) depends on the value of k. 
      */
-    @ApiOperation(value = GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE, nickname = GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE)
+    @Operation(summary = GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE, operationId = GET_SIMILAR_CASES_FROM_EPHEMERAL_CASE_BASE)
     @RequestMapping(method = RequestMethod.POST, path=PATH_EPHEMERAL_RETRIEVAL, produces=APPLICATION_JSON)
     @ApiResponsesDefault
     public @ResponseBody Map<String, Map<String, Double>> retrievalFromEphemeralCaseBase(
@@ -108,7 +108,7 @@ public class EphemeralController {
      * Inner Map<K2,V2> - K1: a caseID from the ephemeralCaseIDs, V2: similarity score for K1 vs K2, respectively. 
      * The number of cases in the inner map (Map<K2,V2>) depends on the value of k. 
      */
-    @ApiOperation(value = GET_EPHEMERAL_CASE_BASE_SELF_SIMILARITY, nickname = GET_EPHEMERAL_CASE_BASE_SELF_SIMILARITY)
+    @Operation(summary = GET_EPHEMERAL_CASE_BASE_SELF_SIMILARITY, operationId = GET_EPHEMERAL_CASE_BASE_SELF_SIMILARITY)
     @RequestMapping(method = RequestMethod.POST, path=PATH_EPHEMERAL_SELF_SIMILARITY, produces=APPLICATION_JSON)
     @ApiResponsesDefault
     public @ResponseBody Map<String, Map<String, Double>> computeEphemeralCaseBaseSelfSimilarity(

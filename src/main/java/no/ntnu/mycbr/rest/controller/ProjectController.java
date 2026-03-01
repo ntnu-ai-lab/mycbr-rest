@@ -1,6 +1,6 @@
 package no.ntnu.mycbr.rest.controller;
 
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import no.ntnu.mycbr.core.Project;
 import no.ntnu.mycbr.rest.common.ApiResponseAnnotations.ApiResponsesDefault;
 import no.ntnu.mycbr.rest.controller.service.ProjectAccessService;
@@ -22,7 +22,7 @@ public class ProjectController {
     @Autowired
     private ProjectAccessService projectAccessService;
 
-    @ApiOperation(value = SAVE_PROJECT, nickname = SAVE_PROJECT)
+    @Operation(summary = SAVE_PROJECT, operationId = SAVE_PROJECT)
     @RequestMapping(method = RequestMethod.GET, value = PATH_PROJECT_SAVE,
             headers = ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault

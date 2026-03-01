@@ -6,28 +6,34 @@ import no.ntnu.mycbr.core.similarity.AmalgamationFct;
 import no.ntnu.mycbr.core.similarity.DoubleFct;
 import no.ntnu.mycbr.core.similarity.config.AmalgamationConfig;
 import no.ntnu.mycbr.core.similarity.config.NumberConfig;
-import no.ntnu.mycbr.rest.App;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
 public class ConceptService {
-    Project p = App.getProject();
     private final Log logger = LogFactory.getLog(getClass());
+    @Autowired
+    private ProjectAccessService projectAccessService;
+
+    private Project currentProject() {
+        return projectAccessService.getProject();
+    }
 
     public Concept addConcept(String conceptID){
+        Project project = currentProject();
         logger.info("creating concept with id:"+conceptID);
-        int concepts = p.getSubConcepts().size();
+        int concepts = project.getSubConcepts().size();
         if (concepts == 0 )
             return createTopConcept(conceptID);
-        else if (p.getSuperConcept() == null)
+        else if (project.getSuperConcept() == null)
             return createTopConcept(conceptID);
         else {
             try {
-                Concept c = new Concept(conceptID,p,p.getSuperConcept());
+                Concept c = new Concept(conceptID, project, project.getSuperConcept());
                 return c;
             } catch (Exception e) {
                 logger.error("got exception trying to create concept:" , e);
@@ -52,7 +58,7 @@ public class ConceptService {
         return  attributeDesc;
     }
     public Concept createTopConcept(String concept){
-        Project p = App.getProject();
+        Project p = currentProject();
         Concept c = null;
         try {
             c = p.createTopConcept(concept);
@@ -63,11 +69,11 @@ public class ConceptService {
     }
 
     public Project getProject(){
-        return p;
+        return currentProject();
     }
 
     public boolean deleteAllConcepts(){
-        Project proj = App.getProject();
+        Project proj = currentProject();
         HashMap<String,Concept> subConcepts = proj.getSubConcepts();
         Concept superConcept = proj.getSuperConcept();
         if(superConcept == null && subConcepts.size() == 0)

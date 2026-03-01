@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import no.ntnu.mycbr.rest.common.ApiResponseAnnotations.ApiResponsesDefault;
 import no.ntnu.mycbr.rest.controller.service.AnalyticsService;
+import no.ntnu.mycbr.rest.controller.service.ProjectAccessService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static no.ntnu.mycbr.rest.common.ApiOperationConstants.*;
 import static no.ntnu.mycbr.rest.common.ApiPathConstants.*;
@@ -31,6 +33,8 @@ public class AnalyticsController {
     
     private static final String CASE_ID_1 = "caseID_1";
     private static final String CASE_ID_2 = "caseID_2";
+    @Autowired
+    private ProjectAccessService projectAccessService;
 
     @ApiOperation(value = "compares 2 instances including weights (weighted sum)", nickname = DETAILED_CASE_COMPARISION)
     @RequestMapping(method = RequestMethod.GET, path= PATH_ANALYTICS_CONCEPT_AMAL_FUNCTION_ID + DETAILED_CASE_COMPARISON, produces = APPLICATION_JSON)
@@ -42,7 +46,7 @@ public class AnalyticsController {
             @RequestParam(value=CASE_ID_1) String caseID1,
             @RequestParam(value=CASE_ID_2) String caseID2) {
 
-        AnalyticsService service = new AnalyticsService(conceptID, amalgamationFunctionID);
+        AnalyticsService service = new AnalyticsService(projectAccessService.getProject(), conceptID, amalgamationFunctionID);
         return service.getCaseComparison(caseID1, caseID2);
     }
 
@@ -56,7 +60,7 @@ public class AnalyticsController {
             @RequestParam(value=CASE_ID_1) String caseAID,
             @RequestParam(value=CASE_ID_2) String caseBID) {
 
-        AnalyticsService service = new AnalyticsService(conceptID, amalgamationFunctionID);
+        AnalyticsService service = new AnalyticsService(projectAccessService.getProject(), conceptID, amalgamationFunctionID);
         return service.getLocalSimComparison(caseAID, caseBID);
     }
 
@@ -68,7 +72,7 @@ public class AnalyticsController {
             //@PathVariable(value=CASEBASE_ID) String casebaseID,
             @RequestParam(value=AMAL_FUNCTION_ID) String amalgamationFunctionID) {
 
-        AnalyticsService service = new AnalyticsService(conceptID, amalgamationFunctionID);
+        AnalyticsService service = new AnalyticsService(projectAccessService.getProject(), conceptID, amalgamationFunctionID);
         return service.getGlobalWeights();
     }
 }

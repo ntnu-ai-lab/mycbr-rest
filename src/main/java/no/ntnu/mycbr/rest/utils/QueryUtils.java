@@ -5,11 +5,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import no.ntnu.mycbr.core.Project;
 import no.ntnu.mycbr.rest.controller.helper.Case;
 import no.ntnu.mycbr.rest.controller.helper.Query;
 
 public class QueryUtils {
-    public static List<LinkedHashMap<String, String>> getFullResult(Query query, String concept) {
+    public static List<LinkedHashMap<String, String>> getFullResult(Project project, Query query, String concept) {
         LinkedHashMap<String, Double> results = query.getSimilarCases();
         List<LinkedHashMap<String, String>> cases = new ArrayList<>();
 
@@ -17,7 +18,7 @@ public class QueryUtils {
             try {
                 String entryCaseID = entry.getKey();
                 double similarity = entry.getValue();
-                Case caze = new Case(concept, entryCaseID, similarity);
+                Case caze = new Case(project, concept, entryCaseID, similarity);
                 cases.add(caze.getCase());
             } catch (Exception e) {
                 // If we're here, we have a concept with an ID from a different concept. Case doesn't exist; continue

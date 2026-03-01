@@ -7,10 +7,11 @@ import io.swagger.annotations.ApiOperation;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import no.ntnu.mycbr.core.ICaseBase;
 import no.ntnu.mycbr.core.Project;
-import no.ntnu.mycbr.rest.App;
+import no.ntnu.mycbr.rest.controller.service.ProjectAccessService;
 
 import static no.ntnu.mycbr.rest.common.ApiResponseAnnotations.*;
 
@@ -25,6 +26,8 @@ import static no.ntnu.mycbr.rest.common.ApiOperationConstants.*;
 public class CaseBaseController {
 
     private final Log logger = LogFactory.getLog(getClass());
+    @Autowired
+    private ProjectAccessService projectAccessService;
 
     @ApiOperation(value = GET_CASEBASE_IDS, nickname = GET_CASEBASE_IDS)
     @RequestMapping(method = RequestMethod.GET, path=PATH_CASEBASES, produces = APPLICATION_JSON)
@@ -33,7 +36,7 @@ public class CaseBaseController {
 	
 	List<String> casebaseNames = new LinkedList<>();
 	
-	Project project = App.getProject();
+	Project project = projectAccessService.getProject();
 
         for (Map.Entry<String, ICaseBase> cb : project.getCaseBases().entrySet()) {
             casebaseNames.add(cb.getKey());
@@ -48,7 +51,7 @@ public class CaseBaseController {
     public boolean createCaseBase(
 	    @PathVariable(value=CASEBASE_ID) String casebase){
 	
-	Project p = App.getProject();
+	Project p = projectAccessService.getProject();
 	try {
 	    p.createDefaultCB(casebase);
 	} catch (Exception e) {
@@ -64,7 +67,7 @@ public class CaseBaseController {
     public boolean deleteCaseBase(
 	    @PathVariable(value=CASEBASE_ID) String casebase){
 	
-	Project p = App.getProject();
+	Project p = projectAccessService.getProject();
 	try {
 	    p.deleteCaseBase(casebase);
 	} catch (Exception e) {

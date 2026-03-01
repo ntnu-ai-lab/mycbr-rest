@@ -1,10 +1,12 @@
 package no.ntnu.mycbr.rest.controller;
 
 import io.swagger.annotations.ApiOperation;
+import no.ntnu.mycbr.rest.controller.service.ProjectAccessService;
 import no.ntnu.mycbr.rest.controller.service.EphemeralRetrieval;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
@@ -23,6 +25,8 @@ public class EphemeralController {
 
     private static final String DEFAULT_CASE_ID = "car0";
     private final Log logger = LogFactory.getLog(getClass());
+    @Autowired
+    private ProjectAccessService projectAccessService;
 
     //@Autowired
     //private EphemeralRetrieval ephemeralService;
@@ -52,7 +56,7 @@ public class EphemeralController {
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k,
 	    @RequestBody(required = true)  Set<String> ephemeralCaseIDs) {
 
-	EphemeralRetrieval ephemeralRetrieval = new EphemeralRetrieval(conceptID, casebaseID, amalgamationFunctionID, k);
+	EphemeralRetrieval ephemeralRetrieval = new EphemeralRetrieval(projectAccessService.getProject(), conceptID, casebaseID, amalgamationFunctionID, k);
 	List<Map<String, String>> retrivalResults = ephemeralRetrieval
 		.ephemeralRetrivalForSingleQuery(queryCaseID, ephemeralCaseIDs);
 
@@ -86,7 +90,7 @@ public class EphemeralController {
 	Set<String> querySet = mapOfcaseIDs.get(QUERY_CASE_IDS);
 	Set<String> cbSet = mapOfcaseIDs.get(EPHEMERAL_CASE_IDS);
 
-	EphemeralRetrieval ephemeralRetrieval = new EphemeralRetrieval(conceptID, casebaseID, amalgamationFunctionID, k);
+	EphemeralRetrieval ephemeralRetrieval = new EphemeralRetrieval(projectAccessService.getProject(), conceptID, casebaseID, amalgamationFunctionID, k);
 	Map<String, Map<String, Double>> retrivalResults = ephemeralRetrieval.ephemeralRetrival(querySet, cbSet);
 
 	return retrivalResults;
@@ -114,7 +118,7 @@ public class EphemeralController {
 	    @RequestParam(required = false, value=NO_OF_RETURNED_CASES,defaultValue = DEFAULT_NO_OF_CASES) int k,
 	    @RequestBody(required = true)  Set<String> ephemeralCaseIDs) {
 
-	EphemeralRetrieval ephemeralRetrieval = new EphemeralRetrieval(conceptID, casebaseID, amalgamationFunctionID, k);
+	EphemeralRetrieval ephemeralRetrieval = new EphemeralRetrieval(projectAccessService.getProject(), conceptID, casebaseID, amalgamationFunctionID, k);
 	Map<String, Map<String, Double>> retrivalResults = ephemeralRetrieval.computeSelfSimilarity(ephemeralCaseIDs);
 
 	return retrivalResults;

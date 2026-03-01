@@ -7,11 +7,11 @@ import no.ntnu.mycbr.core.Project;
 import no.ntnu.mycbr.core.casebase.Instance;
 import no.ntnu.mycbr.core.model.Concept;
 import io.swagger.annotations.ApiOperation;
-import no.ntnu.mycbr.rest.App;
 import no.ntnu.mycbr.rest.common.ApiResponseAnnotations.ApiResponsesDefault;
 import no.ntnu.mycbr.rest.controller.helper.Case;
 import no.ntnu.mycbr.rest.controller.helper.Query;
 import no.ntnu.mycbr.rest.controller.service.CaseService;
+import no.ntnu.mycbr.rest.controller.service.ProjectAccessService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -33,6 +33,8 @@ public class CaseController
 
     @Autowired
     private CaseService instanceService;
+    @Autowired
+    private ProjectAccessService projectAccessService;
 
     private final Log logger = LogFactory.getLog(getClass());
 
@@ -46,14 +48,14 @@ public class CaseController
 	    @PathVariable(value=CASEBASE_ID) String casebaseID,
 	    @PathVariable(value=CASE_ID) String caseID) {
 
-	Project p = App.getProject();
+	Project p = projectAccessService.getProject();
 	
 	if (!p.getCaseBases().containsKey(casebaseID))
 	    return null;
 
 	Instance instance = p.getInstance(caseID);
 
-	Case queriedCase = new Case(instance.getName(),conceptID); 
+	Case queriedCase = new Case(p, instance.getName(),conceptID); 
 	
 	return queriedCase.getCase();
     }
@@ -67,7 +69,7 @@ public class CaseController
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID,
 	    @PathVariable(value=CASE_ID) String caseID) {
-	Project p = App.getProject();
+	Project p = projectAccessService.getProject();
 	if(!p.getCaseBases().containsKey(casebaseID)) {
 		return false;
 	}
@@ -87,7 +89,7 @@ public class CaseController
     public List<Map<String, String>> getAllInstances(
 	    @PathVariable(value=CONCEPT_ID) String conceptID) {
 	
-	Project p = App.getProject();
+	Project p = projectAccessService.getProject();
 
 	/*Query query = new Query(conceptID);
 
@@ -103,7 +105,7 @@ public class CaseController
 	List<Map<String, String>> ret = new LinkedList<>();
 	for(Instance instance : instances){
 	    if(instance.getConcept().getName().contentEquals(conceptID))
-		ret.add(new Case(instance.getName(),conceptID).getCase());
+		ret.add(new Case(p, instance.getName(),conceptID).getCase());
 	}
 	return ret;
     }
@@ -116,7 +118,7 @@ public class CaseController
 	public boolean deleteAllInstances(
 			@PathVariable(value=CONCEPT_ID) String conceptID) {
 
-		Project p = App.getProject();
+		Project p = projectAccessService.getProject();
 		Collection<Instance> instances = p.getAllInstances();
 
 		for(Instance instance : instances){
@@ -134,10 +136,11 @@ public class CaseController
     public List<LinkedHashMap<String, String>> getAllInstancesInCaseBase(
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID) {
-	
-	Query query = new Query(casebaseID,conceptID);
+
+	Project p = projectAccessService.getProject();
+	Query query = new Query(p, casebaseID,conceptID);
 	//TODO: filter to one type of concept
-	List<LinkedHashMap<String, String>> cases = getFullResult(query, conceptID);
+	List<LinkedHashMap<String, String>> cases = getFullResult(p, query, conceptID);
 	return cases;
     }
 
@@ -150,7 +153,7 @@ public class CaseController
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=CASEBASE_ID) String casebaseID) {
 
-	Project p = App.getProject();
+	Project p = projectAccessService.getProject();
 	if(!p.getCaseBases().containsKey(casebaseID))
 	    return false;
 	Collection<Instance> collection = p.getCaseBases().get(casebaseID).getCases();
@@ -179,7 +182,7 @@ public class CaseController
 	    @PathVariable(value=CASEBASE_ID) String casebaseID,
 	    @RequestBody(required= true) JSONObject json) {
 
-	Project p = App.getProject();
+	Project p = projectAccessService.getProject();
 	if(!p.getCaseBases().containsKey(casebaseID)){
 	    return new ArrayList<>();
 	}
@@ -202,7 +205,7 @@ public class CaseController
 	    @PathVariable(value=CASE_ID) String caseID,
 	    @RequestBody(required= true) JSONObject json) {
 	
-	Project p = App.getProject();
+	Project p = projectAccessService.getProject();
 	if(!p.getCaseBases().containsKey(casebaseID)){
 	    return false;
 	}
@@ -223,7 +226,7 @@ public class CaseController
 			@PathVariable(value=CASE_ID) String caseID,
 			@RequestBody(required= true) JSONObject json) {
 
-		Project p = App.getProject();
+		Project p = projectAccessService.getProject();
 		if(!p.getCaseBases().containsKey(casebaseID)){
 			return false;
 		}

@@ -16,18 +16,20 @@ import no.ntnu.mycbr.core.retrieval.Retrieval;
 import no.ntnu.mycbr.core.retrieval.Retrieval.RetrievalCustomer;
 import no.ntnu.mycbr.core.similarity.Similarity;
 import no.ntnu.mycbr.util.Pair;
-import no.ntnu.mycbr.rest.App;
 import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctManager;
 import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctNotChangedException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SelfSimilarityRetrieval implements RetrievalCustomer{
 
     private final Log logger = LogFactory.getLog(getClass());
+    @Autowired
+    private ProjectAccessService projectAccessService;
 
     private int k = -1;
     
@@ -47,7 +49,7 @@ public class SelfSimilarityRetrieval implements RetrievalCustomer{
 
 	this.k = k;
 
-	Project project = App.getProject();
+	Project project = projectAccessService.getProject();
 	Concept concept = project.getConceptByID(conceptName);
 	ICaseBase cb = (DefaultCaseBase)project.getCaseBases().get(casebaseName);
 	

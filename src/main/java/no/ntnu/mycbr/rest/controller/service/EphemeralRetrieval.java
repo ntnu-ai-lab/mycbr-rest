@@ -18,7 +18,6 @@ import no.ntnu.mycbr.core.retrieval.Retrieval;
 import no.ntnu.mycbr.core.retrieval.Retrieval.RetrievalCustomer;
 import no.ntnu.mycbr.core.similarity.Similarity;
 import no.ntnu.mycbr.util.Pair;
-import no.ntnu.mycbr.rest.App;
 import no.ntnu.mycbr.rest.controller.helper.Case;
 import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctManager;
 import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctNotChangedException;
@@ -36,7 +35,7 @@ public class EphemeralRetrieval implements RetrievalCustomer{
 
     // Number of retrieved cases, default is -1 (interpreted as all cases a case base) 
     private int k = -1;
-    private Project project;
+    private final Project project;
     private ICaseBase cb;
     private Concept concept;
     private TemporaryAmalgamFctManager tempAmalgamFctManager;
@@ -44,9 +43,9 @@ public class EphemeralRetrieval implements RetrievalCustomer{
     private List<Pair<Instance,Similarity>> results;
     private Map<String, Map<String, Double>> simMatrix = new LinkedHashMap<String, Map<String, Double>>();
 
-    public EphemeralRetrieval(String conceptName, String casebaseName, String amalFunc, int k) {		
+    public EphemeralRetrieval(Project project, String conceptName, String casebaseName, String amalFunc, int k) {		
 	this.k = k;
-	this.project = App.getProject();
+        this.project = project;
 	this.cb = (DefaultCaseBase)project.getCaseBases().get(casebaseName);
 	this.concept = project.getConceptByID(conceptName);
 	
@@ -81,7 +80,7 @@ public class EphemeralRetrieval implements RetrievalCustomer{
         for (Map.Entry<String, Double> entry : results.entrySet()) {
             String entryCaseID = entry.getKey();
             double similarity = entry.getValue();
-            Case caze = new Case(concept.getName(), entryCaseID, similarity);
+            Case caze = new Case(project, concept.getName(), entryCaseID, similarity);
             cases.add(caze.getCase());
         }
 
@@ -188,7 +187,7 @@ public class EphemeralRetrieval implements RetrievalCustomer{
     private ICaseBase createEmptyCasebase(String cbName, int caseCount) {
 	ICaseBase cb = null;
 	try {
-	    cb = new DefaultCaseBase(this.project, cbName, caseCount);
+	    cb = new DefaultCaseBase(project, cbName, caseCount);
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}

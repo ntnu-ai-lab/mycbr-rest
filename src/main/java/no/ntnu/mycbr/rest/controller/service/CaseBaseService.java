@@ -2,17 +2,19 @@ package no.ntnu.mycbr.rest.controller.service;
 
 import no.ntnu.mycbr.core.ICaseBase;
 import no.ntnu.mycbr.core.Project;
-import no.ntnu.mycbr.rest.App;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CaseBaseService {
-    Project p = App.getProject();
     private final Log logger = LogFactory.getLog(getClass());
+    @Autowired
+    private ProjectAccessService projectAccessService;
 
     public ICaseBase addCaseBase(String caseBaseID){
+        Project p = projectAccessService.getProject();
         ICaseBase ret = null;
         try {
             ret = p.createDefaultCB(caseBaseID);
@@ -23,6 +25,7 @@ public class CaseBaseService {
     }
 
     public boolean deleteCaseBase(String caseBaseID){
+        Project p = projectAccessService.getProject();
         try {
             p.createDefaultCB(caseBaseID);
         } catch (Exception e) {

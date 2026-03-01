@@ -3,7 +3,6 @@ package no.ntnu.mycbr.rest.controller.helper;
 import no.ntnu.mycbr.core.Project;
 import no.ntnu.mycbr.core.casebase.Instance;
 import no.ntnu.mycbr.core.model.Concept;
-import no.ntnu.mycbr.rest.App;
 import no.ntnu.mycbr.rest.cbr.CBREngine;
 
 import java.util.LinkedHashMap;
@@ -19,9 +18,7 @@ public class Case {
 
     private LinkedHashMap<String, String> casecontent = new LinkedHashMap<String, String>();
 
-    public Case(String caseID) {
-
-        Project project = App.getProject();
+    public Case(Project project, String caseID) {
         Concept concept = project.getConceptByID(CBREngine.getConceptName());
         Instance instance = concept.getInstance(caseID);
         if (instance != null)
@@ -30,9 +27,7 @@ public class Case {
             casecontent = new LinkedHashMap<>();
     }
 
-    public Case(String caseID, String conceptID) {
-
-        Project project = App.getProject();
+    public Case(Project project, String caseID, String conceptID) {
         Concept concept = project.getConceptByID(conceptID);
         Instance instance = concept.getInstance(caseID);
 
@@ -41,8 +36,7 @@ public class Case {
     }
 
     // Used by full results
-    public Case(String conceptID, String caseID, double similarity) {
-        Project project = App.getProject();
+    public Case(Project project, String conceptID, String caseID, double similarity) {
         Concept concept = project.getConceptByID(conceptID);
         Instance instance = concept.getInstance(caseID);
 

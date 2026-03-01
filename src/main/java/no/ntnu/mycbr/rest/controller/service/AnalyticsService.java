@@ -7,7 +7,6 @@ import no.ntnu.mycbr.core.model.*;
 import no.ntnu.mycbr.core.similarity.ISimFct;
 import no.ntnu.mycbr.core.similarity.Similarity;
 
-import no.ntnu.mycbr.rest.App;
 import no.ntnu.mycbr.rest.utils.ListUtil;
 import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctManager;
 import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctNotChangedException;
@@ -21,20 +20,15 @@ import java.util.*;
 
 public class AnalyticsService {
 
-    private Project project;
     private Concept concept;
-    //private ICaseBase cb;
-    private TemporaryAmalgamFctManager tempAmalgamFctManager;
     
     private List<Map<String, Double>> resultList = new ArrayList<Map<String, Double>>();
 
-    public AnalyticsService(String conceptID, String amalFuncName) {
-        this.project = App.getProject();
+    public AnalyticsService(Project project, String conceptID, String amalFuncName) {
         this.concept = project.getConceptByID(conceptID);
-        //this.cb = (DefaultCaseBase)project.getCaseBases().get(casebaseID);
         
        
-         this.tempAmalgamFctManager = new TemporaryAmalgamFctManager(concept);
+         TemporaryAmalgamFctManager tempAmalgamFctManager = new TemporaryAmalgamFctManager(concept);
 
 	// This will change the default Amalgamation Function of the myCBR project to a user specified function
 	try {

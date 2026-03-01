@@ -4,8 +4,8 @@ import no.ntnu.mycbr.core.Project;
 import no.ntnu.mycbr.core.model.*;
 import no.ntnu.mycbr.core.similarity.*;
 import no.ntnu.mycbr.core.similarity.config.AmalgamationConfig;
-import no.ntnu.mycbr.rest.*;
 import no.ntnu.mycbr.rest.controller.service.ConceptService;
+import no.ntnu.mycbr.rest.controller.service.ProjectAccessService;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -37,6 +37,8 @@ public class ConceptController {
     private String file_path =  System.getProperty("java.io.tmpdir");
     @Autowired
     private ConceptService conceptService;
+    @Autowired
+    private ProjectAccessService projectAccessService;
 
     //get all amalgamation functions
     @ApiOperation(value = GET_ALL_AMALGAMATION_FUNCTIONS, nickname = GET_ALL_AMALGAMATION_FUNCTIONS)
@@ -48,7 +50,7 @@ public class ConceptController {
 	
 	List<String> amalgamationFunctionIDs = new LinkedList<>();
 	
-	Concept concept = App.getProject().getConceptByID(conceptID);
+	Concept concept = projectAccessService.getProject().getConceptByID(conceptID);
 	
 	List<AmalgamationFct> amalgamationFunctions = concept.getAvailableAmalgamFcts();
         for (AmalgamationFct amalgamationFunction : amalgamationFunctions) {
@@ -65,7 +67,7 @@ public class ConceptController {
     public boolean deleteAmalgamationFunctions(
 	    @PathVariable(value=CONCEPT_ID) String conceptID) {
 	
-	Concept thisconcept = App.getProject().getAllSubConcepts().get(conceptID);
+	Concept thisconcept = projectAccessService.getProject().getAllSubConcepts().get(conceptID);
 	List<AmalgamationFct> list = thisconcept.getAvailableAmalgamFcts();
 	for(AmalgamationFct fct : list){
 	    thisconcept.deleteAmalgamFct(fct);
@@ -84,7 +86,7 @@ public class ConceptController {
 	    @RequestParam(value= AMAL_FUNCTION_ID) String amalgamationFunctionID,
 	    @RequestParam(value=AMAL_FUNCTION_TYPE) String amalgamationFunctionType) {
 	
-	Concept concept = App.getProject().getSubConcepts().get(conceptID);
+	Concept concept = projectAccessService.getProject().getSubConcepts().get(conceptID);
     conceptService.addAmalgamationFunction(concept, amalgamationFunctionID, amalgamationFunctionType);
 
 	return true;
@@ -105,7 +107,7 @@ public class ConceptController {
 			@RequestParam(value=AMAL_FUNCTION_TYPE) String amalgamationFunctionType,
 			@RequestParam(value="attributeWeightsJSON", defaultValue = "{}") String attributeWeightsJSON)
 	{
-		Concept concept = App.getProject().getSubConcepts().get(conceptID);
+		Concept concept = projectAccessService.getProject().getSubConcepts().get(conceptID);
 		JSONParser parser = new JSONParser();
 		JSONObject json = null;
 		try {
@@ -129,7 +131,7 @@ public class ConceptController {
 			}
 		}
 
-		App.getProject().save();
+		projectAccessService.getProject().save();
 		return true;
 	}
 
@@ -186,7 +188,7 @@ public class ConceptController {
 
 	System.setProperty("NeuralRetrievalModelFilePath",baseFileName);
 	//Then create the function
-	Concept concept = App.getProject().getSubConcepts().get(conceptID);
+	Concept concept = projectAccessService.getProject().getSubConcepts().get(conceptID);
 	if(type.contains("direct")) {
 	    AmalgamationConfig config = AmalgamationConfig.NEURAL_NETWORK_SOLUTION_DIRECTLY; //NICE
 	    AmalgamationFct fct = concept.addAmalgamationFct(config, amalgamationFunctionID, false);
@@ -208,7 +210,7 @@ public class ConceptController {
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=AMAL_FUNCTION) String amalgamationFunction) {
 	
-	Concept thisconcept = App.getProject().getAllSubConcepts().get(conceptID);
+	Concept thisconcept = projectAccessService.getProject().getAllSubConcepts().get(conceptID);
 	List<AmalgamationFct> list = thisconcept.getAvailableAmalgamFcts();
 	for(AmalgamationFct fct : list){
 	    if(fct.getName().contentEquals(amalgamationFunction)){
@@ -225,7 +227,7 @@ public class ConceptController {
     @RequestMapping(method = RequestMethod.GET, path=PATH_CONCEPTS, produces = APPLICATION_JSON)
     @ApiResponsesDefault
     public Set<String> getConcepts() {
-	Project project = App.getProject();
+	Project project = projectAccessService.getProject();
 	Set<String> concepts = project.getSubConcepts().keySet();        
 	return concepts;
     }
@@ -246,7 +248,7 @@ public class ConceptController {
     public boolean deleteConcept(
 	    @PathVariable(value=CONCEPT_ID) String conceptID){
 	
-	Project p = App.getProject();
+	Project p = projectAccessService.getProject();
 	logger.info("deleting concept with id:"+conceptID);
 	Concept c = p.getSubConcepts().get(conceptID);
 	//TODO: this should be filtered by concept...

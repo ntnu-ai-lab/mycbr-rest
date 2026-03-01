@@ -19,7 +19,6 @@ import no.ntnu.mycbr.core.model.IntegerDesc;
 import no.ntnu.mycbr.core.model.StringDesc;
 import no.ntnu.mycbr.core.model.SymbolDesc;
 import no.ntnu.mycbr.core.similarity.config.NumberConfig;
-import no.ntnu.mycbr.rest.App;
 
 /**
  * The AttributeService facilitates CRUD operations on attributes of a concept.
@@ -35,23 +34,23 @@ public class AttributeService {
 
     private static final String STRING = "String";
 
-    private Project project;
     private Concept concept;
     private AttributeDesc attributeDesc;
+    private final Project project;
 
-    public AttributeService() {
-        project = App.getProject();
+    public AttributeService(Project project) {
+        this.project = project;
     }
 
-    public AttributeService(String conceptName) {
+    public AttributeService(Project project, String conceptName) {
         // Default constructor initialization
-        this();
+        this(project);
         concept = project.getConceptByID(conceptName);
     }
 
-    public AttributeService(String conceptName, String attributeName) {
+    public AttributeService(Project project, String conceptName, String attributeName) {
         //  Constructor initialization chain
-        this(conceptName);
+        this(project, conceptName);
         attributeDesc = concept.getAttributeDesc(attributeName);
         logger.info("attributeDesc: " + attributeDesc.getName());
     }

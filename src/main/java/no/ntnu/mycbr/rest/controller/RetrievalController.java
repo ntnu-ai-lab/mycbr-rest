@@ -1,14 +1,17 @@
 package no.ntnu.mycbr.rest.controller;
 
 import io.swagger.annotations.ApiOperation;
+import no.ntnu.mycbr.core.Project;
 import no.ntnu.mycbr.rest.common.ApiResponseAnnotations.ApiResponsesDefault;
 import no.ntnu.mycbr.rest.controller.helper.Query;
+import no.ntnu.mycbr.rest.controller.service.ProjectAccessService;
 import no.ntnu.mycbr.rest.controller.service.SelfSimilarityRetrieval;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -33,6 +36,14 @@ public class RetrievalController {
     private static final String CAR0 = "car0";
     private static final String MANUFACTURER = "manufacturer";
     private final Log logger = LogFactory.getLog(getClass());
+    @Autowired
+    private ProjectAccessService projectAccessService;
+    @Autowired
+    private SelfSimilarityRetrieval selfSimilarityRetrieval;
+
+    private Project project() {
+        return projectAccessService.getProject();
+    }
 
     /**
      * Redundant code
@@ -50,7 +61,7 @@ public class RetrievalController {
             @RequestParam(required = false, value = NO_OF_RETURNED_CASES, defaultValue = DEFAULT_NO_OF_CASES) int k,
             @RequestBody(required = true) HashMap<String, Object> queryContent) {
 
-        return new Query(casebase, concept, amalFunc, queryContent, k);
+        return new Query(project(), casebase, concept, amalFunc, queryContent, k);
     }
 
     @ApiOperation(value = GET_SIMILAR_CASES_BY_CASE_ID, nickname = GET_SIMILAR_CASES_BY_CASE_ID)
@@ -63,7 +74,7 @@ public class RetrievalController {
             @RequestParam(value = CASE_ID) String caseID,
             @RequestParam(required = false, value = NO_OF_RETURNED_CASES, defaultValue = DEFAULT_NO_OF_CASES) int k) {
 
-        Query query = new Query(casebaseID, conceptID, amalgamationFunctionID, caseID, k);
+        Query query = new Query(project(), casebaseID, conceptID, amalgamationFunctionID, caseID, k);
 
         return query.getSimilarCases();
     }
@@ -78,7 +89,7 @@ public class RetrievalController {
             @RequestParam(required = false, value = NO_OF_RETURNED_CASES, defaultValue = DEFAULT_NO_OF_CASES) int k,
             @RequestBody(required = true) Set<String> caseIDs) {
 
-        Map<String, HashMap<String, Double>> retrievedResult = Query.retrieve(casebaseIDs, conceptID, amalgamationFunctionID, caseIDs, k);
+        Map<String, HashMap<String, Double>> retrievedResult = Query.retrieve(project(), casebaseIDs, conceptID, amalgamationFunctionID, caseIDs, k);
 
         return retrievedResult;
     }
@@ -111,7 +122,7 @@ public class RetrievalController {
         it = queryBase.iterator();
         while (it.hasNext())
             queryBaseIDs.add(it.next());
-        return Query.retrieve(casebaseID, conceptID, null, caseIDs, queryBaseIDs, k);
+        return Query.retrieve(project(), casebaseID, conceptID, null, caseIDs, queryBaseIDs, k);
     }
 
     /**
@@ -147,7 +158,7 @@ public class RetrievalController {
         it = queryBase.iterator();
         while (it.hasNext())
             queryBaseIDs.add(it.next());
-        return Query.retrieve(casebaseID, conceptID, null, caseIDs, queryBaseIDs, k);
+        return Query.retrieve(project(), casebaseID, conceptID, null, caseIDs, queryBaseIDs, k);
     }
 
     @ApiOperation(value = GET_SIMILAR_CASES_BY_ATTRIBUTE, nickname = GET_SIMILAR_CASES_BY_ATTRIBUTE)
@@ -161,7 +172,7 @@ public class RetrievalController {
             @RequestParam(value = VALUE, defaultValue = VW) String value,
             @RequestParam(required = false, value = NO_OF_RETURNED_CASES, defaultValue = DEFAULT_NO_OF_CASES) int k) {
 
-        return new Query(casebaseID, conceptID, amalgamationFunctionID, attribute, value, k);
+        return new Query(project(), casebaseID, conceptID, amalgamationFunctionID, attribute, value, k);
     }
 
     @ApiOperation(value = GET_SIMILAR_CASES_BY_MULTIPLE_ATTRIBUTES, nickname = GET_SIMILAR_CASES_BY_MULTIPLE_ATTRIBUTES)
@@ -174,8 +185,8 @@ public class RetrievalController {
             @RequestParam(required = false, value = NO_OF_RETURNED_CASES, defaultValue = DEFAULT_NO_OF_CASES) int k,
             @RequestBody() HashMap<String, Object> attributeNameValueMap) {
 
-        Query query = new Query(casebaseID, conceptID, amalgamationFunctionID, attributeNameValueMap, k);
-        return getFullResult(query, conceptID);
+        Query query = new Query(project(), casebaseID, conceptID, amalgamationFunctionID, attributeNameValueMap, k);
+        return getFullResult(project(), query, conceptID);
     }
 
     @ApiOperation(value = GET_SIMILAR_CASES_BY_CASE_ID_WITH_CONTENT, nickname = GET_SIMILAR_CASES_BY_CASE_ID_WITH_CONTENT)
@@ -188,8 +199,8 @@ public class RetrievalController {
             @RequestParam(value = CASE_ID, defaultValue = CAR0) String caseID,
             @RequestParam(required = false, value = NO_OF_RETURNED_CASES, defaultValue = DEFAULT_NO_OF_CASES) int k) {
 
-        Query query = new Query(casebaseID, conceptID, amalgamationFunctionID, caseID, k);
-		return getFullResult(query, conceptID);
+        Query query = new Query(project(), casebaseID, conceptID, amalgamationFunctionID, caseID, k);
+		return getFullResult(project(), query, conceptID);
     }
 
     @ApiOperation(value = GET_SIMILAR_CASES_WITH_CONTENT, nickname = GET_SIMILAR_CASES_WITH_CONTENT)
@@ -203,8 +214,8 @@ public class RetrievalController {
             @RequestParam(value = VALUE, defaultValue = VW) String value,
             @RequestParam(required = false, value = NO_OF_RETURNED_CASES, defaultValue = DEFAULT_NO_OF_CASES) int k) {
 
-        Query query = new Query(casebaseID, conceptID, amalgamationFunctionID, attribute, value, k);
-        List<LinkedHashMap<String, String>> cases = getFullResult(query, conceptID);
+        Query query = new Query(project(), casebaseID, conceptID, amalgamationFunctionID, attribute, value, k);
+        List<LinkedHashMap<String, String>> cases = getFullResult(project(), query, conceptID);
         return cases;
     }
 
@@ -226,7 +237,7 @@ public class RetrievalController {
             @RequestParam(required = false, value = AMAL_FUNCTION_ID) String amalgamationFunctionID,
             @RequestParam(required = false, value = NO_OF_RETURNED_CASES, defaultValue = DEFAULT_NO_OF_CASES) int k) {
 
-        Map<String, Map<String, Double>> retrivalResults = new SelfSimilarityRetrieval()
+        Map<String, Map<String, Double>> retrivalResults = selfSimilarityRetrieval
                 .performSelfSimilarityRetrieval(conceptID, casebaseID, amalgamationFunctionID, k);
 
         return retrivalResults;

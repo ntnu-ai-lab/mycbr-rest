@@ -9,19 +9,20 @@ import no.ntnu.mycbr.core.model.AttributeDesc;
 import no.ntnu.mycbr.core.model.Concept;
 import no.ntnu.mycbr.core.similarity.AmalgamationFct;
 import no.ntnu.mycbr.core.similarity.config.AmalgamationConfig;
-import no.ntnu.mycbr.rest.App;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
 public class CaseService {
-    Project p = App.getProject();
     private final Log logger = LogFactory.getLog(getClass());
+    @Autowired
+    private ProjectAccessService projectAccessService;
 
     public Instance addInstance(Concept c, ICaseBase cb, String caseID, JSONObject inpcase){
         Set keySet = inpcase.keySet();
@@ -69,6 +70,7 @@ public class CaseService {
     }
 
     public ArrayList<String> addInstances(Concept c, String casebaseID, Set<Map<AttributeDesc, String>> inpcases, ArrayList<String> caseIdList){
+        Project p = projectAccessService.getProject();
 
         ICaseBase cb = p.getCaseBases().get(casebaseID);
         int counter = 0;

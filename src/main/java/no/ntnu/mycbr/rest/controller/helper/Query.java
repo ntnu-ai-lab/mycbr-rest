@@ -14,7 +14,6 @@ import no.ntnu.mycbr.core.retrieval.Retrieval;
 import no.ntnu.mycbr.core.retrieval.Retrieval.RetrievalCustomer;
 import no.ntnu.mycbr.core.retrieval.RetrievalResult;
 import no.ntnu.mycbr.core.similarity.Similarity;
-import no.ntnu.mycbr.rest.App;
 import no.ntnu.mycbr.rest.utils.ConcurrentCustomer;
 import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctManager;
 import no.ntnu.mycbr.rest.utils.TemporaryAmalgamFctNotChangedException;
@@ -32,10 +31,11 @@ import java.util.concurrent.Future;
  */
 public class Query implements RetrievalCustomer {
 
+    private final Project project;
     private LinkedHashMap<String, Double> resultList = new LinkedHashMap<>();
 
-    public Query(String casebase, String concept) {
-        Project project = App.getProject();
+    public Query(Project project, String casebase, String concept) {
+        this.project = project;
         // create case bases and assign the case bases that will be used for submitting a query
         DefaultCaseBase cb = (DefaultCaseBase) project.getCaseBases().get(casebase);
         List<Instance> cases = (List<Instance>) cb.getCases();
@@ -46,8 +46,8 @@ public class Query implements RetrievalCustomer {
         }
     }
 
-    public Query(String concept) {
-        Project project = App.getProject();
+    public Query(Project project, String concept) {
+        this.project = project;
         // create case bases and assign the case bases that will be used for submitting a query
         HashMap<String, ICaseBase> cbs = project.getCaseBases();
         List<Instance> cases = new ArrayList<>();
@@ -60,9 +60,8 @@ public class Query implements RetrievalCustomer {
         }
     }
 
-    public Query(String casebase, String concept, String amalFunc, HashMap<String, Object> queryContent, int k) {
-
-        Project project = App.getProject();
+    public Query(Project project, String casebase, String concept, String amalFunc, HashMap<String, Object> queryContent, int k) {
+        this.project = project;
         // create case bases and assign the case bases that will be used for submitting a query
         DefaultCaseBase cb = (DefaultCaseBase) project.getCaseBases().get(casebase);
         // create a concept and get the main concept of the project;
@@ -157,13 +156,13 @@ public class Query implements RetrievalCustomer {
     }
 
 
-    public static HashMap<String, HashMap<String, Double>> retrieve(String casebase,
+    public static HashMap<String, HashMap<String, Double>> retrieve(Project project,
+                                                                    String casebase,
                                                                     String concept,
                                                                     String amalFunc,
                                                                     Set<String> caseIDs,
                                                                     List<String> queryBase,
                                                                     int k) {
-        Project project = App.getProject();
         // create case bases and assign the case bases that will be used for submitting a query
         DefaultCaseBase ocb = (DefaultCaseBase) project.getCaseBases().get(casebase);
         DefaultCaseBase tcb = null;
@@ -185,14 +184,13 @@ public class Query implements RetrievalCustomer {
                 tcb.addCase(instanceMap.get(queryBaseCase));
             }
         }
-        HashMap<String, HashMap<String, Double>> ret = retrieve("tempCB", concept, amalFunc, caseIDs, k);
+        HashMap<String, HashMap<String, Double>> ret = retrieve(project, "tempCB", concept, amalFunc, caseIDs, k);
         project.deleteCaseBase("tempCB");
         return ret;
 
     }
 
-    public static HashMap<String, HashMap<String, Double>> retrieve(String casebase, String concept, String amalFunc, Set<String> caseIDs, int k) {
-        Project project = App.getProject();
+    public static HashMap<String, HashMap<String, Double>> retrieve(Project project, String casebase, String concept, String amalFunc, Set<String> caseIDs, int k) {
         // create case bases and assign the case bases that will be used for submitting a query
         DefaultCaseBase cb = (DefaultCaseBase) project.getCaseBases().get(casebase);
         // create a concept and get the main concept of the project;
@@ -275,8 +273,8 @@ public class Query implements RetrievalCustomer {
         return ret;
     }
 
-    public Query(String casebase, String concept, String amalFunc, String caseID, int k) {
-        Project project = App.getProject();
+    public Query(Project project, String casebase, String concept, String amalFunc, String caseID, int k) {
+        this.project = project;
         // create case bases and assign the case bases that will be used for submitting a query
         DefaultCaseBase cb = (DefaultCaseBase) project.getCaseBases().get(casebase);
         // create a concept and get the main concept of the project;
@@ -319,9 +317,8 @@ public class Query implements RetrievalCustomer {
         }
     }
 
-    public Query(String casebase, String concept, String amalFunc, String attribute, String value, int k) {
-
-        Project project = App.getProject();
+    public Query(Project project, String casebase, String concept, String amalFunc, String attribute, String value, int k) {
+        this.project = project;
         // create case bases and assign the case bases that will be used for submitting a query
         DefaultCaseBase cb = (DefaultCaseBase) project.getCaseBases().get(casebase);
         // create a concept and get the main concept of the project;

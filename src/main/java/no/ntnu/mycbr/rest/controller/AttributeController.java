@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import io.swagger.annotations.ApiOperation;
 import no.ntnu.mycbr.rest.common.ApiResponseAnnotations.ApiResponsesDefault;
 import no.ntnu.mycbr.rest.controller.service.AttributeService;
+import no.ntnu.mycbr.rest.controller.service.ProjectAccessService;
 
 
 /**
@@ -31,6 +33,8 @@ public class AttributeController {
 
     private final Log logger = LogFactory.getLog(getClass());
     private static final String STRING = "String";
+    @Autowired
+    private ProjectAccessService projectAccessService;
 
     //get an attribute by ID
     @ApiOperation(value = GET_ATTRIBUTE_BY_ID, nickname = GET_ATTRIBUTE_BY_ID)
@@ -40,7 +44,7 @@ public class AttributeController {
             @PathVariable(value=CONCEPT_ID) String conceptID,
             @PathVariable(value=ATTR_ID) String attributeID) {
 
-        return new AttributeService().getAttributeByID(conceptID, attributeID);
+        return new AttributeService(projectAccessService.getProject()).getAttributeByID(conceptID, attributeID);
     }
 
     // get attribute description (details)
@@ -52,7 +56,7 @@ public class AttributeController {
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=ATTR_ID) String attributeID) {
 	
-	    AttributeService service = new AttributeService(conceptID, attributeID);
+	    AttributeService service = new AttributeService(projectAccessService.getProject(), conceptID, attributeID);
 	
 	    return service.getAttributeDescription();
     }
@@ -64,7 +68,7 @@ public class AttributeController {
     public Map<String, String> getAllAttributes(
             @PathVariable(value=CONCEPT_ID) String conceptID) {
 
-        AttributeService service = new AttributeService(conceptID);
+        AttributeService service = new AttributeService(projectAccessService.getProject(), conceptID);
 
         return service.getAllAttributes();
     }
@@ -77,7 +81,7 @@ public class AttributeController {
             @PathVariable(value=CONCEPT_ID) String conceptID,
             @PathVariable(value=ATTR_ID) String attributeID,
             @RequestParam(value="attributeJSON", defaultValue = "{}") String attributeJSON) {
-        return new AttributeService().addAttribute(conceptID, attributeID, attributeJSON);
+        return new AttributeService(projectAccessService.getProject()).addAttribute(conceptID, attributeID, attributeJSON);
     }
 
 
@@ -102,7 +106,7 @@ public class AttributeController {
             @PathVariable(value=CONCEPT_ID) String conceptID,
             @PathVariable(value=ATTR_ID) String attributeID) {
 
-        return new AttributeService().deleteAttribute(conceptID, attributeID);
+        return new AttributeService(projectAccessService.getProject()).deleteAttribute(conceptID, attributeID);
     }
 
     //delete all  attributes
@@ -112,7 +116,7 @@ public class AttributeController {
     public boolean deleteAllAttributes(
             @PathVariable(value=CONCEPT_ID) String conceptID) {
 
-        return new AttributeService().deleteAllAttribute(conceptID);
+        return new AttributeService(projectAccessService.getProject()).deleteAllAttribute(conceptID);
     }
 
     //Get active similarity function  the given attribute
@@ -124,7 +128,7 @@ public class AttributeController {
 	    @PathVariable(value=CONCEPT_ID) String conceptID,
 	    @PathVariable(value=ATTR_ID) String attributeID) {
 	
-	AttributeService service = new AttributeService(conceptID, attributeID);
+	AttributeService service = new AttributeService(projectAccessService.getProject(), conceptID, attributeID);
 	
 	return service.getActiveSimilarityFunction();
     }
@@ -141,7 +145,7 @@ public class AttributeController {
             @PathVariable(value=CONCEPT_ID) String conceptID,
             @PathVariable(value=ATTR_ID) String attributeID) {
 
-        AttributeService service = new AttributeService(conceptID, attributeID);
+        AttributeService service = new AttributeService(projectAccessService.getProject(), conceptID, attributeID);
         //logger.info("simFct" + service.ge);
 
         return service.getAllSimilarityFunctions();
@@ -156,7 +160,7 @@ public class AttributeController {
             @PathVariable(value=CONCEPT_ID) String conceptID,
             @PathVariable(value=ATTR_ID) String attributeID) {
 
-        AttributeService service = new AttributeService(conceptID, attributeID);
+        AttributeService service = new AttributeService(projectAccessService.getProject(), conceptID, attributeID);
 
         return service.deleteAllSimilarityFunctions();
     }
@@ -174,7 +178,7 @@ public class AttributeController {
 	logger.info("AttributeController: " + conceptID + ", " +  attributeID + ", " +  similarityFunctionID  + ", " + parameter);
     Double parameterD = Double.parseDouble(parameter);
 //	return new AttributeService().addDoubleSimilarityFunction( conceptID, attributeID, similarityFunctionID, parameterD);
-    return new AttributeService().addIntegerSimilarityFunction( conceptID, attributeID, similarityFunctionID);
+    return new AttributeService(projectAccessService.getProject()).addIntegerSimilarityFunction( conceptID, attributeID, similarityFunctionID);
 
     }
 }

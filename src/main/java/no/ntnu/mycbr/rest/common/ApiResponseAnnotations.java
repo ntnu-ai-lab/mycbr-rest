@@ -3,8 +3,8 @@
  */
 package no.ntnu.mycbr.rest.common;
 
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 /**
  * This class provides the REST API response annotations, which binds multiple response codes together.
@@ -27,11 +27,11 @@ public final class ApiResponseAnnotations {
      * 
      */
     @ApiResponses(value = {
-	    @ApiResponse(code = 200, message = SUCCESS),
-	    @ApiResponse(code = 401, message = UNAUTHORIZED),
-	    @ApiResponse(code = 403, message = FORBIDDEN),
-	    @ApiResponse(code = 404, message = NOT_FOUND),
-	    @ApiResponse(code = 500, message = FAILURE)
+	    @ApiResponse(responseCode = "200", description = SUCCESS),
+	    @ApiResponse(responseCode = "401", description = UNAUTHORIZED),
+	    @ApiResponse(responseCode = "403", description = FORBIDDEN),
+	    @ApiResponse(responseCode = "404", description = NOT_FOUND),
+	    @ApiResponse(responseCode = "500", description = FAILURE)
     })
     public @interface ApiResponsesDefault{}
 }

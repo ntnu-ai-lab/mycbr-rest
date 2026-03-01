@@ -6,7 +6,7 @@ import no.ntnu.mycbr.core.ICaseBase;
 import no.ntnu.mycbr.core.Project;
 import no.ntnu.mycbr.core.casebase.Instance;
 import no.ntnu.mycbr.core.model.Concept;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import no.ntnu.mycbr.rest.common.ApiResponseAnnotations.ApiResponsesDefault;
 import no.ntnu.mycbr.rest.controller.helper.Case;
 import no.ntnu.mycbr.rest.controller.helper.Query;
@@ -39,7 +39,7 @@ public class CaseController
     private final Log logger = LogFactory.getLog(getClass());
 
     //Get one instance
-    @ApiOperation(value = GET_CASE_BY_CASE_ID, nickname = GET_CASE_BY_CASE_ID)
+    @Operation(summary = GET_CASE_BY_CASE_ID, operationId = GET_CASE_BY_CASE_ID)
     @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_CASEBASE_CASE_ID, 
     headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
@@ -61,7 +61,7 @@ public class CaseController
     }
 
     //Delete one instance
-    @ApiOperation(value = DELETE_CASE_BY_CASE_ID, nickname = DELETE_CASE_BY_CASE_ID)
+    @Operation(summary = DELETE_CASE_BY_CASE_ID, operationId = DELETE_CASE_BY_CASE_ID)
     @RequestMapping(method = RequestMethod.DELETE, value = PATH_CONCEPT_CASEBASE_CASE_ID, 
     headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
@@ -83,7 +83,7 @@ public class CaseController
     }
 
     // Get all instances in case base of a concept
-    @ApiOperation(value = GET_ALL_CASES, nickname = GET_ALL_CASES)
+    @Operation(summary = GET_ALL_CASES, operationId = GET_ALL_CASES)
     @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_CASES, headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
     public List<Map<String, String>> getAllInstances(
@@ -112,7 +112,7 @@ public class CaseController
 
 
 	// Deletes all instances from a concept
-	@ApiOperation(value = DELETE_ALL_CASES, nickname = DELETE_ALL_CASES)
+	@Operation(summary = DELETE_ALL_CASES, operationId = DELETE_ALL_CASES)
 	@RequestMapping(method = RequestMethod.DELETE, value = PATH_CONCEPT_CASES, headers=ACCEPT_APPLICATION_JSON)
 	@ApiResponsesDefault
 	public boolean deleteAllInstances(
@@ -129,7 +129,7 @@ public class CaseController
 	}
 
     // Get all instances of a concept
-    @ApiOperation(value = GET_ALL_CASES_FROM_CASEBASE, nickname = GET_ALL_CASES_FROM_CASEBASE)
+    @Operation(summary = GET_ALL_CASES_FROM_CASEBASE, operationId = GET_ALL_CASES_FROM_CASEBASE)
     @RequestMapping(method = RequestMethod.GET, value = PATH_CONCEPT_CASEBASE_CASES, 
     headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
@@ -146,7 +146,7 @@ public class CaseController
 
 
     //Delete all cases from a casebase
-    @ApiOperation(value=DELETE_ALL_CASES_FROM_CB, nickname=DELETE_ALL_CASES_FROM_CB)
+    @Operation(summary = DELETE_ALL_CASES_FROM_CB, operationId = DELETE_ALL_CASES_FROM_CB)
     @RequestMapping(method=RequestMethod.DELETE, value = PATH_CONCEPT_CASEBASE_CASES)
     @ApiResponsesDefault
     public boolean deleteInstances(
@@ -173,7 +173,7 @@ public class CaseController
     ]
     }
      */
-    @ApiOperation(value = ADD_MULTIPLE_CASES_USING_JSON, nickname = ADD_MULTIPLE_CASES_USING_JSON)
+    @Operation(summary = ADD_MULTIPLE_CASES_USING_JSON, operationId = ADD_MULTIPLE_CASES_USING_JSON)
     @RequestMapping(method = RequestMethod.POST, value = PATH_CONCEPT_CASEBASE_CASES, 
     headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
@@ -195,7 +195,7 @@ public class CaseController
     }
 
 	// This call adds a new case; if the ID exists, it does not add anything
-    @ApiOperation(value = ADD_CASE_USING_JSON, nickname = ADD_CASE_USING_JSON)
+    @Operation(summary = ADD_CASE_USING_JSON, operationId = ADD_CASE_USING_JSON)
     @RequestMapping(method = RequestMethod.POST, value = PATH_CONCEPT_CASEBASE_CASE_ID,
     headers=ACCEPT_APPLICATION_JSON)
     @ApiResponsesDefault
@@ -216,7 +216,7 @@ public class CaseController
     }
 
 	// this call updates existing cases
-	@ApiOperation(value = UPDATE_CASE_USING_JSON, nickname = UPDATE_CASE_USING_JSON)
+	@Operation(summary = UPDATE_CASE_USING_JSON, operationId = UPDATE_CASE_USING_JSON)
 	@RequestMapping(method = RequestMethod.PUT, value = PATH_CONCEPT_CASEBASE_CASE_ID,
 			headers=ACCEPT_APPLICATION_JSON)
 	@ApiResponsesDefault

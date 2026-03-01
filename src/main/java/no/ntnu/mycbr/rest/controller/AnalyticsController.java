@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import no.ntnu.mycbr.rest.common.ApiResponseAnnotations.ApiResponsesDefault;
 import no.ntnu.mycbr.rest.controller.service.AnalyticsService;
 import no.ntnu.mycbr.rest.controller.service.ProjectAccessService;
@@ -36,7 +36,7 @@ public class AnalyticsController {
     @Autowired
     private ProjectAccessService projectAccessService;
 
-    @ApiOperation(value = "compares 2 instances including weights (weighted sum)", nickname = DETAILED_CASE_COMPARISION)
+    @Operation(summary = "compares 2 instances including weights (weighted sum)", operationId = DETAILED_CASE_COMPARISION)
     @RequestMapping(method = RequestMethod.GET, path= PATH_ANALYTICS_CONCEPT_AMAL_FUNCTION_ID + DETAILED_CASE_COMPARISON, produces = APPLICATION_JSON)
     @ApiResponsesDefault
     public @ResponseBody List<Map<String, Double>> DetailedCaseComparison(
@@ -50,7 +50,7 @@ public class AnalyticsController {
         return service.getCaseComparison(caseID1, caseID2);
     }
 
-    @ApiOperation(value = "compares 2 instances and returns the local sim for each attribute", nickname = LOCAL_SIM_COMPARISION)
+    @Operation(summary = "compares 2 instances and returns the local sim for each attribute", operationId = LOCAL_SIM_COMPARISION)
     @RequestMapping(method = RequestMethod.GET, path= PATH_ANALYTICS_CONCEPT_AMAL_FUNCTION_ID +LOCAL_SIM_COMPARISON, produces = APPLICATION_JSON)
     @ApiResponsesDefault
     public @ResponseBody List<Map<String, Double>> LocalSimComparison(
@@ -64,7 +64,7 @@ public class AnalyticsController {
         return service.getLocalSimComparison(caseAID, caseBID);
     }
 
-    @ApiOperation(value = "Returns the weights for each attribute specified in the global similarity measure", nickname = GLOBAL_WEIGHTS)
+    @Operation(summary = "Returns the weights for each attribute specified in the global similarity measure", operationId = GLOBAL_WEIGHTS)
     @RequestMapping(method = RequestMethod.GET, path= PATH_ANALYTICS_CONCEPT_AMAL_FUNCTION_ID +GLOBAL_WEIGHTS, produces = APPLICATION_JSON)
     @ApiResponsesDefault
     public @ResponseBody List<Map<String, Double>> GlobalWeights(

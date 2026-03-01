@@ -3,7 +3,7 @@ package no.ntnu.mycbr.rest.controller;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +29,7 @@ public class CaseBaseController {
     @Autowired
     private ProjectAccessService projectAccessService;
 
-    @ApiOperation(value = GET_CASEBASE_IDS, nickname = GET_CASEBASE_IDS)
+    @Operation(summary = GET_CASEBASE_IDS, operationId = GET_CASEBASE_IDS)
     @RequestMapping(method = RequestMethod.GET, path=PATH_CASEBASES, produces = APPLICATION_JSON)
     @ApiResponsesDefault
     public List<String> getCaseBases() {
@@ -45,7 +45,7 @@ public class CaseBaseController {
 	return casebaseNames;
     }
 
-    @ApiOperation(value=ADD_CASEBASE_ID, nickname=ADD_CASEBASE_ID)
+    @Operation(summary = ADD_CASEBASE_ID, operationId = ADD_CASEBASE_ID)
     @RequestMapping(method=RequestMethod.PUT, path=PATH_CASEBASE_ID)
     @ApiResponsesDefault
     public boolean createCaseBase(
@@ -61,7 +61,7 @@ public class CaseBaseController {
 	return true;
     }
 
-    @ApiOperation(value=DELETE_CASEBASE_ID, nickname=DELETE_CASEBASE_ID)
+    @Operation(summary = DELETE_CASEBASE_ID, operationId = DELETE_CASEBASE_ID)
     @RequestMapping(method=RequestMethod.DELETE, path= PATH_CASEBASE_ID)
     @ApiResponsesDefault
     public boolean deleteCaseBase(

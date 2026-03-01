@@ -26,7 +26,7 @@ public class ProjectController {
     public boolean saveProject() {
         try {
             Project p = App.getProject();
-            p.save();
+            //p.save();
             return true;
         } catch (Exception e) {
             logger.error("Error saving project", e);

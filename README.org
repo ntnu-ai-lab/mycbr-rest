@@ -3,8 +3,8 @@
   :CUSTOM_ID: introduction
   :END:
 
-This project puts myCBR into Spring.io and provides the created REST
-calls through a Swagger API
+This project exposes myCBR through a Spring Boot REST API with
+OpenAPI/Swagger documentation.
 
 * How to
   :PROPERTIES:
@@ -43,11 +43,12 @@ root
     or
     mvn clean install -DskipTests=True
 #+END_EXAMPLE
+Requires Java 17 or newer.
 
 - In order to deploy the Spring app, run:
 
 #+BEGIN_EXAMPLE
-    java -DMYCBR.PROJECT.FILE={path to the project file} -jar ./target/mycbr-rest-2.0.jar
+    java -DMYCBR.PROJECT.FILE={path to the project file} -jar ./target/mycbr-rest-2.1.jar
 #+END_EXAMPLE
 
 - After Spring has started, you can find the API documentation here:
@@ -65,13 +66,13 @@ root
   model is working ## GET Requests
 - /case provides the case content
 - /concepts provides all concept names in the project
-- /casebase provides the name(s) of the case bases associated with the
+- /casebases provides the name(s) of the case bases associated with the
   project
-- /retieval provides the similarity-based retrieval either by specifying
+- /retrieval provides the similarity-based retrieval either by specifying
   symbols or an id of existing cases
 - /attributes provides a list of attributes and their value types
-- /values provides the list of allowed values for SymbolDesc attributes
-  and min/max for IntegerDesc/DoubleDesc/FloatDesc ## POST Requests
+- /concepts/{conceptID}/attributes/{attributeID} provides attribute metadata
+  and value ranges ## POST Requests
 - /retrieval allows you to post a query with a number of attributes,
   e.g.:\\
   ={"Doors": 4, "Model": "e_300_diesel", "Manufacturer": "mercedes-benz","Color":"yellow, blue"}=
@@ -91,7 +92,7 @@ root
 - private static String projectName = "used\_cars\_flat.prj" should be
   changed to the project file's name
 - The rest of the API is independent from the project, hence only the
-  parameters such as case base and comcept names have to be adapted to
+  parameters such as case base and concept names have to be adapted to
   the new project
   
 * REST API
@@ -99,7 +100,7 @@ The REST API created for the mycbr backend is trying to adhere to the REST seman
 
 - POST: POST operations should be used when the REST api user does not know exactly
   where the item in question should be located. Typically due to undefined
-  behaviour or bad documentation. This operation shold return a URL that
+  behaviour or bad documentation. This operation should return a URL that
   contains an ID for that item, that also gives the user the location the REST
   server moved the item to.
 - PUT: Instead PUT should be used to put an item at the exact location. This
